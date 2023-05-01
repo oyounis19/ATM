@@ -277,7 +277,4 @@ class ATM{
         
     }
 }
-$atm = new ATM();
-// $atm->sendOTP('oyounis19@gmail.com', 'Ali Ahmed');
-$atm->notifyUser('oyounis19@gmail.com', 'Withdrawl', 500, 5700, true, 'Ali Ahmed', 1254);
 ?>
