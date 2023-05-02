@@ -13,7 +13,6 @@
 </head>
 
 <body>
-
     <div class="insert h-100 d-flex align-items-center justify-content-center">
         <div class="screens bg d-flex">
             <div class="screen info">
