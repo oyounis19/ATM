@@ -15,9 +15,7 @@ private $amount;
 private $time;
 
 public function login(){
-
 }
-
 
 public function logout(){
 
