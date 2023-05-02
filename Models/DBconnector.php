@@ -1,5 +1,4 @@
 <?php
-
 class DBconnector{
     private $name = "atm_db";
     private $host = "db4free.net";
@@ -57,5 +56,4 @@ class DBconnector{
         }
     }
 }
-
 ?> 
