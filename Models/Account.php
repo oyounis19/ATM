@@ -1,4 +1,5 @@
 <?php
+    require_once "Verification.php";
 
     class Account {
         private $id;
@@ -7,27 +8,27 @@
 
     public function getId() 
     {
-        return $id;
+        return $this->id;
     }
     public function setId(int $id) 
     {
-        this->$id = $id;
+        $this->id = $id;
     }
     public function getBalance() 
     {
-        return $balance;
+        return $this->balance;
     }
     public function setBalance(float $balance) 
     {
-        this->$balance = $balance;
+        $this->balance = $balance;
     }
     public function getType() 
     {
-        return $type;
+        return $this->type;
     }
     public function setType(string $type) 
     {
-        this->$type = $type;
+        $this->type = $type;
     }
     public function __construct($id, $balance, $type) 
     {
@@ -43,7 +44,8 @@
 
     public function transfer($account, $amount) 
     {
-        if ($amount > $this->balance) 
+        $verify = new Verification();
+        if (!$verify) 
         {
             return false;
         } 
@@ -57,10 +59,12 @@
 
     public function withdraw($amount) 
     {
-        if ($amount > $this->balance) 
+        $verify = new Verification();
+        if (!$verify)
         {
             return false;
-        } else 
+        } 
+        else 
         {
             $this->balance -= $amount;
             return true;
