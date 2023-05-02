@@ -1,13 +1,11 @@
-let withdrawBTNs = document.getElementsByClassName("withdrawBTN")
-let inputAmount = document.getElementById("Amount")
+const withdrawButtons = document.querySelectorAll('.withdrawBTN');
+const amountInput = document.querySelector('#Amount');
 
-
-for (let i = 0; i < withdrawBTNs.length; i++) {
-    withdrawBTNs[i].addEventListener("click", (e) => {
-        inputAmount.value = ""
-        inputAmount.value = e.target.value
-    })
-}
+withdrawButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      amountInput.value = button.getAttribute('value');
+    });
+  });
 
 inputAmount.addEventListener('keydown', (event) => {
     // Allow: backspace, delete, tab, escape, enter and .

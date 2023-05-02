@@ -8,11 +8,12 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>ATM APP</title>
 </head>
 
 <body>
+
     <div class="insert h-100 d-flex align-items-center justify-content-center">
         <div class="screens bg d-flex">
             <div class="screen info">
@@ -31,34 +32,34 @@
 
             <div class="screen menu">
                 <div class="buttons d-flex flex-wrap justify-content-between">
-                    <form action="#" class="w-100">
+                    <form action="#" class="w-100" method="get">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="Amount" minlength="5" maxlength="5"
-                                placeholder="01234 5648 6542 3156">
+                            <input type="text" class="form-control" id="Amount" minlength="2" maxlength="5"
+                                placeholder="01234 5648 6542 3156" name="amount">
                             <label for="Amount">Enter Amount</label>
                         </div>
+                        <div class="btn btnMenu withdrawBTN" value="50">
+                            50 LE
+                        </div>
+                        <div class="btn btnMenu withdrawBTN" value="100">
+                            100 LE
+                        </div>
+                        <div class="btn btnMenu withdrawBTN" value="200">
+                            200 LE
+                        </div>
+                        <div class="btn btnMenu withdrawBTN" value="500">
+                            500 LE
+                        </div>
+                        <div class="btn btnMenu withdrawBTN" value="1000">
+                            1000 LE
+                        </div>
+                        <div class="btn btnMenu withdrawBTN" value="2000">
+                            2000 LE
+                        </div>
+                        <button class="btn btn-primary w-100 py-3 mt-4">
+                            Withdraw
+                        </button>
                     </form>
-                    <button class="btn btnMenu withdrawBTN" value="50">
-                        50 LE
-                    </button>
-                    <button class="btn btnMenu withdrawBTN" value="100">
-                        100 LE
-                    </button>
-                    <button class="btn btnMenu withdrawBTN" value="200">
-                        200 LE
-                    </button>
-                    <button class="btn btnMenu withdrawBTN" value="500">
-                        500 LE
-                    </button>
-                    <button class="btn btnMenu withdrawBTN" value="1000">
-                        1000 LE
-                    </button>
-                    <button class="btn btnMenu withdrawBTN" value="2000">
-                        2000 LE
-                    </button>
-                    <button class="btn btn-primary w-100 py-3 mt-4">
-                        Withdraw
-                    </button>
                 </div>
             </div>
         </div>
