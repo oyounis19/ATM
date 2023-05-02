@@ -272,7 +272,6 @@ class ATM{
     }
     return true;
     }
-
     public function blockCard(Card $Card){
         
     }
