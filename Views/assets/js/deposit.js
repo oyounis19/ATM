@@ -18,8 +18,14 @@ depositForm.addEventListener('submit', (e) => {//Waits 5 seconds before submitti
 
 amount.addEventListener('keydown', (event) => {
     // Allow: backspace, delete, tab, escape, enter and .
-    if (event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' || event.key === 'Escape' || event.key === 'Enter') {
-        return;
+    if (event.key === 'Backspace' || event.key === 'Delete' || 
+            event.key === 'Tab' || event.key === 'Escape' || 
+            event.key === 'Enter' || (event.key === 'c' && event.ctrlKey === true) || 
+            (event.key === 'v' && event.ctrlKey === true) ||
+            (event.key === 'a' && event.ctrlKey === true) ||
+            (event.key === 'z' && event.ctrlKey === true) ||
+            (event.key === 'y' && event.ctrlKey === true)) {
+            return;
     }
 
     // Allow only numeric keys
