@@ -156,7 +156,8 @@ p {
 }
 /* start account  */
 .insert .screens .accounts .creditCard,
-.insert .screens .transactions .transaction {
+.insert .screens .transactions .transaction ,
+.insert .screens .accounts .account {
     background-color: #675b69;
     align-items: center;
     padding: 10px;

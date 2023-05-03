@@ -10,11 +10,6 @@
     }
 
     if(isset($_POST['card_id']) && isset($_POST['upass'])){//This means that the from has been submitted
-        $host = "db4free.net";
-        $username = "suiiii";
-        $pass = "oyounis1";
-        $db = "atm_db";
-        $port = 3306;
         $conn = mysqli_connect($host,$username, $pass, $db);
 
         $card_ID = validate($_POST['card_id']);
