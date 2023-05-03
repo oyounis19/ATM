@@ -1,58 +1,65 @@
 <?php
-class DBconnector{
-    private $name = "atm_db";
-    private $host = "db4free.net";
-    private $password = "oyounis1";
-    private $username = "suiiii";
-    public $connection;
-    
-    # Database connecting function
-    public function dbconnect(){
-        $this->connection = new mysqli($this->host,$this->username,$this->password,$this->name);
-        if($this->connection->connect_error){
-            echo "Connection Error: " . $this->connection->connect_error;
-            return false;
+class DBConnector {
+    private $conn;
+
+    public function __construct($host, $username, $password, $dbname) {
+        $this->conn = mysqli_connect($host, $username, $password, $dbname);
+        if (!$this->conn) {
+            throw new Exception("Failed to connect to database: " . mysqli_connect_error());
         }
     }
 
-    # Database closing connection function
-    public function dbclose(){
-        $this->connection->close();
+    public function select($table, $columns = "*", $where = null, $params = array()) {
+        $query = "SELECT $columns FROM $table";
+        if ($where) {
+            $query .= " WHERE $where";
+        }
+        $stmt = $this->conn->prepare($query);
+        if (!$stmt) {
+            throw new Exception("Failed to prepare query: " . $this->conn->error);
+        }
+        if ($params) {
+            $types = str_repeat("s", count($params));
+            $stmt->bind_param($types, ...$params);
+        }
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to execute query: " . $stmt->error);
+        }
+        $result = $stmt->get_result();
+        $rows = array();
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        return $rows;
     }
 
-    # this function for Database SELECT queries
-    // input: Mysql query
-    public function select($sqlqry){
-        try{
-            $result = $this->connection->query($sqlqry);
-            // query function return false if the query is false and sql object if true
-            if($result == false)
-                throw new Exception();
-            return $result->fetch_assoc();
+    public function insert($table, $data) {
+        $columns = implode(",", array_keys($data));
+        $values = implode(",", array_fill(0, count($data), "?"));
+        $query = "INSERT INTO $table ($columns) VALUES ($values)";
+        $stmt = $this->conn->prepare($query);
+        if (!$stmt) {
+            throw new Exception("Failed to prepare query: " . $this->conn->error);
         }
-        catch(Exception $e){
-            //use the below statment to know the error
-            echo "message: " . $e->getMessage();
-            return false;
+        
+        $values = array_values($data);
+        $params = array(str_repeat("s", count($data))) + $values;
+        foreach ($values as &$value) {
+            $params[] = &$value;
         }
+        
+        if (!$stmt->bind_param(...$params)) {
+            throw new Exception("Failed to bind parameters: " . $stmt->error);
+        }
+        
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to execute query: " . $stmt->error);
+        }
+        return $stmt->affected_rows;
     }
 
-    # this function for Database INSERT,DELETE,UPDATE queries
-    // input: Mysql query
-    public function modify($sqlqry){
-        // if there is no exeption the function return true else false
-        try{
-            $result = $this->connection->query($sqlqry);
-            if($result == false)
-                throw new Exception();
-            
-            return true;
-        }
-        catch(Exception $e){
-            //use the below statment to know the error
-            echo "message: " . $e->getMessage();
-            return false;
-        }
+    public function close() {
+        mysqli_close($this->conn);
     }
 }
-?> 
+?>
