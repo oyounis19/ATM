@@ -22,8 +22,8 @@
         <div class="screens d-flex">
             <div class="screen account">
                 <h2 class="text-white fw-bolder">Select Account</h2>
-                <div class="accounts">
-                    <form action="" id="accountForm">
+                
+                    <form action="" id="accountForm" class="accounts">
                         <div class="account d-flex mt-4" data-value="1">
                             <i class="fa-solid fa-credit-card"></i>
                             <div class="accountInfo">
@@ -65,7 +65,7 @@
                     </div>
                         <input type="hidden" name="selectedAccount" id="selectedAccount">
                     </form>
-                </div>
+                
             </div>
         </div>
 

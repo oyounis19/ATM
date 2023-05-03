@@ -8,9 +8,10 @@ require_once "Account.php";
 class verification{
     private $db ;
 
-    public function PIN($user,$PIN){
+    public function PIN(Customer $user,$PIN){
         $db = new DBconnector();
-        $sql = "SELECT PIN FROM `user` WHERE SSN = $user->SSN;"; // $user is from class customer
+        $SSN = $user->SSN;
+        $sql = "SELECT PIN FROM `user` WHERE SSN = $SSN;"; // $user is from class customer
         $result = $db->select($sql);
         if($result["PIN"]==$PIN)
             return true;
