@@ -1,10 +1,13 @@
 <?php
     require_once "Verification.php";
+    require_once "../Models/DBconnector.php"
 
     class Account {
         private $id;
         private $balance;
         private $type;
+        private DBconnector $e;
+
 
     public function getId() 
     {
@@ -39,7 +42,22 @@
 
     public function viewBalance() 
     {
-        return $this->balance;
+        $this->e=new DBconnector();
+        if($this->e ->dbconnect())
+        {
+            $qry="SELECT Balance FROM `Account` WHERE Account_ID = ".$this->id." ";
+            $result = $this->e->select($qry);
+            if(!$result)
+            {
+                echo "Error in Query";
+                return false;
+            }
+        }
+        else
+        {
+            echo "Error in database Connection";
+            return false;
+        }
     }
 
     public function transfer($account, $amount) 
@@ -51,6 +69,22 @@
         } 
         else 
         {
+            $this->e=new DBconnector();
+            if($this->e ->dbconnect())
+                {
+                    $qry="SELECT Balance FROM `Account` WHERE Account_ID = ".$this->id." ";
+                    $result = $this->e->select($qry);
+                    if(!$result)
+                    {
+                        echo "Error in Query";
+                        return false;
+                    }
+                }
+            else
+                {
+                    echo "Error in database Connection";
+                    return false;
+                }
             $this->balance -= $amount;
             $account->deposit($amount);
             return true;

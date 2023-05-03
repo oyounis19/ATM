@@ -28,7 +28,6 @@ class DBconnector{
             // query function return false if the query is false and sql object if true
             if($result == false)
                 throw new Exception();
-
             return $result->fetch_assoc();
         }
         catch(Exception $e){
