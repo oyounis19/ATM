@@ -1,8 +1,5 @@
 <?php
-    require_once "Models/DBconnector.php";
     session_start();
-
-    $db = new DBconnector();
 
     function validate($data){
         $data = trim($data);
@@ -13,13 +10,21 @@
     }
 
     if(isset($_POST['card_id']) && isset($_POST['upass'])){//This means that the from has been submitted
+        $host = "db4free.net";
+        $username = "suiiii";
+        $pass = "oyounis1";
+        $db = "atm_db";
+        $port = 3306;
+        $conn = mysqli_connect($host,$username, $pass, $db);
+
         $card_ID = validate($_POST['card_id']);
         $upass = $_POST['upass'];
         
         $sql = "SELECT * FROM `User` where Card_ID=$card_ID AND PIN=$upass";
-        $result = $db->select($sql);
-        if($result != false){
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result) === 1){
             //SESSION VARIABLES GOES HERE BROO
+            $_SESSION["xx"] = "ddjnkdn";
             header("Location: menu.php");
             exit();
         }else
