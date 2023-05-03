@@ -21,7 +21,7 @@
                 <h2 class="text-white fw-bolder">Withdraw</h2>
                 <div class="userInfo my-5">
                     <ul>
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balcnce</span> $2,000
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> 2,000 LE
 
                         </li>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> 1204
