@@ -1,3 +1,36 @@
+<?php
+    session_start();
+
+    function validate($data){
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        $data = str_replace(" ", "", $data);
+        return $data;
+    }
+
+    if(isset($_POST['card_id']) && isset($_POST['upass'])){//This means that the from has been submitted
+        $host = "db4free.net";
+        $username = "suiiii";
+        $pass = "oyounis1";
+        $db = "atm_db";
+        $port = 3306;
+        $conn = mysqli_connect($host,$username, $pass, $db);
+
+        $card_ID = validate($_POST['card_id']);
+        $upass = $_POST['upass'];
+        
+        $sql = "SELECT * FROM `User` where Card_ID=$card_ID AND PIN=$upass";
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result) === 1){
+            //SESSION VARIABLES GOES HERE BROO
+            header("Location: menu.php");
+            exit();
+        }else
+            echo '<b>NO SUCH ACCOUNT IN</b>';
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +44,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="icon" href="assets/img/atm.png">
     <title>ATM APP</title>
 </head>
@@ -21,14 +54,14 @@
         <div class="screens">
             <div class="credit screen">
                 <h2 class="text-white fw-bolder mb-3">Login by Credit Card</h2>
-                <form action="#">
+                <form action="" method="POST">
                     <div class="form-floating mb-3">
-                        <input type="text" class="card-input-field form-control" id="credit-card"
+                        <input type="text" class="card-input-field form-control"  name="card_id" id="credit-card"
                         placeholder="1234 5648 6542 3156" minlength="19" maxlength="19" required>
                         <label for="credit-card">Enter your credit card number</label>
                     </div>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="PIN" maxlength="4" minlength="4" id="floatingPassword"
+                        <input type="password" name="upass" class="form-control" id="PIN" maxlength="4" minlength="4" id="floatingPassword"
                             placeholder="Password"  required>
                         <label for="floatingPassword">Enter your PIN code</label>
                     </div>
