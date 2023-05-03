@@ -1,9 +1,17 @@
 <?php
 class DBConnector {
     private $conn;
+    private $host;
+    private $username;
+    private $password;
+    private $dbname;
+    public function _construct() {
+        $this->host = "db4free.net";
+        $this->username = "suiiii";
+        $this->password = "oyounis1";
+        $this->dbname = "atm_db";
 
-    public function __construct($host, $username, $password, $dbname) {
-        $this->conn = mysqli_connect($host, $username, $password, $dbname);
+        $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->dbname);
         if (!$this->conn) {
             throw new Exception("Failed to connect to database: " . mysqli_connect_error());
         }
