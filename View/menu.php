@@ -1,3 +1,12 @@
+<?php 
+require_once "../Models/Account.php";
+require_once "../Controllers/DBconnector.php";
+$newAccount = new Account(152685,210056,'savings');
+$newAccount->viewBalance($newAccount);
+
+
+?>
+
 <?php
 session_start();
 
@@ -30,7 +39,7 @@ session_start();
                             Elhelaly
                         </li>
 
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> $2,000
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> 
                         </li>
 
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> 1204
