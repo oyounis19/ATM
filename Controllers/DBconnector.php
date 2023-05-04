@@ -1,6 +1,6 @@
 <?php
 class DBConnector {
-    private $connection;
+    private $conn;
     private $username = "suiiii";
     private $password = "oyounis1";
     private $dbname = "atm_db";
@@ -12,8 +12,8 @@ class DBConnector {
      * @throws Exception If there was an error opening the connection.
      */
     public function __construct() {
-        $this->connection = mysqli_connect($this->host, $this->username, $this->password, $this->dbname);
-        if (!$this->connection) {
+        $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->dbname);
+        if (!$this->conn) {
             throw new Exception("Failed to connect to database: " . mysqli_connect_error());
         }
     }
@@ -24,23 +24,32 @@ class DBConnector {
      * @param string $table The name of the table to select from.
      * @param string|array $columns The column(s) to select.
      * @param string|null $where The WHERE clause of the query, without the "WHERE" keyword.
+     * @param array $params An array of values to bind to the query.
      * @return array An array of associative arrays representing the rows selected.
      * @throws Exception If there was an error executing the select query.
      */
-    public function select($table, $columns = "*", $where = null) {
+    public function select($table, $columns = "*", $where = null, $params = array()) {
         $query = "SELECT $columns FROM $table";
         if ($where) {
             $query .= " WHERE $where";
         }
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->conn->prepare($query);
         if (!$stmt) {
-            throw new Exception("Failed to prepare query: " . $this->connection->error);
+            throw new Exception("Failed to prepare query: " . $this->conn->error);
+        }
+        if ($params) {
+            $types = str_repeat("s", count($params));
+            $stmt->bind_param($types, ...$params);
         }
         if (!$stmt->execute()) {
             throw new Exception("Failed to execute query: " . $stmt->error);
         }
         $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        $rows = array();
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        return $rows;
     }
 
     /**
@@ -55,9 +64,9 @@ class DBConnector {
         $columns = implode(",", array_keys($data));
         $values = implode(",", array_fill(0, count($data), "?"));
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->conn->prepare($query);
         if (!$stmt) {
-            throw new Exception("Failed to prepare query: " . $this->connection->error);
+            throw new Exception("Failed to prepare query: " . $this->conn->error);
         }
         
         $values = array_values($data);
@@ -75,44 +84,6 @@ class DBConnector {
         }
         return $stmt->affected_rows;
     }
-
-    /**
-     * Update a record with the specified table with the given data.
-     *
-     * @param string $table The name of the table to insert into.
-     * @param array $data An array of values to insert into the table.
-     * @param string $where The WHERE clause of the query, without the "WHERE" keyword.
-     * @return int The number of rows affected by the insert operation.
-     * @throws Exception If there was an error executing the insert query.
-     */    
-    public function update($table, $data ,$where) {
-        $query = "UPDATE $table SET ";
-        foreach($data as $key => $value){
-            $query .= "$key = ? ,";
-        }
-        $query = rtrim($query,",");
-        $query .= "WHERE $where";
-        $stmt = $this->connection->prepare($query);
-        if (!$stmt) {
-            throw new Exception("Failed to prepare query: " . $this->connection->error);
-        }
-        
-        $values = array_values($data);
-        $params = array(str_repeat("s", count($data)));
-        foreach ($values as $value) {
-            $params[] = $value;
-        }
-        
-        if (!$stmt->bind_param(...$params)) {
-            throw new Exception("Failed to bind parameters: " . $stmt->error);
-        }
-        
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to execute query: " . $stmt->error);
-        }
-        return $stmt->affected_rows;
-    }
-
 
     /**
      * Deletes rows from the specified table that match the given condition.
@@ -123,23 +94,27 @@ class DBConnector {
      * @return int The number of rows affected by the delete operation.
      * @throws Exception If there was an error executing the delete query.
      */
-    public function delete($table, $where) {
+    public function delete($table, $where, $params = array()) {
         $query = "DELETE FROM $table WHERE $where";
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->conn->prepare($query);
         if (!$stmt) {
-            throw new Exception("Failed to prepare query: " . $this->connection->error);
+            throw new Exception("Failed to prepare query: " . $this->conn->error);
         } 
+        if ($params) {
+            $types = str_repeat("s", count($params));
+            $stmt->bind_param($types, ...$params);
+        }
         if (!$stmt->execute()) {
             throw new Exception("Failed to execute query: " . $stmt->error);
         }
         return $stmt->affected_rows;
     }
-
+    
     /**
      * Closes the Database Connection.
      */
     public function close() {
-        mysqli_close($this->connection);
+        mysqli_close($this->conn);
     }
 }
 ?>
