@@ -2,7 +2,7 @@
 require_once '../Models/servicesTechnican.php';
 $srvTeq = new servicesTechinican; 
 if(! $_SESSION['firstName']){
-    header("location:../Viwe/index.php");
+    header("location:../View/index.php");
 }
 if(isset($_POST['bLogOut'])){
     $srvTeq->logOut();
