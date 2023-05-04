@@ -1,6 +1,6 @@
 <?php
     session_start();
-
+    require_once '../models/servicesTtechnician.php';
     function validate($data){
         $data = trim($data);
         $data = stripslashes($data);
@@ -9,6 +9,10 @@
         return $data;
     }
 
+    $srvTeq = new servicesTechinican; 
+    if(isset($_POST['bLogin'])){
+    $srvTeq->login();
+    }
     if(isset($_POST['card_id']) && isset($_POST['upass'])){//This means that the from has been submitted
         $conn = mysqli_connect($host,$username, $pass, $db);
 
@@ -142,16 +146,23 @@
     <div class="popup serviceLogin flex-column" pop="true">
         <i id="close" class="fa-solid fa-xmark"></i>
         <h2 class="text-white fs-1 mb-5">Login</h2>
-        <form action="#" class="w-100">
+        <form  method="POST" class="w-100">
             <div class="form-floating mb-3">
-                <input type="userName" class="form-control" id="Input" placeholder="01234 5648 6542 3156">
+                <input type="userName" name="teqUserName" class="form-control" id="Input" placeholder="01234 5648 6542 3156">
                 <label for="Input">Enter username</label>
             </div>
+            <br>
             <div class="form-floating">
-                <input type="password" class="form-control" minlength="8" id="Password" placeholder="Password">
+                <input type="password" name="teqPassword"  class="form-control"id="Password" placeholder="Password">
                 <label for="Password">Enter password</label>
             </div>
-            <button class="btn btn-primary mt-3 w-100">Log in</button>
+            <br>
+            <div class="form-floating mb-3">
+                <input type="text" name="atm_Id"  class="form-control" id="inputId" placeholder="01234 5648 6542 3156">
+                <label for="inputId">Enter ATM_ID</label>
+            </div>
+            <br>
+            <button name = "bLogin" class="btn btn-primary mt-3 w-100">Log in</button>
         </form>
     </div>
     
