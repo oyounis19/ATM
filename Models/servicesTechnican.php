@@ -73,7 +73,7 @@ public function rechargeAtm (){
         $table = 'ATM';
         $data = array('Balance' => $mAmount);
         $where = 'ATM_ID = ?';
-        $params = array(1);
+        $params = array($_SESSION['atmId']);
         $affected_rows = $this->db->update($table, $data, $where, $params);
     }
 }
