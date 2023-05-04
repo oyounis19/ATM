@@ -1,3 +1,16 @@
+<?php
+require_once '../Models/servicesTechnican.php';
+$srvTeq = new servicesTechinican; 
+if(! $_SESSION['firstName']){
+    header("location:../View/index.php");
+}
+if(isset($_POST['bLogOut'])){
+    $srvTeq->logOut();
+}
+if(isset($_POST['finish'])){
+    $srvTeq->rechargeAtm ();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,16 +40,24 @@
                 <div class="userInfo my-5">
                     <ul>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span>
-                            OUR TEAM LEADER IS THE BEST :)
+                        <?php 
+                            echo $_SESSION['firstName'];
+                        ?>
                         </li>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>ATM Balance</span>
-                            500,522 LE
+                        <?php 
+                            echo  $_SESSION['atmBalance'];
+                        ?>
                         </li>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>employee ID</span>
-                            1204
+                        <?php 
+                            echo  $_SESSION['empId'];
+                        ?>
                         </li>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>ATM ID</span>
-                            1204
+                        <?php 
+                            echo  $_SESSION['atmId'];
+                        ?>
                         </li>
                     </ul>
                 </div>
@@ -50,10 +71,8 @@
                     <a href="logger.php" class="btn btnMenu">
                         Check ATM Logger
                     </a>
-                    <form action="" style="width: 100%">
-                        <button class="btn btnMenu btn-primary">
-                            logOut
-                        </button>
+                    <form  method="POST" class="w-100">
+                        <button name = "bLogOut" class="btn btn-primary mt-3 w-100">Log Out</button>
                     </form>
                 </div>
             </div>
@@ -69,13 +88,12 @@
             <div></div>
             <div></div>
         </div>
-        <form action="#" class="w-100">
+        <form method = "POST" class="w-100">
             <div class="form-floating mb-3">
-                <input type="amount" class="form-control input" id="Input" placeholder="01234 5648 6542 3156"
-                    minlength="3" maxlength="7">
+                <input name = "mAmount" type="amount" class="form-control" id="Input" placeholder="01234 5648 6542 3156">
                 <label for="Input">Enter Amount</label>
             </div>
-            <button class="btn btn-primary mt-3 w-100">Enter</button>
+            <button name = "finish" class="btn btn-primary mt-3 w-100">ENTER</button>
         </form>
     </div>
 

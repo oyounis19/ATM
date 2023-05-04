@@ -31,13 +31,13 @@ if (window.location.pathname.endsWith("index.php")) {
     // Digits only in the Credit card
     inputcc.addEventListener("keydown", function(event) {
         // Allow: backspace, delete, tab, escape, enter and .
-        if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
-            event.keyCode == 13 || event.keyCode == 190 ||
-            // Allow: Ctrl+A
-            (event.keyCode == 65 && event.ctrlKey === true) ||
-            // Allow: home, end, left, right
-            (event.keyCode >= 35 && event.keyCode <= 39)) {
-            // let it happen, don't do anything
+        if (event.key === 'Backspace' || event.key === 'Delete' || 
+            event.key === 'Tab' || event.key === 'Escape' || 
+            event.key === 'Enter' || (event.key === 'c' && event.ctrlKey === true) || 
+            (event.key === 'v' && event.ctrlKey === true) ||
+            (event.key === 'a' && event.ctrlKey === true) ||
+            (event.key === 'z' && event.ctrlKey === true) ||
+            (event.key === 'y' && event.ctrlKey === true)) {
             return;
         } else {
             // Ensure that it is a number and stop the keypress
