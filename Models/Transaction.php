@@ -50,14 +50,14 @@
 		$this->amount = $amount;
 		return $this;
 	}
-    public function saveTransaction($accountid , $SSN, ATM $x ) 
-    {
-        $e=new DBconnector();
+    // public function saveTransaction($accountid , $SSN, ATM $x ) 
+    // {
+    //     $e=new DBConnector();
         
-        $e ->dbconnect();
-        $e ->modify("insert into `Transaction`(Account_ID , SSN, ATM_ID, Amount ,`Date` , State , Type , recipient_account_ID ) 
-        values($accountid , $SSN , ".$x->getID()." ,".$this ->amount." , ".$this->date." ,  )");
+    //     $e ->dbconnect();
+    //     $e ->modify("insert into `Transaction`(Account_ID , SSN, ATM_ID, Amount ,`Date` , State , Type , recipient_account_ID ) 
+    //     values($accountid , $SSN , ".$x->getID()." ,".$this ->amount." , ".$this->date." ,  )");
 
-    } 
+    // } 
 }
 ?>
