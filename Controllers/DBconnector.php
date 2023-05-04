@@ -99,7 +99,7 @@ class DBConnector {
         $stmt = $this->conn->prepare($query);
         if (!$stmt) {
             throw new Exception("Failed to prepare query: " . $this->conn->error);
-        }
+        } 
         if ($params) {
             $types = str_repeat("s", count($params));
             $stmt->bind_param($types, ...$params);
