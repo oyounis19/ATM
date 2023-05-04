@@ -1,5 +1,5 @@
 <?php
-require_once '../models/servicesTechnician.php';
+require_once '../Models/servicesTechnician.php';
 $srvTeq = new servicesTechinican; 
 if(! $_SESSION['firstName']){
     header("location:../Viwe/index.php");

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../controllers/DBconnector.php';
+require_once '../Controllers/DBconnector.php';
 class servicesTechinican{
 private $username;
 private $password;
@@ -47,7 +47,7 @@ public function login(){
                     $_SESSION['atmId'] = $result1[0]['ATM_ID'];
                     $_SESSION['adminId'] = $result1[0]['Admin_ID'];
                     $_SESSION['atmBalance'] = $result1[0]['Balance'];
-                    header("location:../Viwes/serviceMenu.php");
+                    header("location:../Viwe/serviceMenu.php");
                     return true;
                 }
             }
@@ -60,7 +60,7 @@ public function logOut(){
         session_start();
         session_unset();
         session_destroy();
-        header("location:../Viwes/index.php");
+        header("location:../Viwe/index.php");
     }
 
 
