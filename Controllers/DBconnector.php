@@ -120,6 +120,7 @@ class DBConnector {
         return $stmt->affected_rows;
     }
     
+
     /**
      * Deletes rows from the specified table that match the given condition.
      *
