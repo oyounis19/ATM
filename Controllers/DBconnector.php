@@ -47,9 +47,9 @@ class DBConnector {
         }
         
         $values = array_values($data);
-        $params = array(str_repeat("s", count($data))) + $values;
-        foreach ($values as &$value) {
-            $params[] = &$value;
+        $params = array(str_repeat("s", count($data)));
+        foreach ($values as $value) {
+            $params[] = $value;
         }
         
         if (!$stmt->bind_param(...$params)) {
@@ -61,7 +61,6 @@ class DBConnector {
         }
         return $stmt->affected_rows;
     }
-
     public function close() {
         mysqli_close($this->conn);
     }
