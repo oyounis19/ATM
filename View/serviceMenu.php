@@ -1,8 +1,8 @@
 <?php
-require_once '../models/servicesTtechnician.php';
+require_once '../models/servicesTechnician.php';
 $srvTeq = new servicesTechinican; 
 if(! $_SESSION['firstName']){
-    header("location:../Viwes/index.php");
+    header("location:../Viwe/index.php");
 }
 if(isset($_POST['bLogOut'])){
     $srvTeq->logOut();

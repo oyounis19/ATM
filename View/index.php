@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once '../models/servicesTtechnician.php';
+    require_once '../models/servicesTechnician.php';
     function validate($data){
         $data = trim($data);
         $data = stripslashes($data);

@@ -1,7 +1,7 @@
 <?php
-
+session_start();
+require_once '../controllers/DBconnector.php';
 class servicesTechinican{
-
 private $username;
 private $password;
 private $atmamount;
