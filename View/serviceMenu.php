@@ -6,10 +6,10 @@ if(! $_SESSION['firstName']){
 }
 if(isset($_POST['bLogOut'])){
     $srvTeq->logOut();
-}/*
+}
 if(isset($_POST['finish'])){
     $srvTeq->rechargeAtm ();
-}*/
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,13 +88,12 @@ if(isset($_POST['finish'])){
             <div></div>
             <div></div>
         </div>
-        <form action="#" class="w-100">
+        <form method = "POST" class="w-100">
             <div class="form-floating mb-3">
-                <input type="amount" class="form-control input" id="Input" placeholder="01234 5648 6542 3156"
-                    minlength="3" maxlength="7">
+                <input name = "mAmount" type="amount" class="form-control" id="Input" placeholder="01234 5648 6542 3156">
                 <label for="Input">Enter Amount</label>
             </div>
-            <button class="btn btn-primary mt-3 w-100">Enter</button>
+            <button name = "finish" class="btn btn-primary mt-3 w-100">ENTER</button>
         </form>
     </div>
 

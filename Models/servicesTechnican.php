@@ -65,7 +65,17 @@ public function logOut(){
 
 
 public function rechargeAtm (){
-
+    $mAmount = $_POST['mAmount'];
+    if(isset($mAmount)){
+        $this->db = new DBconnector;
+        $mAmount += $_SESSION['atmBalance'];
+        $_SESSION['atmBalance'] = $mAmount;
+        $table = 'ATM';
+        $data = array('Balance' => $mAmount);
+        $where = 'ATM_ID = ?';
+        $params = array(1);
+        $affected_rows = $this->db->update($table, $data, $where, $params);
+    }
 }
 
 
