@@ -86,6 +86,41 @@ class DBConnector {
     }
 
     /**
+     * Update rows in the specified table that match the provided condition with the provided data.
+     *
+     * @param string $table The name of the table to update.
+     * @param array $data An Associative Array of data to update, where the keys are column names and the value is the new value of that cell.
+     * @param string $where The WHERE clause for the update query without the WHERE Keyword.
+     * @param array $params An array of parameters to replace the "?" in the where string.
+     * @return int The number of affected rows.
+     * @throws Exception If the query fails to prepare, bind parameters, or execute.
+     */
+    public function update($table, $data, $where, $params = array()) {
+        $set = array();
+        foreach ($data as $column => $value) {
+            $set[] = "$column=?";
+        }
+        $set_clause = implode(",", $set);
+        $query = "UPDATE $table SET $set_clause WHERE $where";
+        echo $query;
+        $stmt = $this->conn->prepare($query);
+        if (!$stmt) {
+            throw new Exception("Failed to prepare query: " . $this->conn->error);
+        }
+        $values = array_values($data);
+        if ($params) {
+            $values = array_merge($values, $params);
+        }
+        if (!$stmt->bind_param(str_repeat("s", count($values)), ...$values)) {
+            throw new Exception("Failed to bind parameters: " . $stmt->error);
+        }
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to execute query: " . $stmt->error);
+        }
+        return $stmt->affected_rows;
+    }
+    
+    /**
      * Deletes rows from the specified table that match the given condition.
      *
      * @param string $table The name of the table to delete from.
