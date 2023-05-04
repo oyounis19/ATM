@@ -102,7 +102,7 @@ class DBConnector {
         }
         $set_clause = implode(",", $set);
         $query = "UPDATE $table SET $set_clause WHERE $where";
-        echo $query;
+        //echo $query;
         $stmt = $this->conn->prepare($query);
         if (!$stmt) {
             throw new Exception("Failed to prepare query: " . $this->conn->error);
