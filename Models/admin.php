@@ -59,12 +59,14 @@ class admin extends User
     }
     public function createAdmin($fName, $lName, $userName, $passWord)
     {
+        $row = 0;
         $db = new DBconnector();
         $data["First_Name"] = $fName;
         $data["Last_Name"] = $lName;
         $data["User_name"] = $userName;
         $data["Password"] = hash("sha256", $passWord);
         $row = $db->insert("Employee", $data);
-        return $row;
+
+        return $row > 0? true: false; 
     }
 }
