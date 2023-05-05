@@ -1,3 +1,19 @@
+<?php
+require_once '../Controllers/DBconnector.php';
+require_once '../Models/Account.php';
+if(isset($_POST['amount'])){
+    $account = new Account(1475369, 3500, "Saving");
+
+    if($account->deposit($_POST['amount']))
+        echo "Deposit successfully";// SWEET ALERT 
+    else
+        echo "Try again Later...";//SWEET ALERT
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +38,7 @@
         <div class="screens d-flex">
             <div class="screen deposit">
                 <h2 class="text-white">Deposit</h2>
-                <form action="#" class="w-100" id="depositForm">
+                <form action="#" class="w-100" id="depositForm" method="post">
                     <div class="lds-ring mb-4 loading" style="display:none;">
                         <div></div>
                         <div></div>
@@ -33,10 +49,10 @@
                         Verifying cash, please wait...
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="amount" class="form-control" id="Amount" placeholder="01234 5648 6542 3156" maxlength="5" minlength="2">
+                        <input type="amount" class="form-control" id="Amount" placeholder="01234 5648 6542 3156" maxlength="5" minlength="2" name="amount">
                         <label for="Amount">Enter Amount</label>
                     </div>
-                    <button class="btn btn-primary w-100 depositBTN">
+                    <button type = "submit" class="btn btn-primary w-100 depositBTN">
                         Deposit
                     </button>
                 </form>

@@ -1,11 +1,6 @@
 <?php 
 require_once "../Models/Account.php";
 
-$newAccount = new Account();
-$newAccount->setId(662003);
-$newAccount->setBalance(20000);
-$newAccount->setType("Saving");
-$newAccount->viewBalance($newAccount);
 
 ?>
 

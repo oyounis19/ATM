@@ -1,3 +1,23 @@
+<?php
+require_once '../Models/Account.php';
+
+$account = new Account(1475369, 5500, "Saving");
+
+if(isset($_POST['amount']) && isset($_POST['accountID'])){
+    $code = $account->transfer($_POST['accountID'], $_POST['amount']);
+    if(0 == $code){
+        echo "Your Balance is insufficient";//SWEET ALERT
+    }else if(1 == $code){
+        echo "Wrong Account ID";//SWEET ALERT
+    }else
+        echo "Transfered". $_POST['amount'] ."sucessfully";//SWEET ALERT
+}
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,18 +42,18 @@
         <div class="screens d-flex">
             <div class="screen deposit">
                 <h2 class="text-white">Transfer</h2>
-                <form action="#" class="w-100">
+                <form action="" class="w-100" method="post">
                     <div class="form-floating mb-3">
                         <input type="amount" class="form-control input" id="Amount" minlength="2" maxlength="5"
-                            placeholder="01234 5648 6542 3156">
+                            placeholder="01234 5648 6542 3156" name="amount">
                         <label for="Amount">Enter Amount</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="amount" class="form-control input" id="account" minlength="4" maxlength="20"
-                            placeholder="01234 5648 6542 3156">
+                            placeholder="01234 5648 6542 3156" name="accountID">
                         <label for="account">Enter Receipent's account ID</label>
                     </div>
-                    <button class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary w-100">
                         Transfer
                     </button>
                 </form>

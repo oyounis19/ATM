@@ -1,3 +1,17 @@
+<?php
+require_once '../Models/Account.php';
+$account = new Account(1475369, 2000, "Saving");
+if(isset($_POST['amount'])){
+    if($account->withdraw($_POST['amount'])){
+        $account->setBalance(2000-$_POST['amount']);
+        echo "Withdrawal was successful";//SWEET ALERT
+    }
+    else
+        echo "Withdrawal Failed";//SWEET ALERT
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,10 +35,10 @@
                 <h2 class="text-white fw-bolder">Withdraw</h2>
                 <div class="userInfo my-5">
                     <ul>
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> 2,000 LE
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $account->getBalance();?> LE
 
                         </li>
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> 1204
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $account->getID();?>
 
                         </li>
                     </ul>
@@ -33,7 +47,7 @@
 
             <div class="screen menu">
                 <div class="buttons d-flex flex-wrap justify-content-between">
-                    <form action="#" class="w-100" method="get">
+                    <form action="" class="w-100" method="post">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="Amount" minlength="2" maxlength="5"
                                 placeholder="01234 5648 6542 3156" name="amount">
@@ -57,7 +71,7 @@
                         <div class="btn btnMenu withdrawBTN" value="2000">
                             2000 LE
                         </div>
-                        <button class="btn btn-primary w-100 py-3 mt-4">
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-4">
                             Withdraw
                         </button>
                     </form>

@@ -1,116 +1,88 @@
 <?php
     //require_once "Verification.php";
     require_once "../Controllers/DBconnector.php";
+    
+class Account {
+    private $id;
+    private $balance;
+    private $type;
+    private $db;
 
-    class Account {
-        private $id;
-        private $balance;
-        private $type;
-        private $db;
-
-
-    public function getId() 
-    {
+    public function getId() {
         return $this->id;
     }
-    public function setId(int $id) 
-    {
+    public function setId(int $id) {
         $this->id = $id;
     }
-    public function getBalance() 
-    {
+    public function getBalance() {
         return $this->balance;
     }
-    public function setBalance(float $balance) 
-    {
+    public function setBalance(float $balance) {
         $this->balance = $balance;
     }
-    public function getType() 
-    {
+    public function getType() {
         return $this->type;
     }
-    public function setType(string $type) 
-    {
+    public function setType(string $type) {
         $this->type = $type;
     }
-    public function __construct($id, $balance, $type) 
-    {
+    public function __construct($id, $balance, $type) {
         $this->id = $id;
         $this->balance = $balance;
         $this->type = $type;
+        $this->db = new DBConnector();
+    }
+    /**
+     * @param account_id The recipent's account id 
+     * @param amount The Transfer amount
+     * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 3 (Transfer is done)
+     */
+    public function transfer($account_id, $amount) {
+        
+        //VERIFICATION goes here
+        if($amount > $this->balance)
+            return 0;
+
+        $result = $this->db->select("`Account`", "*", "Account_ID=?", array($account_id));
+
+        if(!$result)
+            return 1;
+        
+        $this->db->update("`Account`", array("Balance"=>$this->balance-$amount),"Account_ID=?", array($this->id));
+        $this->db->update("`Account`", array("Balance"=>$this->balance+$amount),"Account_ID=?", array($account_id));
+        //saveTransaction();
+        return 2;
     }
 
-
-    // public function viewBalance() 
-    // {
-    //     $this->db=new DBConnector();
-    //         $result = $this->db->select("`Account`","Balance","Account_ID=?", array($this->id) );
-    //             $this->balance = $result[0]['Balance'];
-    //             // return true;
-    //     //     }
-    //     // }
-    //     // else
-    //     // {
-    //     //     echo "Error in database Connection";
-    //     //     return false;
-    //     // }
-    // }
-    public function transfer($account_id, $amount) 
-    {
-        // $verify = new Verification();
-        // if (!$verify) 
-        // {
-        //     return false;
-        // } 
-        // else 
-        // {
-        $this->e=new DBConnector(); 
-            $result = $this->e->select("`Account`","Balance","WHERE", "id=?", array($id) );
-            if(!$result)
-            {
-                echo "Error in Query";
-                return false;
-            }
-            else
-            {
-                echo "connected";
-                return true;
-            }
-        }
-        else
-        {
-            echo "Error in database Connection";
+    public function deposit($amount) {
+        if(!$this->db->update("`Account`", array("Balance"=>$this->balance+$amount), "Account_ID=?", array($this->id)))
             return false;
-        }
-            $this->balance -= $amount;
-            $account->deposit($amount);
-            return true;
-        }
-    }
 
-    public function withdraw($amount) 
-    {
-        $verify = new Verification();
-        if (!$verify)
-        {
-            return false;
-        } 
-        else 
-        {
-            $this->balance -= $amount;
-            return true;
-        }
-    }
-
-    public function deposit($amount) 
-    {
-        $this->balance += $amount;
+        //saveTransaction();
         return true;
     }
 
+    /**
+     * @param amount The Withdraw amount
+     * @return int 0 (The balance is insufficient), 1 (Error in DB), 2 (Transfer is done)
+     */
+    public function withdraw($amount){
+        //VERIFICATION goes here
+        if($amount > $this->balance)
+            return 0;
+        
+        if(!$this->db->update("`Account`", array("Balance"=>$this->balance-$amount),"Account_ID=?", array($this->id)))
+            return 1;
+        //saveTransaction();
+        return 2;
+    }
+
     public function viewTransactionHistory() {
-      // Code to retrieve and return transaction history
-    }*/
+        return $this->db->select("`Transaction`", "*", "Account_ID=?", array($this->id));
+    }
+    public function closeDBconnection(){
+        $this->db->close();
+    }
 }
 
 ?>

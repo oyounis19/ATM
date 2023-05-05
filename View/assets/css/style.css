@@ -278,3 +278,11 @@ p {
 a {
     width: fit-content;
 }
+
+span[value="Approved"]{
+    color: lime;
+}
+
+span[value="Denied"]{
+    color: rgb(255, 0, 0);
+}

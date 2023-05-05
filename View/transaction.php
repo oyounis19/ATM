@@ -1,3 +1,21 @@
+<?php
+session_start();
+require_once '../Models/Account.php';
+
+$account = new Account(1475369, 500, "Saving");
+
+$transactions = $account->viewTransactionHistory();
+
+$Tid;
+$accountID;
+$atmID;
+$amount;
+$date;
+$state;
+$type;
+$recAccID;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,142 +42,91 @@
                 <h2 class="text-white fw-bolder">transaction History</h2>
 
                 <div class="transactions">
-                    <div class="transaction d-flex mt-4 justify-content-between" id="1">
-                        <div class="accountInfo">
-                            <ul>
-                                <li>
-                                    <p>Account ID : <span>123456</span></p>
-                                </li>
-                                <li>
-                                    <p>transaction Type : <span>Withdraw</span></p>
-                                </li>
-                                <li>
-                                    <p>Date : <span>2023/3/1</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                        <i class="fa-solid fa-arrow-up"></i>
-                    </div>
-                    <div class="transaction d-flex mt-4 justify-content-between" id="2">
-                        <div class="accountInfo">
-                            <ul>
-                                <li>
-                                    <p>Account ID : <span>123456</span></p>
-                                </li>
-                                <li>
-                                    <p>transaction Type : <span>Withdraw</span></p>
-                                </li>
-                                <li>
-                                    <p>Date : <span>2023/3/1</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                        <i class="fa-solid fa-arrow-down"></i>
-                    </div>
-                    <div class="transaction d-flex mt-4 justify-content-between" id="3">
-                        <div class="accountInfo">
-                            <ul>
-                                <li>
-                                    <p>Account ID : <span>123456</span></p>
-                                </li>
-                                <li>
-                                    <p>transaction Type : <span>Withdraw</span></p>
-                                </li>
-                                <li>
-                                    <p>Date : <span>2023/3/1</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                        <i class="fa-solid fa-arrow-down"></i>
-                    </div>
-                </div>
-
+                    <?php  for($i=0; $i<sizeof($transactions); $i++){
+                                // for($j=0; $j<sizeof($transactions[$i]); $j++){
+                                    $accountID = $transactions[$i]['Account_ID'];
+                                    $date = $transactions[$i]['Date'];
+                                    $type = $transactions[$i]['Type'];
+                                // }
+                    ?>
+                            <div class="transaction d-flex mt-4 justify-content-between" id="<?php echo $i+1;?>">
+                                <div class="accountInfo">
+                                    <ul>
+                                        <li>
+                                            <p>Account ID : <span><?php echo $accountID ?></span></p>
+                                        </li>
+                                        <li>
+                                            <p>transaction Type : <span><?php echo $type ?></span></p>
+                                        </li>
+                                        <li>
+                                            <p>Date : <span><?php echo $date ?></span></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </div>
+                    <?php
+                                
+                            } 
+                    ?>
+                    
             </div>
         </div>
     </div>
 
     <div class="popup-cards">
-        <div class="popup details flex-column" pop="true" id="1-popup">
+        <?php  for($i=0; $i<sizeof($transactions); $i++){
+                    // for($j=0; $j<sizeof($transactions[$i]); $j++){
+                        $Tid = $transactions[$i]['Transaction_ID'];
+                        $accountID = $transactions[$i]['Account_ID'];
+                        $atmID = $transactions[$i]['ATM_ID'];
+                        $amount = $transactions[$i]['Amount'];
+                        $date = $transactions[$i]['Date'];
+                        $state = $transactions[$i]['State'];
+                        $type = $transactions[$i]['Type'];
+                        if($type == "Transfer")
+                            $recAccID = $transactions[$i]['recipient_account_ID'];
+                    // }
+        ?>
+        <div class="popup details flex-column" pop="true" id="<?php echo $i+1;?>-popup">
             <i id="close" class="fa-solid fa-xmark"></i>
             <h2 class="text-white fs-1 mb-5">Transaction History</h2>
             <ul class="text-start text-white">
                 <li>
-                    <p>Account ID : <span>123456</span></p>
+                    <p>Account ID : <span><?php echo $accountID ?></span></p>
                 </li>
                 <li>
-                    <p>transaction Type : <span>Withdraw</span></p>
+                    <p>transaction Type : <span><?php echo $type ?></span></p>
                 </li>
                 <li>
-                    <p>transaction id : <span>20230321</span></p>
+                    <p>transaction id : <span><?php echo $Tid ?></span></p>
+                </li>
+                <?php
+                if($type == "Transfer"){
+                    ?>
+                    <li>
+                        <p>Recipient Account ID : <span><?php echo $recAccID ?></span></p>
+                    </li>
+                    <?php
+                }
+                ?>
+                <li>
+                    <p>ATM ID : <span><?php echo $atmID ?></span></p>
                 </li>
                 <li>
-                    <p>ATM ID : <span>20545</span></p>
+                    <p>State : <span value="<?php echo $state ?>"><?php echo $state ?></span></p>
                 </li>
                 <li>
-                    <p>State : <span value="approved">Approved</span></p>
+                    <p>Amount : <span><?php echo $amount ?> LE</span></p>
                 </li>
                 <li>
-                    <p>Amount : <span>200 LE</span></p>
-                </li>
-                <li>
-                    <p>Date : <span>2023/3/1</span></p>
+                    <p>Date : <span><?php echo $date ?></span></p>
                 </li>
             </ul>
         </div>
-        <div class="popup details flex-column" pop="true" id="2-popup">
-            <i id="close" class="fa-solid fa-xmark"></i>
-            <h2 class="text-white fs-1 mb-5">Transaction History</h2>
-            <ul class="text-start text-white">
-                <li>
-                    <p>Account ID : <span>123456</span></p>
-                </li>
-                <li>
-                    <p>transaction Type : <span>Withdraw</span></p>
-                </li>
-                <li>
-                    <p>transaction id : <span>20230321</span></p>
-                </li>
-                <li>
-                    <p>ATM ID : <span>20545</span></p>
-                </li>
-                <li>
-                    <p>State : <span value="declined">Declined</span></p>
-                </li>
-                <li>
-                    <p>Amount : <span>200 LE</span></p>
-                </li>
-                <li>
-                    <p>Date : <span>2023/3/1</span></p>
-                </li>
-            </ul>
-        </div>
-        <div class="popup details flex-column" pop="true" id="3-popup">
-            <i id="close" class="fa-solid fa-xmark"></i>
-            <h2 class="text-white fs-1 mb-5">Transaction History</h2>
-            <ul class="text-start text-white">
-                <li>
-                    <p>Account ID : <span>123456</span></p>
-                </li>
-                <li>
-                    <p>transaction Type : <span>Withdraw</span></p>
-                </li>
-                <li>
-                    <p>transaction id : <span>20230321</span></p>
-                </li>
-                <li>
-                    <p>ATM ID : <span>20545</span></p>
-                </li>
-                <li>
-                    <p>State : <span value="approved">Approved</span></p>
-                </li>
-                <li>
-                    <p>Amount : <span>200 LE</span></p>
-                </li>
-                <li>
-                    <p>Date : <span>2023/3/1</span></p>
-                </li>
-            </ul>
-        </div>
+        <?php            
+            } 
+        ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
