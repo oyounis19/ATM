@@ -37,7 +37,7 @@ class Account {
      * @param amount The Transfer amount
      * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 3 (Transfer is done)
      */
-    public function transfer($account_id, $amount) {
+    public function transfer($account_id, $amount) {//Composition required
         
         //VERIFICATION goes here
         if($amount > $this->balance)
@@ -54,10 +54,10 @@ class Account {
         return 2;
     }
 
-    public function deposit($amount) {
+    public function deposit($amount) {//Composition required
         if(!$this->db->update("`Account`", array("Balance"=>$this->balance+$amount), "Account_ID=?", array($this->id)))
             return false;
-
+        //add the ATM balance
         //saveTransaction();
         return true;
     }
@@ -66,18 +66,20 @@ class Account {
      * @param amount The Withdraw amount
      * @return int 0 (The balance is insufficient), 1 (Error in DB), 2 (Transfer is done)
      */
-    public function withdraw($amount){
+    public function withdraw($amount){//Composition required
         //VERIFICATION goes here
         if($amount > $this->balance)
             return 0;
         
         if(!$this->db->update("`Account`", array("Balance"=>$this->balance-$amount),"Account_ID=?", array($this->id)))
             return 1;
+
+        //decrease the ATM balance
         //saveTransaction();
         return 2;
     }
 
-    public function viewTransactionHistory() {
+    public function viewTransactionHistory() {//Composition required
         return $this->db->select("`Transaction`", "*", "Account_ID=?", array($this->id));
     }
     public function closeDBconnection(){

@@ -16,7 +16,7 @@ if(isset($_SESSION['userID']) && isset($_SESSION['firstname']) && isset($_SESSIO
 }else{
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 3; // 3 seconds delay
-    $redirect_url = "login.php";
+    $redirect_url = "loginAdmin.php";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();

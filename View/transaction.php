@@ -6,6 +6,7 @@ $account = new Account(1475369, 500, "Saving");
 
 $transactions = $account->viewTransactionHistory();
 
+print_r($transactions);
 $Tid;
 $accountID;
 $atmID;
@@ -70,7 +71,7 @@ $recAccID;
                             } 
                     ?>
                     
-            </div>
+                </div>
         </div>
     </div>
 
@@ -84,7 +85,7 @@ $recAccID;
                         $date = $transactions[$i]['Date'];
                         $state = $transactions[$i]['State'];
                         $type = $transactions[$i]['Type'];
-                        if($type == "Transfer")
+                        if($type == "Tranfer")
                             $recAccID = $transactions[$i]['recipient_account_ID'];
                     // }
         ?>
@@ -102,7 +103,7 @@ $recAccID;
                     <p>transaction id : <span><?php echo $Tid ?></span></p>
                 </li>
                 <?php
-                if($type == "Transfer"){
+                if($type == "Tranfer"){
                     ?>
                     <li>
                         <p>Recipient Account ID : <span><?php echo $recAccID ?></span></p>
