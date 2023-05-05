@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "../Controllers/DBconnector.php";
-require_once "user.php";
+require_once __DIR__."/../Controllers/DBconnector.php";
+require_once __DIR__."/User.php";
 class customer extends user
 {
     private string $SSN;
