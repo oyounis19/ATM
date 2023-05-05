@@ -30,12 +30,31 @@ class admin extends User
     public function deleteCustomer()
     {
     }
-    public function createAccount()
+    public function createAccount(Account $account, Customer $customer,Card $card)
     {
+        $db = new DBconnector();
+        $data["SSN"] = $customer->getSSN();
+        $data["Cardid"] = $card->getId();
+        $data["Type"] = $account->getType();
+        $result = $db->insert("Account",$data);
+        return $result;
     }
-    public function deleteAccount()
+    public function deleteAccount(Account $account)
     {
+        $db = new DBconnector();
+        $result = $db->delete("Account","ID=?",array($account->getId()));
+        return $result;
     }
+
+    public function editAccount(Account $account){
+        $db = new DBconnector();
+        $data["Balance"] = $account->getBalance();
+        $data["State"] = $account->getState();
+        $data["Type"] = $account->getType();
+        $result = $db->update("Account",$data,"ID=?",array($account->getId()));
+        return $result;
+    }
+
     public function unblockCreditCard()
     {
     }
