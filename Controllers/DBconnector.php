@@ -47,7 +47,7 @@ class DBConnector {
             }
         }
         catch(Exception $e){
-            return $stmt->error;
+            return false;
         }
         $result = $stmt->get_result();
         $rows = array();
@@ -89,7 +89,7 @@ class DBConnector {
                 $e = new Exception();
         }
         catch(Exception $e){
-            return $stmt->error;
+            return false;
         }
         return true;
     }
@@ -129,7 +129,7 @@ class DBConnector {
                 $e = new Exception();
         }
         catch(Exception $e){
-            return $stmt->error; 
+            return false; 
         }
         return true;
     }
@@ -160,7 +160,7 @@ class DBConnector {
             }
             }
         catch(Exception $e){
-            return $stmt->error;
+            return false;
         }
         return true;
     }
