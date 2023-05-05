@@ -39,7 +39,7 @@
                     <a href="CreateAccount.php"><li class="ps-3 " id="createAccountBTN">Create Account</li></a>
                     <a href="DeleteAccount.php"><li class="ps-3 " id="deleteAccountBTN">Delete Account</li></a>
                     <a href="EditAccount.php"><li class="ps-3 " id="editAccountBTN">Edit Account</li></a>
-                    <a href="Manage Credit Cards.php"><li class="ps-3 " id="creditCardBTN">Manage Credit Cards</li></a>
+                    <a href="ManageCreditCards.php"><li class="ps-3 " id="creditCardBTN">Manage Credit Cards</li></a>
                 </ul>
             </div>
             <li>
@@ -50,9 +50,9 @@
             </li>
             <div class="collapse" id="collapseExample2">
                 <ul>
-                    <a href="Create User.php"><li class="ps-3" id="createUserBTN">Create user</li></a>
-                    <a href="Delete User.php"><li class="ps-3" id="deleteUserBTN">Delete user</li></a>
-                    <a href="Edit User.php"><li class="ps-3" id="editUserBTN">Edit user</li></a>
+                    <a href="CreateUser.php"><li class="ps-3" id="createUserBTN">Create user</li></a>
+                    <a href="DeleteUser.php"><li class="ps-3" id="deleteUserBTN">Delete user</li></a>
+                    <a href="EditUser.php"><li class="ps-3" id="editUserBTN">Edit user</li></a>
                 </ul>
             </div>
             <li>
@@ -63,8 +63,8 @@
             </li>
             <div class="collapse" id="collapseExample3">
                 <ul>
-                    <a href="Create ATM.php"><li class="ps-3" id="createATMBTN">Create ATM</li></a>
-                    <a href="Delete ATM.php"><li class="ps-3" id="deleteATMBTN">Delete ATM</li></a>
+                    <a href="CreateATM.php"><li class="ps-3" id="createATMBTN">Create ATM</li></a>
+                    <a href="DeleteATM.php"><li class="ps-3" id="deleteATMBTN">Delete ATM</li></a>
                 </ul>
             </div>
             <li>

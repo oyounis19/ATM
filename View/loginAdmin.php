@@ -9,9 +9,9 @@ if (isset($_POST['uname']) && isset($_POST['upass'])) {
     $result = $admin->login($_POST['uname'], $_POST['upass']);
 
     if ($result) {
-        $_SESSION['userID'] = $result[0]['Emp_ID'];
-        $_SESSION['firstname'] = $result[0]['First_Name'];
-        $_SESSION['lastname'] = $result[0]['Last_Name'];
+        $_SESSION['userID'] = $result[0]['ID'];
+        $_SESSION['firstname'] = $result[0]['FirstName'];
+        $_SESSION['lastname'] = $result[0]['LastName'];
 
         header("Location: admin/home.php");
         exit();

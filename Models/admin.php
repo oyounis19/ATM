@@ -14,7 +14,7 @@ class admin extends User
     {
         $db = new DBconnector();
         $hashedPassWord = hash("sha256", $_passWord);
-        return $db->select("`Employee`", "*", "User_name=? AND Password=?", array($_userName, $hashedPassWord));
+        return $db->select("`Employee`", "*", "UserName=? AND Password=?", array($_userName, $hashedPassWord));
     }
     public function logout()
     {
@@ -39,20 +39,24 @@ class admin extends User
     public function unblockCreditCard()
     {
     }
-    public function viewCustomers()
-    {
-    }
     public function viewAtmTransactions()
     {
     }
-    public function addAtm()
+    public function addAtm($city, $area, $street)
     {
+        $row = 0;
+        $db = new DBconnector();
+        $data["City"] = $city;
+        $data["Area"] = $area;
+        $data["Street"] = $street;
+        $data["Balance"] = 0;
+        $row = $db->insert("ATM", $data);
+
+        return $row > 0? true: false; 
     }
     public function deleteAtm()
     {
-    }
-    public function editAtm()
-    {
+
     }
     public function viewAtm()
     {
@@ -61,9 +65,9 @@ class admin extends User
     {
         $row = 0;
         $db = new DBconnector();
-        $data["First_Name"] = $fName;
-        $data["Last_Name"] = $lName;
-        $data["User_name"] = $userName;
+        $data["FirstName"] = $fName;
+        $data["LastName"] = $lName;
+        $data["UserName"] = $userName;
         $data["Password"] = hash("sha256", $passWord);
         $row = $db->insert("Employee", $data);
 
