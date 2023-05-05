@@ -46,6 +46,7 @@ public function login(){
                     $_SESSION['userName'] = $result[0]['UserName'];
                     $_SESSION['atmId'] = $result1[0]['ID'];
                     $_SESSION['atmBalance'] = $result1[0]['Balance'];
+                    $_SESSION['check'] = 0;
                     header("location:../View/serviceMenu.php");
                     return true;
                 }
@@ -64,17 +65,20 @@ public function logOut(){
 
 
 public function rechargeAtm (){
-    $mAmount = $_POST['mAmount'];
-    if(isset($mAmount)){
-        $this->db = new DBconnector;
-        $mAmount += $_SESSION['atmBalance'];
-        $_SESSION['atmBalance'] = $mAmount;
-        $table = 'ATM';
-        $data = array('Balance' => $_SESSION['atmBalance']);
-        $where = 'ID = ?';
-        $params = array($_SESSION['atmId']);
-        $affected_rows = $this->db->update($table, $data, $where, $params);
+    if($_SESSION['check'] == 0){
+        $_SESSION['check'] = 1;
+        $mAmount = $_POST['mAmount'];
+        if(isset($mAmount)){
+            $this->db = new DBconnector;
+            $mAmount += $_SESSION['atmBalance'];
+            $_SESSION['atmBalance'] = $mAmount;
+            $table = 'ATM';
+            $data = array('Balance' => $_SESSION['atmBalance']);
+            $where = 'ID = ?';
+            $params = array($_SESSION['atmId']);
+            $affected_rows = $this->db->update($table, $data, $where, $params);
     }
+}
 }
 
 
