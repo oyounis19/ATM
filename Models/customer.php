@@ -97,9 +97,14 @@ class customer extends user
     {
         return $this->Email;
     }
-    public function setPhoneNO($phoneno)
+    public function setPhoneNO($phoneNo)
     {
-        $this->phoneNO = $phoneno;
+        $this->phoneNO = $phoneNo;
+    }
+
+    public function getPhoneNO($phoneNo)
+    {
+        return $this->phoneNO;
     }
     private function pinVerification($pass)
     {
