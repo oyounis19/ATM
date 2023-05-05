@@ -14,87 +14,92 @@ class customer extends user
     private string $City;
     private string $Email;
     private string $CardID;
+    private string $phoneNO;
     private $db;
-    public function setId()
+    public function setId($card_id)
     {
 
-        $this->CardID = $_SESSION['card_id'];
+        $this->CardID = $card_id;
     }
     public function getId()
     {
         return $this->CardID;
     }
-    public function setPin()
+    public function setPin($pin)
     {
-        $this->PIN = $_SESSION['pass'];
+        $this->PIN = $pin;
     }
     public function getPin()
     {
         return $this->PIN;
     }
-    public function setSSN()
+    public function setSSN($ssn)
     {
-        $this->SSN = $_SESSION['SSN'];
+        $this->SSN = $ssn;
     }
     public function getSSN()
     {
         return $this->SSN;
     }
-    public function setFirstName()
+    public function setFirstName($firstname)
     {
-        $this->FirstName = $_SESSION['fName'];
+        $this->FirstName = $firstname;
     }
     public function getFirstName()
     {
         return $this->FirstName;
     }
-    public function setLastName()
+    public function setLastName($lastname)
     {
-        $this->LastName = $_SESSION['lName'];
+        $this->LastName = $lastname;
     }
     public function getLastName()
     {
         return $this->LastName;
     }
-    public function setFingerprint()
+    public function setFingerprint($fingerprint)
     {
-        $this->Fingerprint = $_SESSION['fingerpint'];
+        $this->Fingerprint = $fingerprint;
     }
     public function getFingerprint()
     {
         return $this->Fingerprint;
     }
-    public function setArea()
+    public function setArea($area)
     {
-        $this->Area = $_SESSION['Area'];
+        $this->Area = $area;
     }
     public function getArea()
     {
         return $this->Area;
     }
-    public function setCity()
+    public function setCity($city)
     {
-        $this->City = $_SESSION['City'];
+        $this->City = $city;
     }
     public function getCity()
     {
         return $this->City;
     }
-    public function setStreet()
+    public function setStreet($street)
     {
-        $this->Street = $_SESSION['Street'];
+        $this->Street = $street;
     }
     public function getStreet()
     {
         return $this->Street;
     }
-    public function setEmail()
+    public function setEmail($email)
     {
-        $this->Email = $_SESSION['Email'];
+        $this->Email = $email;
     }
     public function getEmail()
     {
         return $this->Email;
+    }
+    public function setPhoneNO($phoneno)
+    {
+        $this->phoneNO = $phoneno;
     }
     private function pinVerification($pass)
     {
@@ -123,15 +128,25 @@ class customer extends user
                     return false;
                 } else if ($result) {
                     $_SESSION['SSN'] = $result[0]['SSN'];
+                    $this->SSN = $result[0]['SSN'];
                     $_SESSION['card_id'] = $result[0]['CardID'];
+                    $this->CardID = $result[0]['CardID'];
                     $_SESSION['fingerpint'] = $result[0]['Fingerprint'];
+                    $this->Fingerprint = $result[0]['Fingerprint'];
                     $_SESSION['upass'] = $result[0]['PIN'];
+                    $this->PIN = $result[0]['PIN'];
                     $_SESSION['fName'] = $result[0]['First_Name'];
+                    $this->FirstName = $result[0]['First_Name'];
                     $_SESSION['lName'] = $result[0]['Last_Name'];
+                    $this->LastName = $result[0]['Last_Name'];
                     $_SESSION['Street'] = $result[0]['Street'];
+                    $this->Street = $result[0]['Street'];
                     $_SESSION['Area'] = $result[0]['Area'];
+                    $this->Area = $result[0]['Area'];
                     $_SESSION['City'] = $result[0]['City'];
+                    $this->City == $result[0]['City'];
                     $_SESSION['Email'] = $result[0]['Email'];
+                    $this->Email == $result[0]['Email'];
                     return true;
                 }
             } else {
@@ -169,7 +184,7 @@ class customer extends user
     }
     public function blockcard($CardID)
     {
-        $this->db=new DBConnector;
+        $this->db = new DBConnector;
         $table = 'Card';
         $data = array('State' => "Block");
         $where = 'Card_ID =?';
@@ -178,11 +193,11 @@ class customer extends user
     }
     public function accounts($SSN)
     {
-        $this->db=new DBConnector;
+        $this->db = new DBConnector;
         $result = $this->db->select("Account", "ID , Type , Balance", "SSN=?", array($SSN));
         return $result;
-    } 
-    public function Fingerprint()
+    }
+    public function FingerprintValidation()
     {
         $target_file1 = $_FILES['image']["tmp_name"];
         $hash1 = md5_file($target_file1);
@@ -193,15 +208,25 @@ class customer extends user
                 return false;
             } else if ($result) {
                 $_SESSION['SSN'] = $result[0]['SSN'];
-                $_SESSION['card_id'] = $result[0]['Card_ID'];
+                $this->SSN = $result[0]['SSN'];
+                $_SESSION['card_id'] = $result[0]['CardID'];
+                $this->CardID = $result[0]['CardID'];
                 $_SESSION['fingerpint'] = $result[0]['Fingerprint'];
+                $this->Fingerprint = $result[0]['Fingerprint'];
                 $_SESSION['upass'] = $result[0]['PIN'];
+                $this->PIN = $result[0]['PIN'];
                 $_SESSION['fName'] = $result[0]['First_Name'];
+                $this->FirstName = $result[0]['First_Name'];
                 $_SESSION['lName'] = $result[0]['Last_Name'];
+                $this->LastName = $result[0]['Last_Name'];
                 $_SESSION['Street'] = $result[0]['Street'];
+                $this->Street = $result[0]['Street'];
                 $_SESSION['Area'] = $result[0]['Area'];
+                $this->Area = $result[0]['Area'];
                 $_SESSION['City'] = $result[0]['City'];
+                $this->City == $result[0]['City'];
                 $_SESSION['Email'] = $result[0]['Email'];
+                $this->Email == $result[0]['Email'];
                 return true;
             }
         } else {
