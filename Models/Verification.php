@@ -1,12 +1,14 @@
 <?php
 
-require_once __DIR__."/../DBconnector.php";
-require_once __DIR__."/../Customer.php";
-require_once __DIR__."/../Transaction.php";
-require_once __DIR__."/../Account.php";
+
+require_once __DIR__."/../Controllers/DBconnector.php";
+require_once __DIR__."/Customer.php";
+require_once __DIR__."/Transaction.php";
+require_once __DIR__."/Account.php";
+
 
 class verification{
-    private $db ;
+    private $db;
 
     public function PIN(Customer $user,$PIN){// waiting for khaled class
         $db = new DBconnector();
