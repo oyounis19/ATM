@@ -8,44 +8,40 @@ require_once "Account.php";
 class verification{
     private $db ;
 
-    public function PIN(Customer $user,$PIN){
+    public function PIN(Customer $user,$PIN){// waiting for khaled class
         $db = new DBconnector();
-        $SSN = $user->SSN;
-        $sql = "SELECT PIN FROM `user` WHERE SSN = $SSN;"; // $user is from class customer
-        $result = $db->select($sql);
+        $result = $db->select("User", "PIN","SSN = ?",array($user->getSSN())); // $user is from class customer
         if($result["PIN"]==$PIN)
             return true;
         else
             return false;
     }
     
-    public function CheckBalance($account,$transaction){
+    public function CheckBalance(Account $account, Transaction $transaction){
         $db = new DBconnector();
-        $sql = "SELECT Balance FROM `account` WHERE Account_ID = $account->id;"; // $account is from class account
-        $result = $db->select($sql);
-        if($result["Balance"]>=$transaction->amount)
+        $result = $db->select("Account","Balance","Account_ID = ?",array($account->getId()));
+        if($result["Balance"]>=$transaction->getAmount())
             return true;
         else
             return false;
     }
 
-    public function CheckBehavior($account,$transaction){
+    public function CheckBehavior(Account $account, Transaction $transaction){
         $db = new DBconnector();
-        $sql = "SELECT `Withdraw_Amount`, `Avg_Withdraw`, `Transfer_Amount`, `Avg_Transfer` FROM `account` WHERE `Account_ID` = $account->id;"; // $account is from class account
-        $result = $db->select($sql);
-        if($transaction->type == "Withdraw") // $transaction from class transaction
+        $result = $db->select("Account","*","Account_ID = ?",array($account->getId()));
+        if($transaction->getType() == "Withdraw") // $transaction from class transaction
             $AvgAmount = $result["Avg_Withdraw"]/$result["Withdraw_Amount"];
         else
             $AvgAmount = $result["Avg_Transfer"]/$result["Transfer_Amount"];
     
         $ValidAmount = $AvgAmount + $AvgAmount*(30/100);
-        if($ValidAmount >= $transaction->amount) // $transaction from class transaction
+        if($ValidAmount >= $transaction->getAmount()) // $transaction from class transaction
             return true; 
         else
             return false;
     }
         
-    public function VerifyAll($account,$transaction){
+    public function VerifyAll(Account $account, Transaction $transaction){
         $CheckBalance = $this->CheckBalance($account,$transaction);
         $CheckBehavior = $this->CheckBehavior($account,$transaction);
         if($CheckBalance && $CheckBehavior)
