@@ -1,8 +1,11 @@
 <?php 
-
-
-
-
+/* functions of Customer start from here
+*/
+require_once "../Models/customer.php";
+$customer=new customer;
+if(isset($_POST['lg_out'])){
+    $customer->logOut();
+}
 
 ?>
 <!DOCTYPE html>
@@ -61,8 +64,8 @@
                     <a href="transaction.php" class="btn btnMenu">
                         Transaction History
                     </a>
-                    <form action="" style="width: 100%;" method="get">
-                        <button href="index.php" class="btn btnMenu btn-primary">
+                    <form action="" style="width: 100%;" method="post">
+                        <button name="lg_out" href="index.php" class="btn btnMenu btn-primary">
                             logOut
                         </button>
                     </form>

@@ -1,6 +1,17 @@
 <?php 
 require_once "../Models/Account.php";
+require_once "../Models/customer.php";
 
+/* Functions of customer starts here */ 
+    $msg="";
+    $customer=new customer;
+    $result=$customer->accounts($_SESSION['SSN']);
+    if(count($result)==0){
+        $msg="<b style='color: white;'> Sorry you Don't have any Accounts yet </b>";
+    }
+    if(isset($_POST['selectedAccount'])){
+        $_SESSION['account_id']=$_POST['selectedAccount'];
+    }
 
 ?>
 
@@ -27,46 +38,40 @@ require_once "../Models/Account.php";
             <div class="screen account">
                 <h2 class="text-white fw-bolder">Select Account</h2>
 
-                <form action="" id="accountForm" class="accounts">
-                    <div class="account d-flex mt-4" data-value="1">
+                <form action="" method="post" id="accountForm" class="accounts">
+                <?php 
+                         echo $msg;
+                         for($i=0 ; $i < sizeof($result) ; $i++){
+                        ?>
+                        <div class="account d-flex mt-4" data-value="<?php echo $result[$i]['ID']?>">
+                            <i class="fa-solid fa-credit-card"></i>
+                           <div class="accountInfo">
+                                <ul >
+                                    <li>
+                                        <p>Account NO. : <span><?php echo $result[$i]['ID']?></span></p>
+                                    </li>
+                                    <li>
+                                        <p>Account Type : <span><?php echo $result[$i]['Type'] ?></span></p>
+                                        <p>Balnace : <span><?php echo $result[$i]['Balance'] ?></span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <?php }?>
+                    <!-- <div class="account d-flex mt-4" data-value="<?php echo $result[$i]['ID']?>">
                         <i class="fa-solid fa-credit-card"></i>
                         <div class="accountInfo">
                             <ul>
                                 <li>
-                                    <p>Account NO. : <span>1236</span></p>
+                                    <p>Account NO. : <span>< ?></span></p>
                                 </li>
                                 <li>
                                     <p>Account Type : <span>Saving</span></p>
                                 </li>
                             </ul>
                         </div>
-                    </div>
-                    <div class="account d-flex mt-4" data-value="2">
-                        <i class="fa-solid fa-credit-card"></i>
-                        <div class="accountInfo">
-                            <ul>
-                                <li>
-                                    <p>Account NO. : <span>1236</span></p>
-                                </li>
-                                <li>
-                                    <p>Account Type : <span>Gold</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="account d-flex mt-4" data-value="3">
-                        <i class="fa-solid fa-credit-card"></i>
-                        <div class="accountInfo">
-                            <ul>
-                                <li>
-                                    <p>Account NO. : <span>1236</span></p>
-                                </li>
-                                <li>
-                                    <p>Account Type : <span>Current</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    </div> -->
+                    
                     <input type="hidden" name="selectedAccount" id="selectedAccount">
                 </form>
 

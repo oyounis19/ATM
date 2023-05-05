@@ -1,34 +1,44 @@
 <?php
-    //session_start();
-    require_once '../Models/servicesTechnican.php';
-    function validate($data){
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        $data = str_replace(" ", "", $data);
-        return $data;
-    }
-
-    $srvTeq = new servicesTechinican; 
-    if(isset($_POST['bLogin'])){
-    $srvTeq->login();
-    }
-    if(isset($_POST['card_id']) && isset($_POST['upass'])){//This means that the from has been submitted
-        $conn = mysqli_connect($host,$username, $pass, $db);
-
-        $card_ID = validate($_POST['card_id']);
-        $upass = $_POST['upass'];
-        
-        $sql = "SELECT * FROM `User` where Card_ID=$card_ID AND PIN=$upass";
-        $result = mysqli_query($conn, $sql);
-        if(mysqli_num_rows($result) === 1){
-            //SESSION VARIABLES GOES HERE BROO
-            $_SESSION["xx"] = "ddjnkdn";
-            header("Location: menu.php");
+/* functions of Customer start from here
+ */
+    require_once "../Models/customer.php";
+    $customer=new customer;
+    $customererrmsg = "";
+    $customererrmsgfingerprint = "";
+    /* login function using Credit Card
+    */
+    if (isset($_POST['lg_in'])) {
+        $cardID = $_POST['card_id'];
+        $pass = $_POST['upass'];
+        if ($customer->login($cardID, $pass)) {
+            header("location:Account.php");
             exit();
-        }else
-            echo '<b>NO SUCH ACCOUNT IN</b>';
+        } else {
+            $errmsg = "<b style='color: white;'> wrong username or password</b>";
+        }
     }
+    /*    login function using Fingerprint
+    */
+    if (isset($_FILES['image'])) {
+        $value = $customer->FingerprintValidation();
+        if ($value == true) {
+            header("location:Account.php");
+            exit();
+        } else {
+            $customererrmsgfingerprint = "<b style='color: white;'> Not recognized </b>";
+        }
+}
+
+/////////////////////////////
+
+
+/* functions of Service technican start from here
+ */
+    require_once '../Models/servicesTechnican.php';
+    $srvTeq = new servicesTechinican;
+    if (isset($_POST['bLogin'])) {
+        $srvTeq->login();
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,16 +66,17 @@
                 <h2 class="text-white fw-bolder mb-3">Login by Credit Card</h2>
                 <form action="" method="POST">
                     <div class="form-floating mb-3">
-                        <input type="text" class="card-input-field form-control"  name="card_id" id="credit-card"
-                        placeholder="1234 5648 6542 3156" minlength="19" maxlength="19" required>
+                        <input type="text" class="card-input-field form-control" name="card_id" id="credit-card"
+                            placeholder="1234 5648 6542 3156" minlength="19" maxlength="19">
                         <label for="credit-card">Enter your credit card number</label>
                     </div>
                     <div class="form-floating">
-                        <input type="password" name="upass" class="form-control" id="PIN" maxlength="4" minlength="4" id="floatingPassword"
-                            placeholder="Password"  required>
+                        <input type="password" name="upass" class="form-control" id="PIN" maxlength="4" minlength="4"
+                            id="floatingPassword" placeholder="Password">
                         <label for="floatingPassword">Enter your PIN code</label>
                     </div>
-                    <button class="btn btn-primary mt-3 w-100" type="submit">Log in</button>
+                    <button name="lg_in" class="btn btn-primary mt-3 w-100" type="submit">Log in</button>
+                    <?php echo $customererrmsg ?>
                 </form>
 
             </div>
@@ -134,38 +145,39 @@
                     </svg>
                 </div>
                 <form action="">
-                    <input type="file" class="btn btn-primary" accept="image/*" >
+                    <input type="file" class="btn btn-primary" accept="image/*">
                 </form>
             </div>
         </div>
-        <button id="serviceBTN" class="btn btn-primary mt-5" pop="true">
-            Service ATM
-        </button>
+            <button id="serviceBTN" name="service" class="btn btn-primary mt-5" pop="true">
+                Service ATM
+            </button>
     </div>
 
     <div class="popup serviceLogin flex-column" pop="true">
         <i id="close" class="fa-solid fa-xmark"></i>
         <h2 class="text-white fs-1 mb-5">Login</h2>
-        <form  method="POST" class="w-100">
+        <form method="POST" class="w-100">
             <div class="form-floating mb-3">
-                <input type="userName" name="teqUserName" class="form-control" id="Input" placeholder="01234 5648 6542 3156">
+                <input type="userName" name="teqUserName" class="form-control" id="Input"
+                    placeholder="01234 5648 6542 3156">
                 <label for="Input">Enter username</label>
             </div>
             <br>
             <div class="form-floating">
-                <input type="password" name="teqPassword"  class="form-control"id="Password" placeholder="Password">
+                <input type="password" name="teqPassword" class="form-control" id="Password" placeholder="Password">
                 <label for="Password">Enter password</label>
             </div>
             <br>
             <div class="form-floating mb-3">
-                <input type="text" name="atm_Id"  class="form-control" id="inputId" placeholder="01234 5648 6542 3156">
+                <input type="text" name="atm_Id" class="form-control" id="inputId" placeholder="01234 5648 6542 3156">
                 <label for="inputId">Enter ATM_ID</label>
             </div>
             <br>
-            <button name = "bLogin" class="btn btn-primary mt-3 w-100">Log in</button>
+            <button name="bLogin" class="btn btn-primary mt-3 w-100">Log in</button>
         </form>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>

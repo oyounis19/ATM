@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 require_once '../Controllers/DBconnector.php';
 class servicesTechinican{
 private $username;

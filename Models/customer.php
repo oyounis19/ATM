@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    // Start the session
+    session_start();
+  }
 require_once "../Controllers/DBconnector.php";
 require_once "user.php";
 class customer extends user
@@ -127,6 +130,7 @@ class customer extends user
                 if (count($result) == 0) {
                     return false;
                 } else if ($result) {
+                    
                     $_SESSION['SSN'] = $result[0]['SSN'];
                     $this->SSN = $result[0]['SSN'];
                     $_SESSION['card_id'] = $result[0]['CardID'];
@@ -135,18 +139,18 @@ class customer extends user
                     $this->Fingerprint = $result[0]['Fingerprint'];
                     $_SESSION['upass'] = $result[0]['PIN'];
                     $this->PIN = $result[0]['PIN'];
-                    $_SESSION['fName'] = $result[0]['First_Name'];
-                    $this->FirstName = $result[0]['First_Name'];
-                    $_SESSION['lName'] = $result[0]['Last_Name'];
-                    $this->LastName = $result[0]['Last_Name'];
+                    $_SESSION['fName'] = $result[0]['FirstName'];
+                    $this->FirstName = $result[0]['FirstName'];
+                    $_SESSION['lName'] = $result[0]['LastName'];
+                    $this->LastName = $result[0]['LastName'];
                     $_SESSION['Street'] = $result[0]['Street'];
                     $this->Street = $result[0]['Street'];
                     $_SESSION['Area'] = $result[0]['Area'];
                     $this->Area = $result[0]['Area'];
                     $_SESSION['City'] = $result[0]['City'];
-                    $this->City == $result[0]['City'];
+                    $this->City = $result[0]['City'];
                     $_SESSION['Email'] = $result[0]['Email'];
-                    $this->Email == $result[0]['Email'];
+                    $this->Email = $result[0]['Email'];
                     return true;
                 }
             } else {
