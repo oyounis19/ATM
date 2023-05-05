@@ -1,9 +1,9 @@
 <?php
 require_once '../Models/Account.php';
-$account = new Account(1475369, 2000, "Saving");
+$account = new Account(1545105165, 203154, "Gold");
 if(isset($_POST['amount'])){
     if($account->withdraw($_POST['amount'])){
-        $account->setBalance(2000-$_POST['amount']);
+        $account->setBalance(203154-$_POST['amount']);
         echo "Withdrawal was successful";//SWEET ALERT
     }
     else

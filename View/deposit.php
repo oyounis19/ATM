@@ -2,7 +2,7 @@
 require_once '../Controllers/DBconnector.php';
 require_once '../Models/Account.php';
 if(isset($_POST['amount'])){
-    $account = new Account(1475369, 3500, "Saving");
+$account = new Account(1545105165, 203154, "Gold");
 
     if($account->deposit($_POST['amount']))
         echo "Deposit successfully";// SWEET ALERT 
