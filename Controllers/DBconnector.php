@@ -17,7 +17,7 @@ class DBConnector {
             throw new Exception("Failed to connect to database: " . mysqli_connect_error());
         }
     }
-
+    
     /**
      * Retrieves rows from the specified table and returns them as an array of associative arrays.
      *
@@ -33,16 +33,21 @@ class DBConnector {
         if ($where) {
             $query .= " WHERE $where";
         }
-        $stmt = $this->conn->prepare($query);
-        if (!$stmt) {
-            throw new Exception("Failed to prepare query: " . $this->conn->error);
+        try{
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                $e = new Exception();
+            }
+            if ($params) {
+                $types = str_repeat("s", count($params));
+                $stmt->bind_param($types, ...$params);
+            }
+            if (!$stmt->execute()) {
+                $e = new Exception();
+            }
         }
-        if ($params) {
-            $types = str_repeat("s", count($params));
-            $stmt->bind_param($types, ...$params);
-        }
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to execute query: " . $stmt->error);
+        catch(Exception $e){
+            return false;
         }
         $result = $stmt->get_result();
         $rows = array();
@@ -64,25 +69,29 @@ class DBConnector {
         $columns = implode(",", array_keys($data));
         $values = implode(",", array_fill(0, count($data), "?"));
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
-        $stmt = $this->conn->prepare($query);
-        if (!$stmt) {
-            throw new Exception("Failed to prepare query: " . $this->conn->error);
+        try{
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                $e = new Exception();
+            }
+            
+            $values = array_values($data);
+            $params = array(str_repeat("s", count($data)));
+            foreach ($values as $value) {
+                $params[] = $value;
+            }
+            
+            
+            if (!$stmt->bind_param(...$params)) 
+                $e = new Exception();
+            
+            if (!$stmt->execute())  
+                $e = new Exception();
         }
-        
-        $values = array_values($data);
-        $params = array(str_repeat("s", count($data)));
-        foreach ($values as $value) {
-            $params[] = $value;
+        catch(Exception $e){
+            return false;
         }
-        
-        if (!$stmt->bind_param(...$params)) {
-            throw new Exception("Failed to bind parameters: " . $stmt->error);
-        }
-        
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to execute query: " . $stmt->error);
-        }
-        return $stmt->affected_rows;
+        return true;
     }
 
     /**
@@ -103,19 +112,25 @@ class DBConnector {
         $set_clause = implode(",", $set);
         $query = "UPDATE $table SET $set_clause WHERE $where";
         //echo $query;
-        $stmt = $this->conn->prepare($query);
-        if (!$stmt) {
-            throw new Exception("Failed to prepare query: " . $this->conn->error);
+        
+        try{
+            $stmt = $this->conn->prepare($query);
+            
+            if (!$stmt) 
+                $e = new Exception();
+            
+            $values = array_values($data);
+            if ($params) 
+                $values = array_merge($values, $params);
+            
+            if (!$stmt->bind_param(str_repeat("s", count($values)), ...$values)) 
+                $e = new Exception();
+            
+            if (!$stmt->execute()) 
+                $e = new Exception();
         }
-        $values = array_values($data);
-        if ($params) {
-            $values = array_merge($values, $params);
-        }
-        if (!$stmt->bind_param(str_repeat("s", count($values)), ...$values)) {
-            throw new Exception("Failed to bind parameters: " . $stmt->error);
-        }
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to execute query: " . $stmt->error);
+        catch(Exception $e){
+            return false;
         }
         return $stmt->affected_rows;
     }
@@ -132,16 +147,21 @@ class DBConnector {
      */
     public function delete($table, $where, $params = array()) {
         $query = "DELETE FROM $table WHERE $where";
-        $stmt = $this->conn->prepare($query);
-        if (!$stmt) {
-            throw new Exception("Failed to prepare query: " . $this->conn->error);
-        } 
-        if ($params) {
-            $types = str_repeat("s", count($params));
-            $stmt->bind_param($types, ...$params);
-        }
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to execute query: " . $stmt->error);
+        try{
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                $e = new Exception();
+            } 
+            if ($params) {
+                $types = str_repeat("s", count($params));
+                $stmt->bind_param($types, ...$params);
+            }
+            if (!$stmt->execute()) {
+                $e = new Exception();
+            }
+            }
+        catch(Exception $e){
+            return false;
         }
         return $stmt->affected_rows;
     }
