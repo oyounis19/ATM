@@ -6,7 +6,7 @@
         private $id;
         private $balance;
         private $type;
-        private DBConnector $e;
+        private $db;
 
 
     public function getId() 
@@ -41,90 +41,30 @@
     }
 
 
-    public function viewBalance() 
+    // public function viewBalance() 
+    // {
+    //     $this->db=new DBConnector();
+    //         $result = $this->db->select("`Account`","Balance","Account_ID=?", array($this->id) );
+    //             $this->balance = $result[0]['Balance'];
+    //             // return true;
+    //     //     }
+    //     // }
+    //     // else
+    //     // {
+    //     //     echo "Error in database Connection";
+    //     //     return false;
+    //     // }
+    // }
+    public function transfer($account_id, $amount) 
     {
+        // $verify = new Verification();
+        // if (!$verify) 
+        // {
+        //     return false;
+        // } 
+        // else 
+        // {
         $this->e=new DBConnector(); 
-        if($this->e->__construct())
-        {
-            $result = $this->e->select("`Account`","Balance","WHERE", "Account_ID=?" , array($id) );
-            if(!$result)
-            {
-                echo "Error in Query";
-                return false;
-            }
-            else
-            {
-                echo "connected";
-                $this->balance = $result[0]["Balance"];
-                $this->type = $result[0]["Type"];
-                return true;
-                
-            }
-        }
-        else
-        {
-            echo "Error in database Connection";
-            return false;
-        }
-    }
-    /*
-    public function transfer($account, $amount) {
-        $verify = new Verification();
-        if (!$verify) 
-        {
-            return false;
-        } 
-        else 
-        {
-            $this->e=new DBConnector(); 
-        if($this->e->DBConnector())
-        {
-        try {
-            $this->e->beginTransaction();
-    
-            if ($amount > $this->balance) {
-                throw new Exception("Insufficient balance");
-            }
-    
-            // Subtract the transferred amount from this account
-            $this->balance -= $amount;
-            $stmt1 = $this->e->prepare("UPDATE accounts SET balance = balance - :amount WHERE id = :id AND type = :type");
-            $stmt1->bindParam(':amount', $amount);
-            $stmt1->bindParam(':id', $this->id);
-            $stmt1->bindParam(':type', $this->type);
-            $stmt1->execute();
-    
-            // Add the transferred amount to the other account
-            $account->balance += $amount;
-            $stmt2 = $this->e->prepare("UPDATE accounts SET balance = balance + :amount WHERE id = :id AND type = :type");
-            $stmt2->bindParam(':amount', $amount);
-            $stmt2->bindParam(':id', $account->id);
-            $stmt2->bindParam(':type', $account->type);
-            $stmt2->execute();
-    
-            $this->e->commit();
-            return "Transfer successful";
-        } catch (Exception $e) {
-            $this->e->rollback();
-            return $e->getMessage();
-        }
-        }
-        }
-
-    }
-    
-    public function transfer($account, $amount) 
-    {
-        $verify = new Verification();
-        if (!$verify) 
-        {
-            return false;
-        } 
-        else 
-        {
-        $this->e=new DBConnector(); 
-        if($this->e->DBConnector())
-        {
             $result = $this->e->select("`Account`","Balance","WHERE", "id=?", array($id) );
             if(!$result)
             {

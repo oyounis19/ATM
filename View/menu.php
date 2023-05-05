@@ -1,8 +1,10 @@
 <?php 
 require_once "../Models/Account.php";
 require_once "../Controllers/DBconnector.php";
-$newAccount = new Account(152685,210056,'savings');
-$newAccount->viewBalance($newAccount);
+$newAccount = new Account(1475369,210056,'savings');
+$newAccount->setBalance(600000);
+$newAccount->viewBalance();
+
 
 
 ?>
@@ -39,7 +41,7 @@ session_start();
                             Elhelaly
                         </li>
 
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> 
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $newAccount->getBalance(); ?>
                         </li>
 
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> 1204
