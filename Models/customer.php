@@ -102,7 +102,7 @@ class customer extends user
         $this->phoneNO = $phoneNo;
     }
 
-    public function getPhoneNO($phoneNo)
+    public function getPhoneNO()
     {
         return $this->phoneNO;
     }
