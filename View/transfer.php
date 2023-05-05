@@ -1,7 +1,7 @@
 <?php
 require_once '../Models/Account.php';
 
-$account = new Account(1475369, 5500, "Saving");
+$account = new Account(1545105165, 203154, "Gold");
 
 if(isset($_POST['amount']) && isset($_POST['accountID'])){
     $code = $account->transfer($_POST['accountID'], $_POST['amount']);

@@ -1,5 +1,12 @@
 <?php
 require_once (__DIR__."/Head.php");
+require_once (__DIR__."/../../Models/Account.php");
+if(isset($_POST["AccId"])){
+    $account = new Account();
+    $account->setId($_POST["AccId"]);
+    $admin = new admin();
+    $flag = $admin->deleteAccount($account);
+}
 ?>
 <body>
     <?php
@@ -11,12 +18,12 @@ require_once (__DIR__."/Head.php");
         <section class="deleteAccount screen" id="deleteAccount">
         <div class="container-fluid">
             <h2>Delete Account</h2>
-            <form action="#">
+            <form action="#" method="post">
                 <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="UserID" placeholder="name@example.com">
+                    <input type="number" class="form-control" id="UserID" placeholder="name@example.com" name = "AccId">
                     <label for="UserID">Account ID</label>
                 </div>
-                <button class="btn btn-danger rounded">Edit Account</button>
+                <input class="btn btn-danger rounded" value = "Delete Account" type="submit">
             </form>
         </div>
     </section>
@@ -24,4 +31,40 @@ require_once (__DIR__."/Head.php");
     <!-- end deleteAccount -->
 
     </div>
+    <script>
+                    const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+    </script>
+    <?php
+    if ($flag) {
+
+    ?>
+        <script>
+            Toast.fire({
+                icon: 'success',
+                title: ' Account deleted successfully'
+            })
+        </script>
+    <?php
+    } 
+    else{
+        ?>
+            <script>
+            Toast.fire({
+                icon: 'error',
+                title: "Something went wrong , try again"
+            }) 
+        </script>
+        <?php
+    }
+    ?>
 </body>

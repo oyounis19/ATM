@@ -58,20 +58,6 @@ require_once "../Models/customer.php";
                             </div>
                         </div>
                         <?php }?>
-                    <!-- <div class="account d-flex mt-4" data-value="<?php echo $result[$i]['ID']?>">
-                        <i class="fa-solid fa-credit-card"></i>
-                        <div class="accountInfo">
-                            <ul>
-                                <li>
-                                    <p>Account NO. : <span>< ?></span></p>
-                                </li>
-                                <li>
-                                    <p>Account Type : <span>Saving</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div> -->
-                    
                     <input type="hidden" name="selectedAccount" id="selectedAccount">
                 </form>
 

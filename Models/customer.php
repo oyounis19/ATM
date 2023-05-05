@@ -1,10 +1,16 @@
 <?php
+<<<<<<< HEAD
 if (session_status() == PHP_SESSION_NONE) {
     // Start the session
     session_start();
   }
 require_once "../Controllers/DBconnector.php";
 require_once "user.php";
+=======
+session_start();
+require_once __DIR__."/../Controllers/DBconnector.php";
+require_once __DIR__."/User.php";
+>>>>>>> e996a111666f9b255e5dbcdbe4b63a270fc8b72e
 class customer extends user
 {
     private string $SSN;
@@ -100,9 +106,14 @@ class customer extends user
     {
         return $this->Email;
     }
-    public function setPhoneNO($phoneno)
+    public function setPhoneNO($phoneNo)
     {
-        $this->phoneNO = $phoneno;
+        $this->phoneNO = $phoneNo;
+    }
+
+    public function getPhoneNO()
+    {
+        return $this->phoneNO;
     }
     private function pinVerification($pass)
     {

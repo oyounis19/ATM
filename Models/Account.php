@@ -1,12 +1,15 @@
 <?php
-    //require_once "Verification.php";
-    require_once "../Controllers/DBconnector.php";
+    // require_once __DIR__."/Verification.php";
+    require_once __DIR__."/../Controllers/DBconnector.php";
+    // require_once __DIR__."/Models/Transaction.php";
+    // require_once __DIR__."/Models/ATM.php";
     
 class Account {
     private $id;
     private $balance;
     private $type;
     private $db;
+    private $state;
 
     public function getId() {
         return $this->id;
@@ -26,12 +29,25 @@ class Account {
     public function setType(string $type) {
         $this->type = $type;
     }
-    public function __construct($id, $balance, $type) {
+    public function getState(){
+        return $this->state;
+    }
+    public function setState(string $State)
+    {
+        $this->state = $State;
+    }  
+    // public function __construct() {
+        
+    // }
+    public function __construct($id, $balance, $type) 
+    {
         $this->id = $id;
         $this->balance = $balance;
         $this->type = $type;
         $this->db = new DBConnector();
     }
+
+
     /**
      * @param account_id The recipent's account id 
      * @param amount The Transfer amount
@@ -43,19 +59,19 @@ class Account {
         if($amount > $this->balance)
             return 0;
 
-        $result = $this->db->select("`Account`", "*", "Account_ID=?", array($account_id));
+        $result = $this->db->select("`Account`", "*", "ID=?", array($account_id));
 
         if(!$result)
             return 1;
         
-        $this->db->update("`Account`", array("Balance"=>$this->balance-$amount),"Account_ID=?", array($this->id));
-        $this->db->update("`Account`", array("Balance"=>$this->balance+$amount),"Account_ID=?", array($account_id));
-        //saveTransaction();
+        $this->db->update("`Account`", array("Balance"=>$this->balance-$amount),"ID=?", array($this->id));
+        $this->db->update("`Account`", array("Balance"=>$this->balance+$amount),"ID=?", array($account_id));
+        //saveTransaction(this->id,);
         return 2;
     }
 
     public function deposit($amount) {//Composition required
-        if(!$this->db->update("`Account`", array("Balance"=>$this->balance+$amount), "Account_ID=?", array($this->id)))
+        if(!$this->db->update("`Account`", array("Balance"=>$this->balance+$amount), "ID=?", array($this->id)))
             return false;
         //add the ATM balance
         //saveTransaction();
@@ -71,7 +87,7 @@ class Account {
         if($amount > $this->balance)
             return 0;
         
-        if(!$this->db->update("`Account`", array("Balance"=>$this->balance-$amount),"Account_ID=?", array($this->id)))
+        if(!$this->db->update("`Account`", array("Balance"=>$this->balance-$amount),"ID=?", array($this->id)))
             return 1;
 
         //decrease the ATM balance
@@ -80,7 +96,7 @@ class Account {
     }
 
     public function viewTransactionHistory() {//Composition required
-        return $this->db->select("`Transaction`", "*", "Account_ID=?", array($this->id));
+        return $this->db->select("`Transaction`", "*", "AccountID=?", array($this->id));
     }
     public function closeDBconnection(){
         $this->db->close();
