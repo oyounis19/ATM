@@ -1,43 +1,48 @@
 <?php
-		require_once 'ATM.php';
-		require_once 'Account.php';
-		require_once '../Controllers/DBconnector.php';
-		require_once '../View/transaction.php';
-	 class Transaction
+    class Transaction
     {
-        private $type ;
-		private $date;
+        private string $type;
+        private string $time;
+        private $date;
         private $amount;
-        private  $db;
+        private DBconnector $e;
 
-		public function __construct($type, $date , $amount)
-		{
-			$this->type = $type;
-			$this->date = $date;
-			$this->amount = $amount;
-			$this->db = new DBConnector();
-		}
-		public function getType() {
+    
+	public function getType() {
 		return $this->type;
 	}
-		
+	
+	
 	public function setType(string $type){
 		$this->type = $type;
 		return $this;
 	}
     
+
+
+	public function getTime(): string {
+		return $this->time;
+	}
+	
+	
+	public function setTime(string $time): self {
+		$this->time = $time;
+		return $this;
+	}
+
+	
 	public function getDate() {
 		return $this->date;
 	}
-		
-	public function setDate($date)
-	{
+	
+	
+	public function setDate($date): self {
 		$this->date = $date;
 		return $this;
 	}
+
 	
-	public function getAmount()
-	{
+	public function getAmount() {
 		return $this->amount;
 	}
 	
@@ -45,27 +50,14 @@
 		$this->amount = $amount;
 		return $this;
 	}
+    // public function saveTransaction($accountid , $SSN, ATM $x ) 
+    // {
+    //     $e=new DBConnector();
+        
+    //     $e ->dbconnect();
+    //     $e ->modify("insert into `Transaction`(Account_ID , SSN, ATM_ID, Amount ,`Date` , State , Type , recipient_account_ID ) 
+    //     values($accountid , $SSN , ".$x->getID()." ,".$this ->amount." , ".$this->date." ,  )");
 
-	 public function saveTransaction(Customer $z, Account $e, ATM $x , $Tstate , $recAccID)
-	 {
-		
-		if (!($this->type == "Transfer"))
-		 {
-			$recAccID = null;
-		 }
-		$this->db ->insert("`Transaction`",array("Account_ID"=>$e->getId(),"SSN"=>$z->getSSN(),"ATM_ID"=>$x->getID(),
-								"Amount"=>$this->amount,"Date"=>"now()","State"=>$Tstate,"Type"=>$this->type,
-								"recipient_account_ID"=>$recAccID));
-								
-		if(($this->db ->insert("`Transaction`",array("Account_ID"=>$e->getId(),"SSN"=>$z->getSSN(),"ATM_ID"=>$x->getID(),
-		"Amount"=>$this->amount,"Date"=>"now()","State"=>$Tstate,"Type"=>$this->type,
-		"recipient_account_ID"=>$recAccID)));
-if())
-		{
-			echo
-			$x->notifyUser();
-		}			
-		
-	 } 
+    // } 
 }
 ?>
