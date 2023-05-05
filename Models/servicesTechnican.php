@@ -80,7 +80,9 @@ public function rechargeAtm (){
 
 
 public function checkLoggers(){
-
+    $this->db = new DBconnector;
+    $result = $this->db->select("Transaction", "Account_ID , Type , Date" , "", array());
+    return $result;
 }
 
 }

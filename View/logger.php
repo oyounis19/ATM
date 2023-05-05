@@ -1,3 +1,9 @@
+<?php 
+require_once '../Models/servicesTechnican.php';
+$srvTeq = new servicesTechinican; 
+$result =  $srvTeq->checkLoggers();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,55 +28,33 @@
         <div class="screens d-flex">
             <div class="screen history">
                 <h2 class="text-white fw-bolder">Logger</h2>
-                <div class="transactions">
-                    <div class="transaction d-flex mt-4 justify-content-between" id="1">
+                 <?php 
+                 for( $i = 0 ; $i < sizeof($result);$i++){
+                    ?>
+                <div class="transictions">
+                    <div id="transiction" class="transiction d-flex mt-4 justify-content-between">
                         <div class="accountInfo">
                             <ul>
                                 <li>
-                                    <p>Account ID : <span>123456</span></p>
+                                    <p>Account ID : <span><?php echo $result[$i]["Account_ID"] ?></span></p>
                                 </li>
                                 <li>
-                                    <p>transaction Type : <span>Withdraw</span></p>
+                                    <p>Transiction Type : <span><?php echo $result[$i]["Type"] ?></span></p>
                                 </li>
                                 <li>
-                                    <p>Date : <span>2023/3/1</span></p>
+                                    <p>Date : <span><?php echo $result[$i]["Date"] ?></span></p>
                                 </li>
                             </ul>
+
                         </div>
+
                         <i class="fa-solid fa-arrow-up"></i>
+
+
                     </div>
-                    <div class="transaction d-flex mt-4 justify-content-between" id="2">
-                        <div class="accountInfo">
-                            <ul>
-                                <li>
-                                    <p>Account ID : <span>123456</span></p>
-                                </li>
-                                <li>
-                                    <p>transaction Type : <span>Withdraw</span></p>
-                                </li>
-                                <li>
-                                    <p>Date : <span>2023/3/1</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                        <i class="fa-solid fa-arrow-up"></i>
-                    </div>
-                    <div class="transaction d-flex mt-4 justify-content-between" id="3">
-                        <div class="accountInfo">
-                            <ul>
-                                <li>
-                                    <p>Account ID : <span>123456</span></p>
-                                </li>
-                                <li>
-                                    <p>transaction Type : <span>Withdraw</span></p>
-                                </li>
-                                <li>
-                                    <p>Date : <span>2023/3/1</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                        <i class="fa-solid fa-arrow-up"></i>
-                    </div>
+                 <?php 
+                 }
+                 ?>
                 </div>
             </div>
                 
