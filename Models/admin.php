@@ -54,9 +54,11 @@ class admin extends User
 
         return $row > 0? true: false; 
     }
-    public function deleteAtm()
+    public function deleteAtm($atmId)
     {
-
+        $db = new DBconnector();
+        $ok = $db->delete("ATM", "ID = ?", array($atmId));
+        return $ok;
     }
     public function viewAtm()
     {

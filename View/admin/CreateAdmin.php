@@ -2,13 +2,15 @@
     require_once(__DIR__ . "/../../Models/admin.php");
     require_once(__DIR__ . "/Head.php");
 
-    $showAlert = false;
+    $showAlert = 0;
     $admin = new admin();
     // create new admin
     if (isset($_POST['fName']) && isset($_POST['lName']) && isset($_POST['userName']) && isset($_POST['passWord'])) {
         $ok = $admin->createAdmin($_POST['fName'], $_POST['lName'], $_POST['userName'], $_POST['passWord']);
         if ($ok) {
-            $showAlert = true;
+            $showAlert = 1;
+        } else {
+            $showAlert = 2;
         }
     }
     ?>
@@ -53,7 +55,7 @@
     <!-- end CreateAdmin -->
 
     <?php
-    if ($showAlert) {
+    if ($showAlert == 1) {
 
     ?>
         <script>
@@ -72,6 +74,27 @@
             Toast.fire({
                 icon: 'success',
                 title: 'New Admin created successfully'
+            })
+        </script>
+    <?php
+    } else if ($showAlert == 2) {
+    ?>
+        <script>
+            const Tooast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Tooast.fire({
+                icon: 'error',
+                title: 'something went wrong with Admin creation'
             })
         </script>
     <?php
