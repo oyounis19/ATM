@@ -7,6 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 require_once '../Controllers/lib/src/PHPMailer.php';
 require_once '../Controllers/lib/src/SMTP.php';
 require_once '../Controllers/lib/src/Exception.php';
+require_once '../Controllers/DBconnector.php';
 
 class ATM{
     private int $ID;
@@ -14,7 +15,7 @@ class ATM{
     private string $street;
     private bool $area;
     private bool $balance;
-    private bool $db;
+    private $db;
 
     public function __construct($ID, $city, $street, $area, $balance){
         $this->ID = $ID;
@@ -22,6 +23,7 @@ class ATM{
         $this->street = $street;
         $this->area = $area;
         $this->balance = $balance;
+        $this->db = new DBConnector();
     }
 
     private function generateOTP() {
@@ -64,7 +66,11 @@ class ATM{
     public function setCity($city){
         $this->city = $city;
     }
-
+    /**
+     * @param Customer $customer The customer to send the OTP to
+     * @return mixed OTP if the Email was sent successfully and null otherwise
+     */
+//  public function sendOTP(Customer $customer){
     public function sendOTP($recepient_email, string $client_name){//customer class
         $mail = $this->serverSettings();
 
@@ -160,7 +166,14 @@ class ATM{
         }
         return $OTP;
     }
+//  public function notifyUser(Customer $customer, Transaction $transaction, Account $account){
 
+    /**
+     * @param Customer $customer The customer to send the email to
+     * @param Transaction $transaction The transaction details
+     * @param Account $account The account of the customer with the new balance
+     * @return bool True if the Email was sent successfully and false otherwise
+     */
     public function notifyUser(string $recepient_email, string $transactionType, $amount, $currentBalance, bool $state, string $client_name, int $atmID){
         $mail = $this->serverSettings();
         $mail->addAddress($recepient_email, 'Client');              
@@ -239,41 +252,42 @@ class ATM{
                 color: #D8000C;
                 padding: 10px;
             }
-            </style>
-            <body>
-        <table>
-		<!-- Header -->
-		<tr>
-			<td colspan=\"2\" class=\"header\">
-				<h1>Transaction Notification</h1>
-			</td>
-		</tr>
+                </style>
+                <body>
+            <table>
+            <!-- Header -->
+            <tr>
+                <td colspan=\"2\" class=\"header\">
+                    <h1>Transaction Notification</h1>
+                </td>
+            </tr>
 
-		<!-- Content -->
-		<tr>
-			<td colspan=\"2\" class=\"content\">
-				<p>Dear $client_name,</p>
-				<p>A transaction of type $transactionType of <b>$amount</b> LE on $current_date $current_time occured at ATM with ID: $atmID.</p>
-				<p>Your current account balance is <b>$currentBalance</b> LE.</p>				
-                $HTMLstate
-				<p>Thank you for choosing our bank for your financial needs.</p>
-				<p>Sincerely,</p>
-				<p>The Bank Team</p>
-			</td>
-		</tr>
-	</table>
-    </body>";
-    $mail->Body = $emailBody;
-    try{
-        $mail->send();
-    }catch(Exception $e){
-        return false;
+            <!-- Content -->
+            <tr>
+                <td colspan=\"2\" class=\"content\">
+                    <p>Dear $client_name,</p>
+                    <p>A transaction of type $transactionType of <b>$amount</b> LE on $current_date $current_time occured at ATM with ID: $atmID.</p>
+                    <p>Your current account balance is <b>$currentBalance</b> LE.</p>				
+                    $HTMLstate
+                    <p>Thank you for choosing our bank for your financial needs.</p>
+                    <p>Sincerely,</p>
+                    <p>The Bank Team</p>
+                </td>
+            </tr>
+        </table>
+        </body>";
+        $mail->Body = $emailBody;
+        try{
+            $mail->send();
+        }catch(Exception $e){
+            return false;
+        }
+        return true;
     }
-    return true;
-    }
-    
-    public function blockCard(Card $Card){
-        
+
+    public function blockCard(Card $card, ){
+        $this->db->update("`CreditCard`", array("State"=> 2), " ");
+
     }
 }
 ?>

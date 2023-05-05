@@ -1,9 +1,9 @@
 <?php
 
-require_once "DBconnector.php";
-require_once "Customer.php";
-require_once "Transaction.php";
-require_once "Account.php";
+require_once __DIR__."/../DBconnector.php";
+require_once __DIR__."/../Customer.php";
+require_once __DIR__."/../Transaction.php";
+require_once __DIR__."/../Account.php";
 
 class verification{
     private $db ;
