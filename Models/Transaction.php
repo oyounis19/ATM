@@ -2,7 +2,7 @@
 		require_once 'ATM.php';
 		require_once 'Account.php';
 		require_once '../Controllers/DBconnector.php';
-		require_once '../View/transaction.php'
+		require_once '../View/transaction.php';
 	 class Transaction
     {
         private $type ;
@@ -55,7 +55,16 @@
 		 }
 		$this->db ->insert("`Transaction`",array("Account_ID"=>$e->getId(),"SSN"=>$z->getSSN(),"ATM_ID"=>$x->getID(),
 								"Amount"=>$this->amount,"Date"=>"now()","State"=>$Tstate,"Type"=>$this->type,
-								"recipient_account_ID"=>$recAccID));			
+								"recipient_account_ID"=>$recAccID));
+								
+		if(($this->db ->insert("`Transaction`",array("Account_ID"=>$e->getId(),"SSN"=>$z->getSSN(),"ATM_ID"=>$x->getID(),
+		"Amount"=>$this->amount,"Date"=>"now()","State"=>$Tstate,"Type"=>$this->type,
+		"recipient_account_ID"=>$recAccID)));
+if())
+		{
+			echo
+			$x->notifyUser();
+		}			
 		
 	 } 
 }
