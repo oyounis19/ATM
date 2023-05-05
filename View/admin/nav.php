@@ -15,7 +15,7 @@
     <nav class="navbar">
         <div class="container-fluid">
             <i id="menuBTN" class="fa-solid fa-bars"></i>
-            <span class="mb-0 fs-1">ADMIN ATM</span>
+            <span class="mb-0 fs-1">ATM ADMIN</span>
         </div>
     </nav>
 
@@ -26,7 +26,7 @@
     <div class="leftSide" id="leftSide">
         <ul class="d-flex flex-column ">
             <li>
-                <button class="btn-primary d-flex" id="DashBoardBTN">DashBoard</button>
+                <a href="home.php"><button class="btn-primary d-flex" id="DashBoardBTN">DashBoard</button></a>
             </li>
             <li>
                 <button class="btn-primary d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
@@ -36,10 +36,10 @@
             </li>
             <div class="collapse" id="collapseExample1">
                 <ul>
-                    <li class="ps-3 " id="createAccountBTN">Create Account</li>
-                    <li class="ps-3 " id="deleteAccountBTN">Delete Account</li>
-                    <li class="ps-3 " id="editAccountBTN">Edit Account</li>
-                    <li class="ps-3 " id="creditCardBTN">Mangae Credit Cards</li>
+                    <a href="CreateAccount.php"><li class="ps-3 " id="createAccountBTN">Create Account</li></a>
+                    <a href="DeleteAccount.php"><li class="ps-3 " id="deleteAccountBTN">Delete Account</li></a>
+                    <a href="EditAccount.php"><li class="ps-3 " id="editAccountBTN">Edit Account</li></a>
+                    <a href="Manage Credit Cards.php"><li class="ps-3 " id="creditCardBTN">Manage Credit Cards</li></a>
                 </ul>
             </div>
             <li>
@@ -50,9 +50,9 @@
             </li>
             <div class="collapse" id="collapseExample2">
                 <ul>
-                    <li class="ps-3" id="createUserBTN">Create user</li>
-                    <li class="ps-3" id="deleteUserBTN">Delete user</li>
-                    <li class="ps-3" id="editUserBTN">Edit user</li>
+                    <a href="Create User.php"><li class="ps-3" id="createUserBTN">Create user</li></a>
+                    <a href="Delete User.php"><li class="ps-3" id="deleteUserBTN">Delete user</li></a>
+                    <a href="Edit User.php"><li class="ps-3" id="editUserBTN">Edit user</li></a>
                 </ul>
             </div>
             <li>
@@ -63,8 +63,8 @@
             </li>
             <div class="collapse" id="collapseExample3">
                 <ul>
-                    <li class="ps-3" id="createATMBTN">Create ATM</li>
-                    <li class="ps-3" id="deleteATMBTN">Delete ATM</li>
+                    <a href="Create ATM.php"><li class="ps-3" id="createATMBTN">Create ATM</li></a>
+                    <a href="Delete ATM.php"><li class="ps-3" id="deleteATMBTN">Delete ATM</li></a>
                 </ul>
             </div>
             <li>

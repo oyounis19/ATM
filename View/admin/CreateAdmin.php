@@ -17,6 +17,7 @@
         <div class="container">
         <div class="CreateAdmin screen" id="CreateAdmin">
             <div class="container-fluid">
+                <h2>Add Admin</h2>
                 <form  method="POST" action="#">
                     <div class="d-flex gap-4">
                         <div class="form-floating w-50 mb-3">
