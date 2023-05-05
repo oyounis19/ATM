@@ -26,8 +26,8 @@ public function login(){
         $this->db = new DBconnector;
        // if($this->db->__construct()){
             $password = $this->pinVerification($password);
-            $result = $this->db->select("Employee", "*" , "User_name=? AND Password=?", array($userName,$password));
-            $result1 = $this->db->select("ATM", "*" , "ATM_ID=?", array($atmId));
+             $result = $this->db->select("Employee", "*" , "UserName=? AND Password=?", array($userName,$password));
+            $result1 = $this->db->select("ATM", "*" , "ID=?", array($atmId));
             if(!$result){
                 //echo "PASS OR USER";
                 return false;
@@ -40,12 +40,11 @@ public function login(){
                     return false;
                 }else{ 
                     //foreach ($rows as $row){
-                    $_SESSION['empId'] = $result[0]['Emp_ID'];
-                    $_SESSION['firstName'] = $result[0]['First_Name'];
-                    $_SESSION['lastName'] = $result[0]['Last_Name'];
-                    $_SESSION['userName'] = $result[0]['User_Name'];
-                    $_SESSION['atmId'] = $result1[0]['ATM_ID'];
-                    $_SESSION['adminId'] = $result1[0]['Admin_ID'];
+                    $_SESSION['empId'] = $result[0]['ID'];
+                    $_SESSION['firstName'] = $result[0]['FirstName'];
+                    $_SESSION['lastName'] = $result[0]['LastName'];
+                    $_SESSION['userName'] = $result[0]['UserName'];
+                    $_SESSION['atmId'] = $result1[0]['ID'];
                     $_SESSION['atmBalance'] = $result1[0]['Balance'];
                     header("location:../View/serviceMenu.php");
                     return true;
@@ -71,8 +70,8 @@ public function rechargeAtm (){
         $mAmount += $_SESSION['atmBalance'];
         $_SESSION['atmBalance'] = $mAmount;
         $table = 'ATM';
-        $data = array('Balance' => $mAmount);
-        $where = 'ATM_ID = ?';
+        $data = array('Balance' => $_SESSION['atmBalance']);
+        $where = 'ID = ?';
         $params = array($_SESSION['atmId']);
         $affected_rows = $this->db->update($table, $data, $where, $params);
     }
@@ -81,7 +80,7 @@ public function rechargeAtm (){
 
 public function checkLoggers(){
     $this->db = new DBconnector;
-    $result = $this->db->select("Transaction", "Account_ID , Type , Date" , "", array());
+    $result = $this->db->select("Transaction", "AccountID , Type , Date" , "", array());
     return $result;
 }
 
