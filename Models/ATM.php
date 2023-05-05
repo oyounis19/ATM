@@ -4,15 +4,25 @@ use PHPMailer\PHPMailer\PHPMailer;//like using namespace to make the code more r
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require_once '../lib/src/PHPMailer.php';
-require_once '../lib/src/SMTP.php';
-require_once '../lib/src/Exception.php';
+require_once '../Controllers/lib/src/PHPMailer.php';
+require_once '../Controllers/lib/src/SMTP.php';
+require_once '../Controllers/lib/src/Exception.php';
 
 class ATM{
     private int $ID;
     private string $city;
-    private string $country;
-    private bool $empty;
+    private string $street;
+    private bool $area;
+    private bool $balance;
+    private bool $db;
+
+    public function __construct($ID, $city, $street, $area, $balance){
+        $this->ID = $ID;
+        $this->city = $city;
+        $this->street = $street;
+        $this->area = $area;
+        $this->balance = $balance;
+    }
 
     private function generateOTP() {
         $digits = 6;
@@ -47,26 +57,15 @@ class ATM{
     public function getCity(){
         return $this->city;
     }
-    public function getCountry(){
-        return $this->country;
-    }
-    public function isEmpty(){
-        return $this->empty;
-    }
+
     public function setID($ID){
         $this->ID = $ID;
     }
     public function setCity($city){
         $this->city = $city;
     }
-    public function setCountry($country){
-        $this->country = $country;
-    }
-    public function setStatus(bool $status){
-        $this->empty = $status;
-    }
 
-    public function sendOTP($recepient_email, string $client_name){
+    public function sendOTP($recepient_email, string $client_name){//customer class
         $mail = $this->serverSettings();
 
         if($mail == null) 
@@ -272,6 +271,7 @@ class ATM{
     }
     return true;
     }
+    
     public function blockCard(Card $Card){
         
     }
