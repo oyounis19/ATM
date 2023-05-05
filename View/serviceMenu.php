@@ -68,7 +68,7 @@ if(isset($_POST['finish'])){
                     <button id="cashBTN" class="btn btnMenu">
                         Fill Cash
                     </button>
-                    <a href="logger.php" class="btn btnMenu">
+                    <a href="../View/logger.php" class="btn btnMenu">
                         Check ATM Logger
                     </a>
                     <form  method="POST" class="w-100">
