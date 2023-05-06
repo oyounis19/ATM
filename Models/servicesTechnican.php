@@ -11,6 +11,7 @@ private $lastName;
 private $userName;
 private $password;
 private $tqId;
+private $role;
 private $balance;
 private $atmId;
 private $accId;
@@ -24,18 +25,14 @@ private function pinVerification($pass){
         return $password;
     }
 
-public function __construct($firstName=null,$lastName=null,$userName=null,$password=null,$tqId=null, $atmId=null, $balance=null, $accId=null, $trsType=null, $trsDate=null){
-        if($firstName && $lastName && $userName && $password && $TqId && $atmId && $balance && $accId && $trsType && $trsDate){
+public function __construct($firstName=null,$lastName=null,$userName=null,$password=null,$tqId=null, $role = null){
+        if($firstName && $lastName && $userName && $password && $TqId ){
             $this->firstName= $firstName;
             $this->lastName = $lastName;
-            $this->TqId = $TqId;
+            $this->tqId = $tqId;
             $this->userName = $userName;
             $this->password = $password;
-            $this->atmId = $atmId;
-            $this->balance = $balance;
-            $this->accId = $accId;
-            $this->trsType = $trsType;
-            $this->trsDate = $trsDate;
+            $this->role = $role;
         }
         $this->db = new DBConnector;
     }
