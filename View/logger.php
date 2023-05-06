@@ -41,7 +41,7 @@ $result =  $srvTeq->checkLoggers();
                         <div class="accountInfo">
                             <ul>
                                 <li>
-                                    <p>Account ID : <span><?php echo $result[$i]["Account_ID"] ?></span></p>
+                                    <p>Account ID : <span><?php echo $result[$i]["AccountID"] ?></span></p>
                                 </li>
                                 <li>
                                     <p>Transiction Type : <span><?php echo $result[$i]["Type"] ?></span></p>
