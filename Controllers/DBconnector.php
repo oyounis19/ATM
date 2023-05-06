@@ -1,5 +1,6 @@
 <?php
-class DBConnector {
+class DBConnector
+{
     private $conn;
     private $username = "suiiii";
     private $password = "oyounis1";
@@ -11,13 +12,14 @@ class DBConnector {
      *
      * @throws Exception If there was an error opening the connection.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->dbname);
         if (!$this->conn) {
             throw new Exception("Failed to connect to database: " . mysqli_connect_error());
         }
     }
-    
+
     /**
      * Retrieves rows from the specified table and returns them as an array of associative arrays.
      *
@@ -28,12 +30,13 @@ class DBConnector {
      * @return array An array of associative arrays representing the rows selected.
      * @throws Exception If there was an error executing the select query.
      */
-    public function select($table, $columns = "*", $where = null, $params = array()) {
+    public function select($table, $columns = "*", $where = null, $params = array())
+    {
         $query = "SELECT $columns FROM $table";
         if ($where) {
             $query .= " WHERE $where";
         }
-        try{
+        try {
             $stmt = $this->conn->prepare($query);
             if (!$stmt) {
                 $e = new Exception();
@@ -45,8 +48,7 @@ class DBConnector {
             if (!$stmt->execute()) {
                 $e = new Exception();
             }
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return false;
         }
         $result = $stmt->get_result();
@@ -65,30 +67,30 @@ class DBConnector {
      * @return int The number of rows affected by the insert operation.
      * @throws Exception If there was an error executing the insert query.
      */
-    public function insert($table, $data) {
+    public function insert($table, $data)
+    {
         $columns = implode(",", array_keys($data));
         $values = implode(",", array_fill(0, count($data), "?"));
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
-        try{
+        try {
             $stmt = $this->conn->prepare($query);
             if (!$stmt) {
                 $e = new Exception();
             }
-            
+
             $values = array_values($data);
             $params = array(str_repeat("s", count($data)));
             foreach ($values as $value) {
                 $params[] = $value;
             }
-            
-            
-            if (!$stmt->bind_param(...$params)) 
+
+
+            if (!$stmt->bind_param(...$params))
                 $e = new Exception();
-            
-            if (!$stmt->execute())  
+
+            if (!$stmt->execute())
                 $e = new Exception();
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -104,36 +106,36 @@ class DBConnector {
      * @return int The number of affected rows.
      * @throws Exception If the query fails to prepare, bind parameters, or execute.
      */
-    public function update($table, $data, $where, $params = array()) {
+    public function update($table, $data, $where, $params = array())
+    {
         $set = array();
         foreach ($data as $column => $value) {
             $set[] = "$column=?";
         }
         $set_clause = implode(",", $set);
         $query = "UPDATE $table SET $set_clause WHERE $where";
-        
-        try{
+
+        try {
             $stmt = $this->conn->prepare($query);
-            
-            if (!$stmt) 
+
+            if (!$stmt)
                 $e = new Exception();
-            
+
             $values = array_values($data);
-            if ($params) 
+            if ($params)
                 $values = array_merge($values, $params);
-            
-            if (!$stmt->bind_param(str_repeat("s", count($values)), ...$values)) 
+
+            if (!$stmt->bind_param(str_repeat("s", count($values)), ...$values))
                 $e = new Exception();
-            
-            if (!$stmt->execute()) 
+
+            if (!$stmt->execute())
                 $e = new Exception();
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return false;
         }
         return true;
     }
-    
+
 
     /**
      * Deletes rows from the specified table that match the given condition.
@@ -144,13 +146,14 @@ class DBConnector {
      * @return int The number of rows affected by the delete operation.
      * @throws Exception If there was an error executing the delete query.
      */
-    public function delete($table, $where, $params = array()) {
+    public function delete($table, $where, $params = array())
+    {
         $query = "DELETE FROM $table WHERE $where";
-        try{
+        try {
             $stmt = $this->conn->prepare($query);
             if (!$stmt) {
                 $e = new Exception();
-            } 
+            }
             if ($params) {
                 $types = str_repeat("s", count($params));
                 $stmt->bind_param($types, ...$params);
@@ -158,18 +161,17 @@ class DBConnector {
             if (!$stmt->execute()) {
                 $e = new Exception();
             }
-            }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return false;
         }
         return true;
     }
-    
+
     /**
      * Closes the Database Connection.
      */
-    public function close() {
+    public function close()
+    {
         mysqli_close($this->conn);
     }
 }
-?>
