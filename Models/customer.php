@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once(__DIR__ . '/../Controllers/DBconnector.php');
 require_once "user.php";
 
-class customer extends user
+class Customer extends user
 {
     private string $SSN;
     private string $FirstName;
@@ -20,91 +20,46 @@ class customer extends user
     private string $CardID;
     private string $phoneNO;
     private $db;
-    public function setId($card_id)
-    {
-        $this->CardID = $card_id;
-    }
     public function getId()
     {
         return $this->CardID;
-    }
-    public function setPin($pin)
-    {
-        $this->PIN = $pin;
     }
     public function getPin()
     {
         return $this->PIN;
     }
-    public function setSSN($ssn)
-    {
-        $this->SSN = $ssn;
-    }
     public function getSSN()
     {
         return $this->SSN;
-    }
-    public function setFirstName($firstname)
-    {
-        $this->FirstName = $firstname;
     }
     public function getFirstName()
     {
         return $this->FirstName;
     }
-    public function setLastName($lastname)
-    {
-        $this->LastName = $lastname;
-    }
     public function getLastName()
     {
         return $this->LastName;
-    }
-    public function setFingerprint($fingerprint)
-    {
-        $this->Fingerprint = $fingerprint;
     }
     public function getFingerprint()
     {
         return $this->Fingerprint;
     }
-    public function setArea($area)
-    {
-        $this->Area = $area;
-    }
     public function getArea()
     {
         return $this->Area;
-    }
-    public function setCity($city)
-    {
-        $this->City = $city;
     }
     public function getCity()
     {
         return $this->City;
     }
-    public function setStreet($street)
-    {
-        $this->Street = $street;
-    }
     public function getStreet()
     {
         return $this->Street;
-    }
-    public function setEmail($email)
-    {
-        $this->Email = $email;
     }
     public function getEmail()
     {
         return $this->Email;
     }
-    public function setPhoneNO($phoneNo)
-    {
-        $this->phoneNO = $phoneNo;
-    }
-
     public function getPhoneNO()
     {
         return $this->phoneNO;
