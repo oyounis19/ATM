@@ -42,7 +42,7 @@ if(isset($_POST['finish'])){
                     <ul>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span>
                         <?php 
-                            echo $_SESSION['firstName'];
+                            echo $_SESSION['firstName'] , ' ' , $_SESSION['lastName'];
                         ?>
                         </li>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>ATM Balance</span>

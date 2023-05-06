@@ -35,7 +35,7 @@ if(isset($_POST['lg_out'])){
                 <h2 class="text-white fw-bolder">ATM </h2>
                 <div class="userInfo my-5">
                     <ul>
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span><?php echo $_SESSION['fName'] ?>
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span><?php echo $_SESSION['fName'] , ' ' , $_SESSION['lName'] ?>
                         </li>
 
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $_SESSION['balance'].' L.E' ?>
