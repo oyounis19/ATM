@@ -1,9 +1,8 @@
 <?php
 require_once(__DIR__ . '/../Controllers/DBconnector.php');
-
-
-
-require_once "User.php";
+require_once(__DIR__."/Account.php");
+require_once(__DIR__."/customer.php");
+require_once (__DIR__."/User.php");
 class admin extends User
 {
     private string $userName;
@@ -33,11 +32,10 @@ class admin extends User
     public function deleteCustomer()
     {
     }
-    public function createAccount(Account $account, Customer $customer, Card $card)
+    public function createAccount(Account $account, Customer $customer)
     {
         $db = new DBconnector();
         $data["SSN"] = $customer->getSSN();
-        $data["Cardid"] = $card->getId();
         $data["Type"] = $account->getType();
         $result = $db->insert("Account", $data);
         return $result;
