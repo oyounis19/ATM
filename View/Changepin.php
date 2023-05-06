@@ -1,9 +1,5 @@
 <?php
 require_once "../Models/customer.php";
-if(!isset($_SESSION['SSN'])){
-    header("location:index.php");
-}
-require_once "../Models/customer.php";
 $errmsg = "";
 $customer = new customer;
 if (isset($_POST['change'])) {
