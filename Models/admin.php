@@ -13,7 +13,7 @@ class admin extends User
         $this->userName = $user;
         $this->passWord = $pass;
     } 
-    public function login()
+    public function login($user, $pass)
     {
         $db = new DBconnector();
         $hashedPassWord = hash("sha256", $this->passWord);

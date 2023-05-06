@@ -114,7 +114,7 @@ class customer extends user
         $password = hash("sha256", $pass);
         return $password;
     }
-    public function login()
+    public function login($id, $pass)
     {
         function validate($data)
         {
