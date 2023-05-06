@@ -198,9 +198,9 @@ class Customer extends user
                 $_SESSION['Area'] = $result[0]['Area'];
                 $this->Area = $result[0]['Area'];
                 $_SESSION['City'] = $result[0]['City'];
-                $this->City == $result[0]['City'];
+                $this->City = $result[0]['City'];
                 $_SESSION['Email'] = $result[0]['Email'];
-                $this->Email == $result[0]['Email'];
+                $this->Email = $result[0]['Email'];
                 return true;
             }
         } else {

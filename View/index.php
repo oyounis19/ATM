@@ -143,8 +143,11 @@
                         </g>
                     </svg>
                 </div>
-                <form action="">
-                    <input type="file" class="btn btn-primary" accept="image/*">
+                <form action="#" method="post" enctype="multipart/form-data">
+                    <input type="file" class="btn btn-primary mb-3" name="image">
+                    <!-- <button name="upload" class="btn btn-primary">upload</button> -->
+                    <input type="submit" name="upload" class="btn btn-primary" value="upload">
+                    <?php echo "<pre>$customererrmsgfingerprint</pre>" ?>
                 </form>
             </div>
         </div>
