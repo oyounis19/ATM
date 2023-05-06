@@ -76,26 +76,20 @@ class Report{
         }else
         {
             for($i=0; $i<sizeof($result); $i++){
-                
-                 for($j=0; $j<sizeof($result[$i])-1; $j++){
-                    if([$i]["State"]== "Approved"){
-                        $this->pdf->writeHTMLCell(21.11,15, '', '', '<h4 style="text-align: center; color:green">Approved</h4>',1, 1);
+                for($j=0; $j<sizeof($result[$i])-1; $j++){
+                    if($j == 6){//State
+                        $color = '';
+                        $result[$i][$columnsNames[$j]] == "Approved" ? $color = 'green' : $color = 'red';
+                        $this->pdf->writeHTMLCell(21.11,15, '', '', '<h4 style="color:'.$color.'; text-align: center;">'.$result[$i][$columnsNames[$j]].'</h4>',1, 0);
+                    }else{//Any thing else
+                        $this->pdf->writeHTMLCell(21.11,15, '', '', '<h4 style="text-align: center;">'.$result[$i][$columnsNames[$j]].'</h4>',1, 0);
                     }
-                    else{
-                        $this->pdf->writeHTMLCell(21.11,15, '', '', '<h4 style="text-align: center; color:green">De</h4>',1, 1);
-                    } 
-                    $this->pdf->writeHTMLCell(21.11,15, '', '', '<h4 style="text-align: center;">'.$result[$i][$columnsNames[$j]].'</h4>',1, 0);
-                    
-                     }
-                }                
+                }
                 $this->pdf->writeHTMLCell(21.11,15, '', '', '<h4 style="text-align: center;">'.$result[$i]["receiverId"].'</h4>',1, 1);
-
-            }
-        
+            }                
+        }
         //Add content
-        
         $this->pdf->Output();
     }
-    
 }
 ?>
