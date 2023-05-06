@@ -1,5 +1,5 @@
 <?php
-require_once (__DIR__.'/../Controllers/DBconnector.php');
+require_once(__DIR__ . '/../Controllers/DBconnector.php');
 
 
 
@@ -9,12 +9,21 @@ class admin extends User
     private string $userName;
     private string $passWord;
 
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
+    }
+    public function setPassWord($passWord)
+    {
+        $this->passWord = $passWord;
+    }
 
-    public function login($_userName, $_passWord)
+
+    public function login()
     {
         $db = new DBconnector();
-        $hashedPassWord = hash("sha256", $_passWord);
-        return $db->select("`Employee`", "*", "UserName=? AND Password=?", array($_userName, $hashedPassWord));
+        $hashedPassWord = hash("sha256", $this->passWord);
+        return $db->select("`Employee`", "*", "UserName=? AND Password=?", array($this->userName, $hashedPassWord));
     }
     public function logout()
     {
@@ -30,28 +39,29 @@ class admin extends User
     public function deleteCustomer()
     {
     }
-    public function createAccount(Account $account, Customer $customer,Card $card)
+    public function createAccount(Account $account, Customer $customer, Card $card)
     {
         $db = new DBconnector();
         $data["SSN"] = $customer->getSSN();
         $data["Cardid"] = $card->getId();
         $data["Type"] = $account->getType();
-        $result = $db->insert("Account",$data);
+        $result = $db->insert("Account", $data);
         return $result;
     }
     public function deleteAccount(Account $account)
     {
         $db = new DBconnector();
-        $result = $db->delete("Account","ID=?",array($account->getId()));
+        $result = $db->delete("Account", "ID=?", array($account->getId()));
         return $result;
     }
 
-    public function editAccount(Account $account){
+    public function editAccount(Account $account)
+    {
         $db = new DBconnector();
         $data["Balance"] = $account->getBalance();
         $data["State"] = $account->getState();
         $data["Type"] = $account->getType();
-        $result = $db->update("Account",$data,"ID=?",array($account->getId()));
+        $result = $db->update("Account", $data, "ID=?", array($account->getId()));
         return $result;
     }
 
@@ -71,7 +81,7 @@ class admin extends User
         $data["Balance"] = 0;
         $row = $db->insert("ATM", $data);
 
-        return $row > 0? true: false; 
+        return $row > 0 ? true : false;
     }
     public function deleteAtm($atmId)
     {
@@ -92,6 +102,6 @@ class admin extends User
         $data["Password"] = hash("sha256", $passWord);
         $row = $db->insert("Employee", $data);
 
-        return $row > 0? true: false; 
+        return $row > 0 ? true : false;
     }
 }

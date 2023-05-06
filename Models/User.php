@@ -12,6 +12,6 @@ abstract class User
     $this->name = $name;
     return $this;
   }
-  abstract public function login($_userName, $_passWord);
+  abstract public function login();
   abstract public function logout();
 }

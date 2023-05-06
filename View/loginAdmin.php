@@ -6,7 +6,10 @@ $ErrorMessage = "";
 
 if (isset($_POST['uname']) && isset($_POST['upass'])) {
     $admin = new admin;
-    $result = $admin->login($_POST['uname'], $_POST['upass']);
+    $admin->setPassWord($_POST['upass']);
+    $admin->setUserName($_POST['uname']);
+    
+    $result = $admin->login();
 
     if ($result) {
         $_SESSION['userID'] = $result[0]['ID'];
