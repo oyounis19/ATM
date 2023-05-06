@@ -1,7 +1,7 @@
 <?php
 // require_once __DIR__."/Verification.php";
 require_once __DIR__."/../Controllers/DBconnector.php";
-// require_once __DIR__."/Models/Transaction.php";
+require_once __DIR__."/Models/Transaction.php";
 // require_once __DIR__."/Models/ATM.php";
 
 class Account {
@@ -90,7 +90,7 @@ class Account {
             return 1;
 
         //decrease the ATM balance
-        //saveTransaction();
+        saveTransaction();
         return 2;
     }
 

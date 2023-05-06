@@ -50,17 +50,17 @@
 			$this->amount = $amount;
 		}
 
-		public function saveTransaction(User $m, Customer $z, Account $e, ATM $x , $Tstate , $recAccID)
+		public function saveTransaction(Customer $customer, Account $sender, ATM $atm , Account $reciever)
 		{
 			if (!($this->type == "Transfer")) {
 				$recAccID = null;
 			}
-			$ok = $this->db ->insert("`Transaction`",array("Account_ID"=>$e->getId(),"SSN"=>$z->getSSN(),"ATM_ID"=>$x->getID(),
-									"Amount"=>$this->amount,"Date"=>"now()","State"=>$Tstate,"Type"=>$this->type,
-									"recipient_account_ID"=>$recAccID));
+			$ok = $this->db ->insert("`Transaction`",array("AccountID"=>$sender->getId(),"SSN"=>$customer->getSSN(),"AtmID"=>$atm->getID(),
+									"Amount"=>$this->amount,"Date"=>"now()","State"=>$this->state,"Type"=>$this->type,
+									"receiverId"=>$reciever->getId()));
 			
-			if($ok == true) 
-				$x->notifyUser($z, $this, $e);
+			if($ok) 
+				$atm->notifyUser($customer, $this, $sender);
 		} 
 
 		/**
