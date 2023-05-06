@@ -9,13 +9,18 @@
         private $amount;
 		private $id;
 		private $state;
+		private $db;
 
-		public function __construct($type, $date , $amount)
+		public function __construct($type = null, $date = null, $amount = null, $id = null, $state = null)
 		{
-			$this->type = $type;
-			$this->date = $date;
-			$this->amount = $amount;
-	
+			if($type && $date && $amount && $id && $state){
+				$this->type = $type;
+				$this->date = $date;
+				$this->amount = $amount;
+				$this->id = $id;
+				$this->state = $state;
+			}
+			$this->db = new DBConnector();
 		}
 		public function getType() {
 		return $this->type;
@@ -41,28 +46,21 @@
 			return $this->amount;
 		}
 		
-		public function setAmount($amount): self {
+		public function setAmount($amount) {
 			$this->amount = $amount;
-			return $this;
 		}
 
 		public function saveTransaction(User $m, Customer $z, Account $e, ATM $x , $Tstate , $recAccID)
 		{
-			$db = new DBConnector();
-			if (!($this->type == "Transfer"))
-			{
+			if (!($this->type == "Transfer")) {
 				$recAccID = null;
 			}
-			$ok = $db ->insert("`Transaction`",array("Account_ID"=>$e->getId(),"SSN"=>$z->getSSN(),"ATM_ID"=>$x->getID(),
+			$ok = $this->db ->insert("`Transaction`",array("Account_ID"=>$e->getId(),"SSN"=>$z->getSSN(),"ATM_ID"=>$x->getID(),
 									"Amount"=>$this->amount,"Date"=>"now()","State"=>$Tstate,"Type"=>$this->type,
 									"recipient_account_ID"=>$recAccID));
 			
-			if($ok == true)
-
-			{
-				$x->notifyUser($z->getEmail(),$this->type,$this->amount,$e->getBalance(),$x->state,$m->getName(),$x ->getID());
-			}			
-			
+			if($ok == true) 
+				$x->notifyUser($z, $this, $e);
 		} 
 
 		/**
@@ -95,6 +93,9 @@
 		public function setState($state): self {
 			$this->state = $state;
 			return $this;
+		}
+		public function __destruct() {
+			$this->db->close();
 		}
 }
 ?>
