@@ -9,16 +9,10 @@ class admin extends User
     private string $userName;
     private string $passWord;
 
-    public function setUserName($userName)
-    {
-        $this->userName = $userName;
-    }
-    public function setPassWord($passWord)
-    {
-        $this->passWord = $passWord;
-    }
-
-
+    public function __construct($user, $pass){
+        $this->userName = $user;
+        $this->passWord = $pass;
+    } 
     public function login()
     {
         $db = new DBconnector();

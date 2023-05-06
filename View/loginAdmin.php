@@ -4,11 +4,8 @@ session_start();
 require_once '../Models/admin.php';
 $ErrorMessage = "";
 
-if (isset($_POST['uname']) && isset($_POST['upass'])) {
-    $admin = new admin;
-    $admin->setPassWord($_POST['upass']);
-    $admin->setUserName($_POST['uname']);
-    
+if (isset($_POST['user']) && isset($_POST['pass'])) {
+    $admin = new admin($_POST['user'], $_POST['pass']);
     $result = $admin->login();
 
     if ($result) {
@@ -56,11 +53,11 @@ if (isset($_POST['uname']) && isset($_POST['upass'])) {
         <div class="container">
             <form method="POST">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingSSN" placeholder="Username" name="uname" maxlength="20" required>
+                    <input type="text" class="form-control" id="floatingSSN" placeholder="Username" name="user" maxlength="20" required>
                     <label for="floatingSSN">Username</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="Password" class="form-control" id="floatingPassword" placeholder="Password" name="upass" required>
+                    <input type="Password" class="form-control" id="floatingPassword" placeholder="Password" name="pass" required>
                     <label for="floatingCard">Password</label>
                 </div>
                 <button class="btn btn-success" type="submit">Login</button>

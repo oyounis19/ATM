@@ -10,7 +10,7 @@ if(isset($_POST["SSN"]) && isset($_POST["Cardid"]) && isset($_POST["Type"])){
     $card->setId($_POST["Cardid"]);
     $customer = new customer();
     $customer->setSSN($_POST["SSN"]);
-    $admin = new admin();
+    $admin = new admin("", "");
     $admin->createAccount($account,$customer,$card);
 }
 ?>

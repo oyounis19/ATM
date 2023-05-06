@@ -3,7 +3,7 @@ require_once(__DIR__ . "/../../Models/admin.php");
 require_once(__DIR__ . "/Head.php");
 
 $showAlert = 0;
-$admin = new admin();
+$admin = new admin("", "");
 
 
 if (isset($_POST['atmId'])) {

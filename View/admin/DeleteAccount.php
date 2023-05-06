@@ -2,9 +2,9 @@
 require_once (__DIR__."/Head.php");
 require_once (__DIR__."/../../Models/Account.php");
 if(isset($_POST["AccId"])){
-    $account = new Account();
+    $account = new Account(0, 0, "");
     $account->setId($_POST["AccId"]);
-    $admin = new admin();
+    $admin = new admin("", "");
     $flag = $admin->deleteAccount($account);
 }
 ?>
