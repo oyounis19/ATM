@@ -23,8 +23,17 @@ class admin extends User
         session_unset();
         session_destroy();
     }
-    public function addCustomer()
+    public function addCustomer(customer $customer)
     {
+        $data["FirstName"] = $customer->getFirstName();
+        $data["LastName"] = $customer->getLastName();
+        $data["Email"] = $customer->getEmail();
+        $data["Street"] = $customer->getStreet();
+        $data["Area"] = $customer->getArea();
+        $data["City"] = $customer->getCity();
+        $data["SSN"] = $customer->getSSN();
+        $data["PIN"] = $customer->getPin();
+        $data["Fingerprint"] = $customer->getFingerprint();
     }
     public function editCustomer()
     {
