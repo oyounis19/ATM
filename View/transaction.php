@@ -1,20 +1,20 @@
 <?php
 
-require_once '../Models/Account.php';
+require_once __DIR__.'/../Models/Account.php';
 
-$account = new Account(1475369, 500, "Saving");
+// $account = new Account(1475369, 500, "Saving");
 
-$transactions = $account->viewTransactionHistory();
+// $transactions = $account->viewTransactionHistory();
 
-print_r($transactions);
-$Tid;
-$accountID;
-$atmID;
-$amount;
-$date;
-$state;
-$type;
-$recAccID;
+// print_r($transactions);
+// $Tid;
+// $accountID;
+// $atmID;
+// $amount;
+// $date;
+// $state;
+// $type;
+// $recAccID;
 ?>
 
 <!DOCTYPE html>
