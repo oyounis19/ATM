@@ -1,10 +1,11 @@
 <?php
 
 require_once __DIR__.'/../Models/Account.php';
+require_once __DIR__.'/../Models/Transaction.php';
 
-// $account = new Account(1475369, 500, "Saving");
+$account = new Transaction(1475369, 500, "Saving");
 
-// $transactions = $account->viewTransactionHistory();
+$transactions = $account->viewTransactionHistory();
 
 // print_r($transactions);
 // $Tid;
