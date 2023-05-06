@@ -93,7 +93,7 @@ class DBConnector
         } catch (Exception $e) {
             return false;
         }
-        return true;
+        return $stmt->affected_rows>0?true:false;
     }
 
     /**
@@ -133,7 +133,7 @@ class DBConnector
         } catch (Exception $e) {
             return false;
         }
-        return true;
+        return $stmt->affected_rows>0?true:false;
     }
 
 
@@ -164,7 +164,7 @@ class DBConnector
         } catch (Exception $e) {
             return false;
         }
-        return true;
+        return $stmt->affected_rows>0?true:false;
     }
 
     /**
