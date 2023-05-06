@@ -1,15 +1,9 @@
 <?php
 class card{
     private string $id;
-    
     private string $CVV;
-
     private $date;
-
     private bool $Blocked;
-
-
-
 
 	public function getBlocked(): bool {
 		return $this->Blocked;

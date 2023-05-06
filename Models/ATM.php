@@ -17,11 +17,13 @@ class ATM{
     private bool $balance;
     private $db;
 
-    public function __construct($city, $street, $area, $balance){
-        $this->city = $city;
-        $this->street = $street;
-        $this->area = $area;
-        $this->balance = $balance;
+    public function __construct($city = null, $street = null, $area = null, $balance = null){
+        if($city){
+            $this->city = $city;
+            $this->street = $street;
+            $this->area = $area;
+            $this->balance = $balance;
+        }
         $this->db = new DBConnector();
     }
 
