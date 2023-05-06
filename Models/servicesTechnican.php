@@ -54,7 +54,7 @@ public function getUserName(){
     return $this->userName;
 }
 public function getTqId(){
-    return $this->TqId ;
+    return $this->tqId ;
 }
 public function getAtmId(){
     return $this->atmId ;
