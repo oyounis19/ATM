@@ -11,7 +11,7 @@ class Account {
     private $state;
     private $db;
     
-    public function __construct($id = null, $balance = null, $type = null, $state = null) {
+    public function __construct($id = null, $balance = null, $type = null) {
         if($id && $balance && $type){
             $this->id = $id;
             $this->balance = $balance;
