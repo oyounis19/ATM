@@ -72,7 +72,7 @@ class DBConnector
         $columns = implode(",", array_keys($data));
         $values = implode(",", array_fill(0, count($data), "?"));
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
-        try {
+        //try {
             $stmt = $this->conn->prepare($query);
             if (!$stmt) {
                 $e = new Exception();
@@ -90,9 +90,9 @@ class DBConnector
 
             if (!$stmt->execute())
                 $e = new Exception();
-        } catch (Exception $e) {
-            return false;
-        }
+        //} catch (Exception $e) {
+        //    return false;
+       // }
         return $stmt->affected_rows>0?true:false;
     }
 

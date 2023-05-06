@@ -3,6 +3,7 @@ require_once(__DIR__ . '/../Controllers/DBconnector.php');
 require_once(__DIR__."/Account.php");
 require_once(__DIR__."/customer.php");
 require_once (__DIR__."/User.php");
+require_once(__DIR__."/Card.php");
 class admin extends User
 {
     private string $userName;
@@ -23,8 +24,25 @@ class admin extends User
         session_unset();
         session_destroy();
     }
+    public function CreateCard(){
+        $card = new Card();
+        $card->generateCard();
+        $data["ID"] = $card->getId();
+        $data["ExpDate"] = $card->getDate();
+        $data["CVV"] = $card->getCVV();
+        $db = new DBConnector();
+        $result = $db->insert("CreditCard",$data);
+        while(!$result){
+            $this->CreateCard();
+        }
+        return $card;
+    }
+
     public function addCustomer(customer $customer)
     {
+        $card = $this->CreateCard();
+        $hashedPIN = hash("sha256",$customer->getPin());
+
         $data["FirstName"] = $customer->getFirstName();
         $data["LastName"] = $customer->getLastName();
         $data["Email"] = $customer->getEmail();
@@ -32,9 +50,25 @@ class admin extends User
         $data["Area"] = $customer->getArea();
         $data["City"] = $customer->getCity();
         $data["SSN"] = $customer->getSSN();
-        $data["PIN"] = $customer->getPin();
+        $data["PIN"] = $hashedPIN;
         $data["Fingerprint"] = $customer->getFingerprint();
+        $data["CardID"] = $card->getId();
+
+        $db = new DBConnector();
+        $result = $db->insert("User",$data);
+        if(!$result)
+            return false;
+
+        $account = new Account();
+        $account->setType("Current");
+
+        $result = $this->createAccount($account,$customer);
+        if(!$result)
+            return false;
+
+        return true;
     }
+
     public function editCustomer()
     {
     }

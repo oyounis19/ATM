@@ -1,15 +1,24 @@
 <?php
-    // require_once __DIR__."/Verification.php";
-    require_once __DIR__."/../Controllers/DBconnector.php";
-    // require_once __DIR__."/Models/Transaction.php";
-    // require_once __DIR__."/Models/ATM.php";
-    
+// require_once __DIR__."/Verification.php";
+require_once __DIR__."/../Controllers/DBconnector.php";
+// require_once __DIR__."/Models/Transaction.php";
+// require_once __DIR__."/Models/ATM.php";
+
 class Account {
     private $id;
     private $balance;
     private $type;
-    private $db;
     private $state;
+    private $db;
+    
+    public function __construct($id = null, $balance = null, $type = null, $state = null) {
+        if($id && $balance && $type){
+            $this->id = $id;
+            $this->balance = $balance;
+            $this->type = $type;
+        }
+        $this->db = new DBConnector();
+    }
 
     public function getId() {
         return $this->id;
@@ -36,17 +45,15 @@ class Account {
     {
         $this->state = $State;
     }  
-    // public function __construct() {
+     public function __construct() {
         
-    // }
-    public function __construct($id, $balance, $type) 
-    {
+     }
+    /*public function __construct($id, $balance, $type) {
         $this->id = $id;
         $this->balance = $balance;
         $this->type = $type;
         $this->db = new DBConnector();
-    }
-
+    }*/
 
     /**
      * @param account_id The recipent's account id 
@@ -98,9 +105,9 @@ class Account {
     public function viewTransactionHistory() {//Composition required
         return $this->db->select("`Transaction`", "*", "AccountID=?", array($this->id));
     }
-    public function closeDBconnection(){
+
+    public function __destruct() {
         $this->db->close();
     }
 }
-
 ?>
