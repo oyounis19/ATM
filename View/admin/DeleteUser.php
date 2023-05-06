@@ -1,5 +1,19 @@
 <?php
-require_once (__DIR__."/Head.php");
+require_once(__DIR__ . "/../../Models/admin.php");
+require_once(__DIR__ . "/Head.php");
+
+$showAlert = 0;
+$admin = new admin("", "");
+
+
+if (isset($_POST['customerSSN'])) {
+    $ok = $admin->deleteATM($_POST['customerSSN']);
+    if ($ok) {
+        $showAlert = 1;
+    } else {
+        $showAlert = 2;
+    }
+}
 ?>
 
 <body>  
@@ -14,9 +28,9 @@ require_once (__DIR__."/Head.php");
         <div class="container-fluid">
             <h2>Delete User</h2>
 
-            <form action="#">
+            <form method="POST" action="#">
                 <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="SSN" placeholder="SSN">
+                    <input type="number" class="form-control" id="SSN" placeholder="SSN" name="customerSSN">
                     <label for="SSN">SSN</label>
                 </div>
 
@@ -55,4 +69,41 @@ require_once (__DIR__."/Head.php");
 
     <!-- end deleteUser  -->
     </div>
+
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+    </script>
+
 </body>
+
+<?php
+if ($showAlert == 1) {
+
+?>
+    <script>
+        Toast.fire({
+            icon: 'success',
+            title: 'user deleted successfully'
+        })
+    </script>
+<?php
+} else if ($showAlert == 2) {
+?>
+    <script>
+        Toast.fire({
+            icon: 'error',
+            title: 'something went wrong with the user deleting'
+        })
+    </script>
+<?php
+} ?>
