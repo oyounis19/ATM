@@ -26,7 +26,7 @@ private function pinVerification($pass){
     }
 
 public function __construct($firstName=null,$lastName=null,$userName=null,$password=null,$tqId=null, $role = null){
-        if($firstName && $lastName && $userName && $password && $TqId ){
+        if($firstName && $lastName && $userName && $password && $tqId ){
             $this->firstName= $firstName;
             $this->lastName = $lastName;
             $this->tqId = $tqId;
