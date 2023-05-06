@@ -109,6 +109,22 @@ class customer extends user
     {
         return $this->phoneNO;
     }
+    public function __construct($SSN=null,$FirstName=null,$LastName=null,$PIN=null,$Fingerprint=null, $Street=null, $Area=null, $City=null, $Email=null, $CardID=null, $phoneNO=null)
+    {
+        if($SSN && $FirstName && $LastName && $PIN && $Fingerprint && $Street && $Area && $City && $Email && $CardID && $phoneNO){
+            $this->SSN = $SSN;
+            $this->CardID = $CardID;
+            $this->Fingerprint = $Fingerprint;
+            $this->PIN = $PIN;
+            $this->FirstName = $FirstName;
+            $this->LastName = $LastName;
+            $this->Street = $Street;
+            $this->Area = $Area;
+            $this->City = $City;
+            $this->Email = $Email;
+        }
+        $this->db = new DBConnector;
+    }
     private function pinVerification($pass)
     {
         $password = hash("sha256", $pass);
@@ -129,7 +145,6 @@ class customer extends user
         } else if (isset($id) and isset($pass)) {
             $id = validate($id);
             $hashed_password = $this->pinVerification($pass);
-            $this->db = new DBconnector;
             $result = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_password));
             if ($result) {
                 if (count($result) == 0) {
@@ -180,7 +195,6 @@ class customer extends user
                 return 2;
             } else {
                 $hashed_password = $this->pinVerification($pass1);
-                $this->db = new DBconnector;
                 $table = 'User';
                 $data = array('Pin' => $hashed_password);
                 $where = 'CardID =?';
@@ -192,7 +206,6 @@ class customer extends user
     }
     public function blockcard($CardID)
     {
-        $this->db = new DBConnector;
         $table = 'Card';
         $data = array('State' => "Block");
         $where = 'Card_ID =?';
@@ -201,7 +214,6 @@ class customer extends user
     }
     public function accounts($SSN)
     {
-        $this->db = new DBConnector;
         $result = $this->db->select("Account", "ID , Type , Balance", "SSN=?", array($SSN));
         return $result;
     }
@@ -209,7 +221,6 @@ class customer extends user
     {
         $target_file1 = $_FILES['image']["tmp_name"];
         $hash1 = md5_file($target_file1);
-        $this->db = new DBconnector;
         $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
         if ($result) {
             if (count($result) == 0) {
@@ -243,14 +254,16 @@ class customer extends user
     }
     public function chooseAccount($account_id)
     {
-        $this->db = new DBConnector;
         $result = $this->db->select("Account", "ID,Balance,State,Type", "ID=?", array($account_id));
         $_SESSION['account_id'] = $result[0]['ID'];
         $_SESSION['balance'] = $result[0]['Balance'];
         $_SESSION['state'] = $result[0]['State'];
         $_SESSION['type'] = $result[0]['Type'];
     }
-
+    public function __destruct()
+    {
+        $this->db->close();
+    }
 }
 
 ?>
