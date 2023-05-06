@@ -3,7 +3,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-require_once "../Controllers/DBconnector.php";
+require_once(__DIR__ . '/../Controllers/DBconnector.php');
 require_once "user.php";
 
 class customer extends user
@@ -22,7 +22,6 @@ class customer extends user
     private $db;
     public function setId($card_id)
     {
-
         $this->CardID = $card_id;
     }
     public function getId()
@@ -115,7 +114,7 @@ class customer extends user
         $password = hash("sha256", $pass);
         return $password;
     }
-    public function login($id, $pass)
+    public function login()
     {
         function validate($data)
         {
