@@ -1,5 +1,6 @@
 <?php
-require_once '../Models/servicesTechnican.php';
+require_once (__DIR__."/../Models/servicesTechnican.php");
+require_once "../Models/customer.php";
 $srvTeq = new servicesTechinican; 
 if(! $_SESSION['firstName']){
     header("location:../View/index.php");

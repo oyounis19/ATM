@@ -1,6 +1,10 @@
 <?php
-//session_start();
-require_once '../Controllers/DBconnector.php';
+// if(session_start()){
+
+// }else {
+//     session_start();
+// }
+require_once (__DIR__."/../Controllers/DBconnector.php");
 class servicesTechinican{
 private $username;
 private $password;
@@ -28,10 +32,11 @@ public function login(){
             $password = $this->pinVerification($password);
              $result = $this->db->select("Employee", "*" , "UserName=? AND Password=?", array($userName,$password));
             $result1 = $this->db->select("ATM", "*" , "ID=?", array($atmId));
-            if(!$result){
+            if(!$result || $result[0]['Role'] == "Admin"){
                 //echo "PASS OR USER";
                 return false;
             }else if(!$result1){
+                //echo "PASS atm USER";
                 //$_SESSION['$erMssg'] = ['No Matchs For This Atm_Id'];
                 return false;
             } else{
@@ -41,6 +46,7 @@ public function login(){
                 }else{ 
                     //foreach ($rows as $row){
                     $_SESSION['empId'] = $result[0]['ID'];
+                    echo $_SESSION['empId'];
                     $_SESSION['firstName'] = $result[0]['FirstName'];
                     $_SESSION['lastName'] = $result[0]['LastName'];
                     $_SESSION['userName'] = $result[0]['UserName'];

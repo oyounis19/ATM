@@ -74,7 +74,7 @@ class admin extends User
     public function deleteCustomer($customerSNN)
     {
         $db = new DBconnector();
-        $ok = $db->delete("'User'", "SSN=?", array($customerSNN));
+        $ok = $db->delete("User", "SSN=?", array($customerSNN));
         return $ok;
     }
     public function createAccount(Account $account, Customer $customer)

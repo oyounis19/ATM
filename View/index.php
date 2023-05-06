@@ -33,7 +33,7 @@
 
 /* functions of Service technican start from here
  */
-    require_once '../Models/servicesTechnican.php';
+    require_once (__DIR__."/../Models/servicesTechnican.php");
     $srvTeq = new servicesTechinican;
     if (isset($_POST['bLogin'])) {
         $srvTeq->login();
