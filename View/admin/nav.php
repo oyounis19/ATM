@@ -1,5 +1,4 @@
 <?php 
-    require_once (__DIR__ . "/../../Models/admin.php");
     //Log Out
     if(isset($_POST['ptnLogOut'])){
         $admin = new admin();

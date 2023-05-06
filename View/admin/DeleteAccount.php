@@ -1,11 +1,16 @@
 <?php
 require_once (__DIR__."/Head.php");
 require_once (__DIR__."/../../Models/Account.php");
+$showAlert = 0;
 if(isset($_POST["AccId"])){
     $account = new Account();
     $account->setId($_POST["AccId"]);
     $admin = new admin();
     $flag = $admin->deleteAccount($account);
+    if ($flag == true) 
+        $showAlert = 1;
+    else 
+        $showAlert = 2;
 }
 ?>
 <body>
@@ -32,7 +37,7 @@ if(isset($_POST["AccId"])){
 
     </div>
     <script>
-                    const Toast = Swal.mixin({
+            const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
@@ -45,26 +50,26 @@ if(isset($_POST["AccId"])){
             })
     </script>
     <?php
-    if ($flag) {
+        if ($showAlert == 1) {
 
-    ?>
-        <script>
-            Toast.fire({
-                icon: 'success',
-                title: ' Account deleted successfully'
-            })
-        </script>
-    <?php
-    } 
-    else{
         ?>
             <script>
-            Toast.fire({
-                icon: 'error',
-                title: "Something went wrong , try again"
-            }) 
-        </script>
-        <?php
-    }
+                Toast.fire({
+                    icon: 'success',
+                    title: ' Account deleted successfully'
+                })
+            </script>
+    <?php
+        } 
+        else if ($showAlert == 2){
+            ?>
+                <script>
+                Toast.fire({
+                    icon: 'error',
+                    title: "Something went wrong , try again"
+                }) 
+            </script>
+            <?php
+        }
     ?>
 </body>
