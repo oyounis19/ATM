@@ -45,15 +45,7 @@ class Account {
     {
         $this->state = $State;
     }  
-     public function __construct() {
-        
-     }
-    /*public function __construct($id, $balance, $type) {
-        $this->id = $id;
-        $this->balance = $balance;
-        $this->type = $type;
-        $this->db = new DBConnector();
-    }*/
+
 
     /**
      * @param account_id The recipent's account id 
