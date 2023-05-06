@@ -12,10 +12,7 @@ if (isset($_POST['change'])) {
     } else if ($value == 2) {
         $errmsg = "<b style='color: white;'>  Not match password </b>";
     } else {
-        if ($value == false) {
-            $errmsg = "<b style='color: white;'> Server is down now </b>";
-        } else
-            $customer->logOut();
+        $customer->logOut();
     }
 }
 ?>

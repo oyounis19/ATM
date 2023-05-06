@@ -1,5 +1,5 @@
 <?php
-require_once "../Models/Account.php";
+require_once __DIR__."/../Models/Account.php";
 require_once "../Models/customer.php";
 
 /* Functions of customer starts here */

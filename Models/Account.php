@@ -1,9 +1,9 @@
 <?php
-    // require_once __DIR__."/Verification.php";
-    require_once __DIR__."/../Controllers/DBconnector.php";
-    // require_once __DIR__."/Models/Transaction.php";
-    // require_once __DIR__."/Models/ATM.php";
-    
+// require_once __DIR__."/Verification.php";
+require_once __DIR__."/../Controllers/DBconnector.php";
+require_once __DIR__."/Models/Transaction.php";
+// require_once __DIR__."/Models/ATM.php";
+
 class Account {
     private $id;
     private $balance;

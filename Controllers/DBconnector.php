@@ -27,7 +27,7 @@ class DBConnector
      * @param string|array $columns The column(s) to select.
      * @param string|null $where The WHERE clause of the query, without the "WHERE" keyword.
      * @param array $params An array of values to bind to the query.
-     * @return array An array of associative arrays representing the rows selected.
+     * @return mixed An array of associative arrays representing the rows selected.
      * @throws Exception If there was an error executing the select query.
      */
     public function select($table, $columns = "*", $where = null, $params = array())
