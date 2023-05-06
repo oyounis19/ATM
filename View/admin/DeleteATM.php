@@ -41,12 +41,7 @@ if (isset($_POST['atmId'])) {
 
         <!-- end Delete ATM  -->
     </div>
-</body>
 
-<?php
-if ($showAlert == 1) {
-
-?>
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -59,7 +54,14 @@ if ($showAlert == 1) {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
+    </script>
 
+</body>
+
+<?php
+if ($showAlert == 1) {
+?>
+    <script>
         Toast.fire({
             icon: 'success',
             title: 'ATM deleted successfully'
@@ -69,22 +71,10 @@ if ($showAlert == 1) {
 } else if ($showAlert == 2) {
 ?>
     <script>
-        const Tooast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-
-        Tooast.fire({
-            icon: 'error',
-            title: 'something went wrong with the ATM deleting'
-        })
+    Toast.fire({
+    icon: 'error',
+    title: 'something went wrong with the ATM deleting'
+    })
     </script>
 <?php
 } ?>

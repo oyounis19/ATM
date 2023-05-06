@@ -3,10 +3,17 @@
 */
 require_once "../Models/customer.php";
 
-$customer=new customer;
+$customer=new customer();
+$account = new Account();
+$atm = new ATM();
+$card = new Card();
+
 if(isset($_POST['lg_out'])){
     $customer->logOut();
 }
+
+
+
 
 ?>
 <!DOCTYPE html>

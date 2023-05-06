@@ -1,63 +1,100 @@
 <?php
-    class Transaction
-    {
-        private string $type;
-        private string $time;
-        private $date;
+		require_once 'ATM.php';
+		require_once 'Account.php';
+		require_once '../Controllers/DBconnector.php';
+		require_once '../View/transaction.php';
+	class Transaction {
+        private $type;
+		private $date;
         private $amount;
-        private DBconnector $e;
+		private $id;
+		private $state;
 
-    
-	public function getType() {
+		public function __construct($type, $date , $amount)
+		{
+			$this->type = $type;
+			$this->date = $date;
+			$this->amount = $amount;
+	
+		}
+		public function getType() {
 		return $this->type;
-	}
-	
-	
-	public function setType(string $type){
-		$this->type = $type;
-		return $this;
-	}
-    
+		}
+		
+		public function setType(string $type){
+			$this->type = $type;
+			return $this;
+		}
+		
+		public function getDate() {
+			return $this->date;
+		}
+			
+		public function setDate($date)
+		{
+			$this->date = $date;
+			return $this;
+		}
+		
+		public function getAmount()
+		{
+			return $this->amount;
+		}
+		
+		public function setAmount($amount): self {
+			$this->amount = $amount;
+			return $this;
+		}
 
+		public function saveTransaction(User $m, Customer $z, Account $e, ATM $x , $Tstate , $recAccID)
+		{
+			$db = new DBConnector();
+			if (!($this->type == "Transfer"))
+			{
+				$recAccID = null;
+			}
+			$ok = $db ->insert("`Transaction`",array("Account_ID"=>$e->getId(),"SSN"=>$z->getSSN(),"ATM_ID"=>$x->getID(),
+									"Amount"=>$this->amount,"Date"=>"now()","State"=>$Tstate,"Type"=>$this->type,
+									"recipient_account_ID"=>$recAccID));
+			
+			if($ok == true)
 
-	public function getTime(): string {
-		return $this->time;
-	}
-	
-	
-	public function setTime(string $time): self {
-		$this->time = $time;
-		return $this;
-	}
+			{
+				$x->notifyUser($z->getEmail(),$this->type,$this->amount,$e->getBalance(),$x->state,$m->getName(),$x ->getID());
+			}			
+			
+		} 
 
-	
-	public function getDate() {
-		return $this->date;
-	}
-	
-	
-	public function setDate($date): self {
-		$this->date = $date;
-		return $this;
-	}
+		/**
+		 * @return mixed
+		 */
+		public function getId() {
+			return $this->id;
+		}
+		
+		/**
+		 * @param mixed $id 
+		 * @return self
+		 */
+		public function setId($id): self {
+			$this->id = $id;
+			return $this;
+		}
 
-	
-	public function getAmount() {
-		return $this->amount;
-	}
-	
-	public function setAmount($amount): self {
-		$this->amount = $amount;
-		return $this;
-	}
-    // public function saveTransaction($accountid , $SSN, ATM $x ) 
-    // {
-    //     $e=new DBConnector();
-        
-    //     $e ->dbconnect();
-    //     $e ->modify("insert into `Transaction`(Account_ID , SSN, ATM_ID, Amount ,`Date` , State , Type , recipient_account_ID ) 
-    //     values($accountid , $SSN , ".$x->getID()." ,".$this ->amount." , ".$this->date." ,  )");
-
-    // } 
+		/**
+		 * @return mixed
+		 */
+		public function getState() {
+			return $this->state;
+		}
+		
+		/**
+		 * @param mixed $state 
+		 * @return self
+		 */
+		public function setState($state): self {
+			$this->state = $state;
+			return $this;
+		}
 }
 ?>

@@ -10,18 +10,20 @@ require_once '../Controllers/lib/src/Exception.php';
 require_once '../Controllers/DBconnector.php';
 
 class ATM{
-    private int $ID;
-    private string $city;
-    private string $street;
-    private bool $area;
-    private bool $balance;
+    private $ID;
+    private $city;
+    private $street;
+    private $area;
+    private $balance;
     private $db;
 
-    public function __construct($city, $street, $area, $balance){
-        $this->city = $city;
-        $this->street = $street;
-        $this->area = $area;
-        $this->balance = $balance;
+    public function __construct($city = null, $street = null, $area = null, $balance = null){
+        if($city){
+            $this->city = $city;
+            $this->street = $street;
+            $this->area = $area;
+            $this->balance = $balance;
+        }
         $this->db = new DBConnector();
     }
 
@@ -55,28 +57,41 @@ class ATM{
     public function getID(){
         return $this->ID;
     }
-    public function getCity(){
-        return $this->city;
-    }
-    public function getArea(){
-        return $this->area;
-    }
-    public function getStreet(){
-        return $this->city;
-    }
-
     public function setID($ID){
         $this->ID = $ID;
+    }
+    public function getCity(){
+        return $this->city;
     }
     public function setCity($city){
         $this->city = $city;
     }
+    public function getArea(){
+        return $this->area;
+    }
+    public function setArea($area){
+        $this->area = $area;
+    }
+    public function getStreet(){
+        return $this->city;
+    }
+    public function setStreet($street) {
+        $this->street = $street;
+    }
+
+    public function getBalance(){
+		return $this->balance;
+	}
+	
+	public function setBalance($balance) {
+		$this->balance = $balance;
+	}
+
     /**
      * @param Customer $customer The customer to send the OTP to
      * @return mixed OTP if the Email was sent successfully and null otherwise
      */
-//  public function sendOTP(Customer $customer){
-    public function sendOTP($recepient_email, string $client_name){//customer class
+    public function sendOTP(Customer $customer){//customer class
         $mail = $this->serverSettings();
 
         if($mail == null) 
@@ -84,7 +99,7 @@ class ATM{
 
         $OTP = $this->generateOTP();
 
-        $mail->addAddress($recepient_email, 'Client');              //Add a recipient
+        $mail->addAddress($customer->getEmail(), 'Client');              //Add a recipient
         $mail->Subject = 'OTP Verification for ATM Access';
         $mail->Body = "<head> 
         <style>
@@ -146,7 +161,7 @@ class ATM{
     <body>
         <div class=\"container\">
             <h1>OTP Verification</h1>
-            <p>Dear $client_name,</p>
+            <p>Dear ".$customer->getFirstName().",</p>
             <p>We have detected a suspicious transaction or login attempt on your account. To ensure your account security, we have sent you an OTP code. Please enter the code in the ATM or website to verify your identity.</p>
             <p>Your OTP code is:</p>
             <p class=\"otp-code\">$OTP</p>
@@ -156,7 +171,7 @@ class ATM{
     </body>";
 
         // Set up altbody for non-html mails
-        $mail->AltBody = "Dear $client_name,
+        $mail->AltBody = "Dear $".$customer->getFirstName().",
 
         Please enter the following OTP to verify your account:
 
@@ -171,23 +186,22 @@ class ATM{
         }
         return $OTP;
     }
-//  public function notifyUser(Customer $customer, Transaction $transaction, Account $account){
-
+    
     /**
      * @param Customer $customer The customer to send the email to
      * @param Transaction $transaction The transaction details
      * @param Account $account The account of the customer with the new balance
      * @return bool True if the Email was sent successfully and false otherwise
      */
-    public function notifyUser(string $recepient_email, string $transactionType, $amount, $currentBalance, bool $state, string $client_name, int $atmID){
+    public function notifyUser(Customer $customer, Transaction $transaction, Account $account){
         $mail = $this->serverSettings();
-        $mail->addAddress($recepient_email, 'Client');              
+        $mail->addAddress($customer->getEmail(), 'Client');
         $mail->Subject = 'Transaction Notification';
 
         $current_date = date('Y-m-d');
         $current_time = date('h:i:s A');
 
-        if($state == true)
+        if($transaction->getState() == true)
             $HTMLstate = '<!-- Success message -->
             <div class="success">
                 <p>The transaction was successful. Thank you for choosing our bank for your financial needs.</p>
@@ -270,9 +284,9 @@ class ATM{
             <!-- Content -->
             <tr>
                 <td colspan=\"2\" class=\"content\">
-                    <p>Dear $client_name,</p>
-                    <p>A transaction of type $transactionType of <b>$amount</b> LE on $current_date $current_time occured at ATM with ID: $atmID.</p>
-                    <p>Your current account balance is <b>$currentBalance</b> LE.</p>				
+                    <p>Dear ".$customer->getName() .",</p>
+                    <p>A transaction of type". $transaction->getType()." of <b>".$transaction->getAmount()."</b> LE on ".$current_date." $current_time occured at ATM with ID: ".$this->ID.".</p>
+                    <p>Your current account balance is <b>".$account->getBalance()."</b> LE.</p>				
                     $HTMLstate
                     <p>Thank you for choosing our bank for your financial needs.</p>
                     <p>Sincerely,</p>
@@ -292,7 +306,9 @@ class ATM{
 
     public function blockCard(Card $card, ){
         $this->db->update("`CreditCard`", array("State"=> 2), " ");
-
     }
+
+	
+
 }
 ?>
