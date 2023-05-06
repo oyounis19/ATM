@@ -1,5 +1,5 @@
 <?php
-require_once "../Models/Account.php";
+// require_once __DIR__."/../Models/Account.php";
 require_once "../Models/customer.php";
 
 /* Functions of customer starts here */
@@ -65,7 +65,7 @@ if (isset($_SESSION['SSN'])) {
                                         <p>Account Type : <span>
                                                 <?php echo $result[$i]['Type'] ?>
                                             </span></p>
-                                        <p>Balnace : <span>
+                                        <p>Balance : <span>
                                                 <?php echo $result[$i]['Balance'] ?>
                                             </span></p>
                                     </li>

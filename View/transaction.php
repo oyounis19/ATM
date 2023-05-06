@@ -1,21 +1,26 @@
 <?php
 
-require_once '../Models/Account.php';
+require_once __DIR__.'/../Models/Account.php';
+require_once __DIR__.'/../Models/Transaction.php';
 
+<<<<<<< HEAD
 $account = new Account(1475369, 500, "Saving");
 $transaction = new Transaction();
+=======
+$account = new Transaction(1475369, 500, "Saving");
+>>>>>>> 504e3c9debbbb255db193d872754743f6e1c2c34
 
 $transactions = $transaction->viewTransactionHistory($account);
 
-print_r($transactions);
-$Tid;
-$accountID;
-$atmID;
-$amount;
-$date;
-$state;
-$type;
-$recAccID;
+// print_r($transactions);
+// $Tid;
+// $accountID;
+// $atmID;
+// $amount;
+// $date;
+// $state;
+// $type;
+// $recAccID;
 ?>
 
 <!DOCTYPE html>

@@ -189,10 +189,10 @@ class Customer extends user
                 $this->Fingerprint = $result[0]['Fingerprint'];
                 $_SESSION['upass'] = $result[0]['PIN'];
                 $this->PIN = $result[0]['PIN'];
-                $_SESSION['fName'] = $result[0]['First_Name'];
-                $this->FirstName = $result[0]['First_Name'];
-                $_SESSION['lName'] = $result[0]['Last_Name'];
-                $this->LastName = $result[0]['Last_Name'];
+                $_SESSION['fName'] = $result[0]['FirstName'];
+                $this->FirstName = $result[0]['FirstName'];
+                $_SESSION['lName'] = $result[0]['LastName'];
+                $this->LastName = $result[0]['LastName'];
                 $_SESSION['Street'] = $result[0]['Street'];
                 $this->Street = $result[0]['Street'];
                 $_SESSION['Area'] = $result[0]['Area'];
