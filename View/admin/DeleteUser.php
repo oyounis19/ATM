@@ -7,7 +7,7 @@ $admin = new admin("", "");
 
 
 if (isset($_POST['customerSSN'])) {
-    $ok = $admin->deleteATM($_POST['customerSSN']);
+    $ok = $admin->deleteCustomer($_POST['customerSSN']);
     if ($ok) {
         $showAlert = 1;
     } else {
@@ -30,7 +30,7 @@ if (isset($_POST['customerSSN'])) {
 
             <form method="POST" action="#">
                 <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="SSN" placeholder="SSN" name="customerSSN">
+                    <input type="text" class="form-control" id="SSN" placeholder="SSN" name="customerSSN">
                     <label for="SSN">SSN</label>
                 </div>
 
