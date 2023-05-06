@@ -24,7 +24,7 @@ private function pinVerification($pass){
         return $password;
     }
 
-    
+
 public function login(){
     $userName = $_POST['teqUserName'];
     $password = $_POST['teqPassword'];
@@ -63,12 +63,16 @@ public function login(){
     }
 }//else echo "SETT";
 
+
+
 public function logOut(){
         session_start();
         session_unset();
         session_destroy();
         header("location:../View/index.php");
     }
+
+
 
 
 public function rechargeAtm (){
@@ -86,7 +90,9 @@ public function rechargeAtm (){
             $affected_rows = $this->db->update($table, $data, $where, $params);
     }
 }
+
 }
+
 
 
 public function checkLoggers(){
