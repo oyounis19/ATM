@@ -6,6 +6,7 @@
     $admin = new admin("", "");
     // create new admin
     if (isset($_POST['fName']) && isset($_POST['lName']) && isset($_POST['userName']) && isset($_POST['passWord'])) {
+        
         $ok = $admin->createAdmin($_POST['fName'], $_POST['lName'], $_POST['userName'], $_POST['passWord']);
         if ($ok) {
             $showAlert = 1;
