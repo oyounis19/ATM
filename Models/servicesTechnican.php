@@ -32,7 +32,7 @@ public function login(){
             $password = $this->pinVerification($password);
              $result = $this->db->select("Employee", "*" , "UserName=? AND Password=?", array($userName,$password));
             $result1 = $this->db->select("ATM", "*" , "ID=?", array($atmId));
-            if(!$result){
+            if(!$result || $result[0]['Role'] == "Admin"){
                 //echo "PASS OR USER";
                 return false;
             }else if(!$result1){
