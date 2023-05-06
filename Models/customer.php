@@ -1,9 +1,11 @@
 <?php
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 require_once "../Controllers/DBconnector.php";
 require_once "user.php";
+
 class customer extends user
 {
     private string $SSN;
