@@ -3,7 +3,7 @@
 		require_once 'Account.php';
 		require_once 'customer.php';
 		require_once '../Controllers/DBconnector.php';
-		require_once '../View/transaction.php';
+
 	class Transaction {
         private $type;
 		private $date;

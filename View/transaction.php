@@ -3,9 +3,9 @@
 require_once __DIR__.'/../Models/Account.php';
 require_once __DIR__.'/../Models/Transaction.php';
 
-$account = new Transaction(1475369, 500, "Saving");
-
-$transactions = $account->viewTransactionHistory();
+$tr = new Transaction(1475369, 500, "Saving");
+$account = new Account(212, 1551, "Gold");
+$transactions = $tr->viewTransactionHistory($account);
 
 // print_r($transactions);
 // $Tid;

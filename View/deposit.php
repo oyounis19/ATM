@@ -1,14 +1,15 @@
 <?php
 
-require_once '../Controllers/DBconnector.php';
-require_once '../Models/Account.php';
-require_once '../Models/Transaction.php';
+require_once __DIR__.'/../Controllers/DBconnector.php';
+require_once __DIR__.'/../Models/Account.php';
+require_once __DIR__.'/../Models/Transaction.php';
+
 if(isset($_POST['amount'])){
 $sender = new Account(112700, 0, "Gold");
-$reciver = new Account();
-$transaction = new Transaction();
-$customer = new Customer();
-$atm = new ATM();
+// $reciver = new Account();
+// $transaction = new Transaction();
+// $customer = new Customer();
+// $atm = new ATM();
 $transaction ->setAmount($_POST['amount']);
 
     if($transaction->deposit($sender , $reciver , $atm , $customer))
