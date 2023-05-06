@@ -3,8 +3,9 @@
 require_once '../Models/Account.php';
 
 $account = new Account(1475369, 500, "Saving");
+$transaction = new Transaction();
 
-$transactions = $account->viewTransactionHistory();
+$transactions = $transaction->viewTransactionHistory($account);
 
 print_r($transactions);
 $Tid;

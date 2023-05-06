@@ -2,10 +2,16 @@
 
 require_once '../Controllers/DBconnector.php';
 require_once '../Models/Account.php';
+require_once '../Models/Transaction.php';
 if(isset($_POST['amount'])){
-$account = new Account(1545105165, 203154, "Gold");
+$sender = new Account(112700, 0, "Gold");
+$reciver = new Account();
+$transaction = new Transaction();
+$customer = new Customer();
+$atm = new ATM();
+$transaction ->setAmount($_POST['amount']);
 
-    if($account->deposit($_POST['amount']))
+    if($transaction->deposit($sender , $reciver , $atm , $customer))
         echo "Deposit successfully";// SWEET ALERT 
     else
         echo "Try again Later...";//SWEET ALERT

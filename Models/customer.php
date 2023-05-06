@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once(__DIR__ . '/../Controllers/DBconnector.php');
 require_once "user.php";
 
-class customer extends user
+class Customer extends user
 {
     private string $SSN;
     private string $FirstName;
@@ -20,94 +20,65 @@ class customer extends user
     private string $CardID;
     private string $phoneNO;
     private $db;
-    public function setId($card_id)
-    {
-        $this->CardID = $card_id;
-    }
     public function getId()
     {
         return $this->CardID;
-    }
-    public function setPin($pin)
-    {
-        $this->PIN = $pin;
     }
     public function getPin()
     {
         return $this->PIN;
     }
-    public function setSSN($ssn)
-    {
-        $this->SSN = $ssn;
-    }
     public function getSSN()
     {
         return $this->SSN;
-    }
-    public function setFirstName($firstname)
-    {
-        $this->FirstName = $firstname;
     }
     public function getFirstName()
     {
         return $this->FirstName;
     }
-    public function setLastName($lastname)
-    {
-        $this->LastName = $lastname;
-    }
     public function getLastName()
     {
         return $this->LastName;
-    }
-    public function setFingerprint($fingerprint)
-    {
-        $this->Fingerprint = $fingerprint;
     }
     public function getFingerprint()
     {
         return $this->Fingerprint;
     }
-    public function setArea($area)
-    {
-        $this->Area = $area;
-    }
     public function getArea()
     {
         return $this->Area;
-    }
-    public function setCity($city)
-    {
-        $this->City = $city;
     }
     public function getCity()
     {
         return $this->City;
     }
-    public function setStreet($street)
-    {
-        $this->Street = $street;
-    }
     public function getStreet()
     {
         return $this->Street;
-    }
-    public function setEmail($email)
-    {
-        $this->Email = $email;
     }
     public function getEmail()
     {
         return $this->Email;
     }
-    public function setPhoneNO($phoneNo)
-    {
-        $this->phoneNO = $phoneNo;
-    }
-
     public function getPhoneNO()
     {
         return $this->phoneNO;
+    }
+    public function __construct($SSN=null,$FirstName=null,$LastName=null,$PIN=null,$Fingerprint=null, $Street=null, $Area=null, $City=null, $Email=null, $CardID=null, $phoneNO=null)
+    {
+        if($SSN && $FirstName && $LastName && $PIN && $Fingerprint && $Street && $Area && $City && $Email && $CardID && $phoneNO){
+            $this->SSN = $SSN;
+            $this->CardID = $CardID;
+            $this->Fingerprint = $Fingerprint;
+            $this->PIN = $PIN;
+            $this->FirstName = $FirstName;
+            $this->LastName = $LastName;
+            $this->Street = $Street;
+            $this->Area = $Area;
+            $this->City = $City;
+            $this->Email = $Email;
+        }
+        $this->db = new DBConnector;
     }
     private function pinVerification($pass)
     {
@@ -129,7 +100,6 @@ class customer extends user
         } else if (isset($id) and isset($pass)) {
             $id = validate($id);
             $hashed_password = $this->pinVerification($pass);
-            $this->db = new DBconnector;
             $result = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_password));
             if ($result) {
                 if (count($result) == 0) {
@@ -180,7 +150,6 @@ class customer extends user
                 return 2;
             } else {
                 $hashed_password = $this->pinVerification($pass1);
-                $this->db = new DBconnector;
                 $table = 'User';
                 $data = array('Pin' => $hashed_password);
                 $where = 'CardID =?';
@@ -192,7 +161,6 @@ class customer extends user
     }
     public function blockcard($CardID)
     {
-        $this->db = new DBConnector;
         $table = 'Card';
         $data = array('State' => "Block");
         $where = 'Card_ID =?';
@@ -201,7 +169,6 @@ class customer extends user
     }
     public function accounts($SSN)
     {
-        $this->db = new DBConnector;
         $result = $this->db->select("Account", "ID , Type , Balance", "SSN=?", array($SSN));
         return $result;
     }
@@ -209,7 +176,6 @@ class customer extends user
     {
         $target_file1 = $_FILES['image']["tmp_name"];
         $hash1 = md5_file($target_file1);
-        $this->db = new DBconnector;
         $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
         if ($result) {
             if (count($result) == 0) {
@@ -243,14 +209,16 @@ class customer extends user
     }
     public function chooseAccount($account_id)
     {
-        $this->db = new DBConnector;
         $result = $this->db->select("Account", "ID,Balance,State,Type", "ID=?", array($account_id));
         $_SESSION['account_id'] = $result[0]['ID'];
         $_SESSION['balance'] = $result[0]['Balance'];
         $_SESSION['state'] = $result[0]['State'];
         $_SESSION['type'] = $result[0]['Type'];
     }
-
+    public function __destruct()
+    {
+        $this->db->close();
+    }
 }
 
 ?>
