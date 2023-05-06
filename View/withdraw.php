@@ -1,14 +1,19 @@
 <?php
 require_once '../Models/Account.php';
-$account = new Account(1545105165, 203154, "Gold");
-if(isset($_POST['amount'])){
-    if($account->withdraw($_POST['amount'])){
-        $account->setBalance(203154-$_POST['amount']);
-        echo "Withdrawal was successful";//SWEET ALERT
-    }
-    else
-        echo "Withdrawal Failed";//SWEET ALERT
-}
+require_once '../Models/customer.php';
+
+$customer = new Customer();
+
+
+// $account = new Account(1545105165, 203154, "Gold");
+// if(isset($_POST['amount'])){
+//     if($account->withdraw($_POST['amount'])){
+//         $account->setBalance(203154-$_POST['amount']);
+//         echo "Withdrawal was successful";//SWEET ALERT
+//     }
+//     else
+//         echo "Withdrawal Failed";//SWEET ALERT
+// }
 ?>
 
 

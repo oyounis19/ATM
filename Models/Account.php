@@ -9,11 +9,13 @@ class Account {
     private $type;
     private $state;
     
-    public function __construct($id, $balance, $type) 
+    public function __construct($id = null, $balance = null, $type = null) 
     {
-        $this->id = $id;
-        $this->balance = $balance;
-        $this->type = $type;
+        if($id && $balance && $type){
+            $this->id = $id;
+            $this->balance = $balance;
+            $this->type = $type;
+        }
     }
     public function getId() {
         return $this->id;
