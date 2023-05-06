@@ -8,8 +8,8 @@ if (isset($_POST["AccId"])) {
     $account->setId($_POST["AccId"]);
     $admin = new admin("", "");
 
-    $flag = $admin->deleteAccount($account);
-    if ($flag) {
+    $result = $admin->deleteAccount($account);
+    if ($result) {
         $showAlert = 1;
     } else {
         $showAlert = 2;
@@ -40,6 +40,13 @@ if (isset($_POST["AccId"])) {
         <!-- end deleteAccount -->
 
     </div>
+
+</body>
+
+<?php
+if ($showAlert == 1) {
+
+?>
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -52,27 +59,32 @@ if (isset($_POST["AccId"])) {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-    </script>
-    <?php
-    if ($showAlert == 1) {
 
-    ?>
-        <script>
-            Toast.fire({
-                icon: 'success',
-                title: ' Account deleted successfully'
-            })
-        </script>
-    <?php
-    } else if ($showAlert == 2) {
-    ?>
-        <script>
-            Toast.fire({
-                icon: 'error',
-                title: "Something went wrong , try again"
-            })
-        </script>
-    <?php
-    }
-    ?>
-</body>
+        Toast.fire({
+            icon: 'success',
+            title: 'ATM deleted successfully'
+        })
+    </script>
+<?php
+} else if ($showAlert == 2) {
+?>
+    <script>
+        const Tooast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Tooast.fire({
+            icon: 'error',
+            title: 'something went wrong with the ATM deleting'
+        })
+    </script>
+<?php
+} ?>

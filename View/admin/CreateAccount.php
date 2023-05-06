@@ -4,13 +4,21 @@ require_once (__DIR__."/Head.php");
 require_once (__DIR__."/../../Models/Account.php");
 require_once (__DIR__."/../../Models/Card.php");
 require_once (__DIR__."/../../Models/customer.php");
+
+$showAlert = 0;
+
 if(isset($_POST["SSN"]) && isset($_POST["Type"])){
     $account = new Account();
     $account->setType($_POST["Type"]);
     $customer = new customer();
     $customer->setSSN($_POST["SSN"]);
     $admin = new admin("", "");
-    $admin->createAccount($account,$customer);
+    $result = $admin->createAccount($account,$customer);
+    if ($result) {
+        $showAlert = 1;
+    } else {
+        $showAlert = 2;
+    }
 }
 ?>
 <body>
@@ -41,6 +49,50 @@ if(isset($_POST["SSN"]) && isset($_POST["Type"])){
     </div>
 
 </body>
+<?php
+if ($showAlert == 1) {
 
+?>
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Account created successfully'
+        })
+    </script>
+<?php
+} else if ($showAlert == 2) {
+?>
+    <script>
+        const Tooast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Tooast.fire({
+            icon: 'error',
+            title: 'Something went wrong with creating the account'
+        })
+    </script>
+<?php
+} ?>
 
     <!-- end createAccount  -->
