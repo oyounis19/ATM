@@ -41,7 +41,8 @@
 			return $this->amount;
 		}
 		
-		public function setAmount($amount): self {
+		public function setAmount($amount)
+		{
 			$this->amount = $amount;
 			return $this;
 		}
@@ -60,8 +61,10 @@
 			if($ok == true)
 
 			{
-				$x->notifyUser($z->getEmail(),$this->type,$this->amount,$e->getBalance(),$x->state,$m->getName(),$x ->getID());
-			}			
+			//	Customer $customer, Transaction $transaction, Account $account
+				$x->notifyUser();
+			}
+
 			
 		} 
 
