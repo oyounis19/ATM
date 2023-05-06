@@ -17,18 +17,20 @@ private $transactionType;
 private $date;
 private $amount;
 private $time;
+private $db;
 
 private function pinVerification($pass){
         $password = hash("sha256", $pass);
         return $password;
     }
+
+    
 public function login(){
     $userName = $_POST['teqUserName'];
     $password = $_POST['teqPassword'];
     $atmId = $_POST['atm_Id'];
     if(isset($userName) && isset($password) && isset($atmId)){
-        $this->db = new DBconnector;
-       // if($this->db->__construct()){
+            $this->db = new DBconnector;
             $password = $this->pinVerification($password);
              $result = $this->db->select("Employee", "*" , "UserName=? AND Password=?", array($userName,$password));
             $result1 = $this->db->select("ATM", "*" , "ID=?", array($atmId));
@@ -44,7 +46,6 @@ public function login(){
                     echo "0 result";
                     return false;
                 }else{ 
-                    //foreach ($rows as $row){
                     $_SESSION['empId'] = $result[0]['ID'];
                     echo $_SESSION['empId'];
                     $_SESSION['firstName'] = $result[0]['FirstName'];
@@ -58,7 +59,7 @@ public function login(){
                 }
             }
     }else {
-        //$_SESSION['$erMssg'] = ['Fill all fields'];
+        return false;
     }
 }//else echo "SETT";
 
