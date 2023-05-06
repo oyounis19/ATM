@@ -2,6 +2,7 @@
 /* functions of Customer start from here
 */
 require_once "../Models/customer.php";
+
 $customer=new customer;
 if(isset($_POST['lg_out'])){
     $customer->logOut();
@@ -31,14 +32,13 @@ if(isset($_POST['lg_out'])){
                 <h2 class="text-white fw-bolder">ATM </h2>
                 <div class="userInfo my-5">
                     <ul>
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span> youssif
-                            Elhelaly
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span><?php echo $_SESSION['fName'] ?>
                         </li>
 
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> 2000 LE
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $_SESSION['balance'].' L.E' ?>
                         </li>
 
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> 1204
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $_SESSION['account_id'] ?>
                         </li>
 
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">

@@ -1,7 +1,7 @@
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
-  }
+}
 require_once "../Controllers/DBconnector.php";
 require_once "user.php";
 class customer extends user
@@ -134,7 +134,6 @@ class customer extends user
                 if (count($result) == 0) {
                     return false;
                 } else if ($result) {
-                    
                     $_SESSION['SSN'] = $result[0]['SSN'];
                     $this->SSN = $result[0]['SSN'];
                     $_SESSION['card_id'] = $result[0]['CardID'];
@@ -240,6 +239,15 @@ class customer extends user
         } else {
             return false;
         }
+    }
+    public function chooseAccount($account_id)
+    {
+        $this->db = new DBConnector;
+        $result = $this->db->select("Account", "ID,Balance,State,Type", "ID=?", array($account_id));
+        $_SESSION['account_id'] = $result[0]['ID'];
+        $_SESSION['balance'] = $result[0]['Balance'];
+        $_SESSION['state'] = $result[0]['State'];
+        $_SESSION['type'] = $result[0]['Type'];
     }
 
 }

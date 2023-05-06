@@ -14,7 +14,7 @@
             header("location:Account.php");
             exit();
         } else {
-            $errmsg = "<b style='color: white;'> wrong username or password</b>";
+            $customererrmsg = "<b style='color: white;'> wrong username or password</b>";
         }
     }
     /*    login function using Fingerprint
@@ -30,7 +30,6 @@
 }
 
 /////////////////////////////
-
 
 /* functions of Service technican start from here
  */

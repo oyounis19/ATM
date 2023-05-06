@@ -1,5 +1,8 @@
 <?php
-session_start();
+require_once "../Models/customer.php";
+if(!isset($_SESSION['SSN'])){
+    header("location:index.php");
+}
 require_once '../Models/Account.php';
 
 $account = new Account(1475369, 500, "Saving");

@@ -1,3 +1,29 @@
+<?php
+require_once "../Models/customer.php";
+if(!isset($_SESSION['SSN'])){
+    header("location:index.php");
+}
+require_once "../Models/customer.php";
+$errmsg = "";
+$customer = new customer;
+if (isset($_POST['change'])) {
+    $pass1 = $_POST['pass1'];
+    $pass2 = $_POST['pass2'];
+    $card_id = $_SESSION['card_id'];
+    $value = $customer->resetPin($pass1, $pass2, $card_id);
+    if ($value == 1) {
+        $errmsg = "<b style='color: white;'> All fields is rquired </b>";
+    } else if ($value == 2) {
+        $errmsg = "<b style='color: white;'>  Not match password </b>";
+    } else {
+        if ($value == false) {
+            $errmsg = "<b style='color: white;'> Server is down now </b>";
+        } else
+            $customer->logOut();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,20 +48,26 @@
         <div class="screens d-flex">
             <div class="screen deposit">
                 <h2 class="text-white">Change PIN</h2>
-                <form action="#" class="w-100">
+                <form action="#" method="post" class="w-100">
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control input" maxlength="4" minlength="4"
-                            placeholder="Password" required>
+                        <input type="password" name="pass1" class="form-control input" maxlength="4" minlength="4"
+                            placeholder="Password">
                         <label for="floatingPassword">Enter your new pin code</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control input" maxlength="4" minlength="4"
-                            placeholder="Password" required>
+                        <input type="password" name="pass2" class="form-control input" maxlength="4" minlength="4"
+                            placeholder="Password">
                         <label for="floatingPassword">Retype pin code</label>
                     </div>
-                    <button class="btn btn-primary w-100">
+                    <button name="change" class="btn btn-primary w-100">
                         Change PIN
                     </button>
+                    <div class="popup">
+                        <img src="/View/assets/img/404-tick.png">
+                        <h2>Password is successfully updated</h2>
+                        <button type="button">OK</button>
+                    </div>
+                    <?php echo $errmsg ?>
                 </form>
             </div>
         </div>
