@@ -4,15 +4,15 @@ require_once '../Models/Account.php';
 
 $account = new Account(1545105165, 203154, "Gold");
 
-if(isset($_POST['amount']) && isset($_POST['accountID'])){
-    $code = $account->transfer($_POST['accountID'], $_POST['amount']);
-    if(0 == $code){
-        echo "Your Balance is insufficient";//SWEET ALERT
-    }else if(1 == $code){
-        echo "Wrong Account ID";//SWEET ALERT
-    }else
-        echo "Transfered". $_POST['amount'] ."sucessfully";//SWEET ALERT
-}
+// if(isset($_POST['amount']) && isset($_POST['accountID'])){
+//     // $code = $account->transfer($_POST['accountID'], $_POST['amount']);
+//     if(0 == $code){
+//         echo "Your Balance is insufficient";//SWEET ALERT
+//     }else if(1 == $code){
+//         echo "Wrong Account ID";//SWEET ALERT
+//     }else
+//         echo "Transfered". $_POST['amount'] ."sucessfully";//SWEET ALERT
+// }
 
 
 ?>

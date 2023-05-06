@@ -5,17 +5,17 @@ require_once __DIR__.'/../Models/Account.php';
 require_once __DIR__.'/../Models/Transaction.php';
 
 if(isset($_POST['amount'])){
-$sender = new Account(112700, 0, "Gold");
+$sender = new Transaction(112700, 0, "Gold");
 // $reciver = new Account();
 // $transaction = new Transaction();
 // $customer = new Customer();
 // $atm = new ATM();
-$transaction ->setAmount($_POST['amount']);
+$sender ->setAmount($_POST['amount']);
 
-    if($transaction->deposit($sender , $reciver , $atm , $customer))
-        echo "Deposit successfully";// SWEET ALERT 
-    else
-        echo "Try again Later...";//SWEET ALERT
+    // if($sender->deposit($sender , $reciver , $atm , $customer))
+    //     echo "Deposit successfully";// SWEET ALERT 
+    // else
+    //     echo "Try again Later...";//SWEET ALERT
 }
 
 ?>
