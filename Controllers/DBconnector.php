@@ -111,7 +111,6 @@ class DBConnector {
         }
         $set_clause = implode(",", $set);
         $query = "UPDATE $table SET $set_clause WHERE $where";
-        //echo $query;
         
         try{
             $stmt = $this->conn->prepare($query);
@@ -132,7 +131,7 @@ class DBConnector {
         catch(Exception $e){
             return false;
         }
-        return $stmt->affected_rows;
+        return true;
     }
     
 
@@ -163,7 +162,7 @@ class DBConnector {
         catch(Exception $e){
             return false;
         }
-        return $stmt->affected_rows;
+        return true;
     }
     
     /**
