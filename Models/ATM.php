@@ -303,12 +303,5 @@ class ATM{
         }
         return true;
     }
-
-    public function blockCard(Card $card, ){
-        $this->db->update("`CreditCard`", array("State"=> 2), " ");
-    }
-
-	
-
 }
 ?>
