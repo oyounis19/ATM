@@ -6,17 +6,17 @@
 // }
 require_once (__DIR__."/../Controllers/DBconnector.php");
 class servicesTechinican{
-private $username;
+private $firstName;
+private $lastName;
+private $userName;
 private $password;
-private $atmamount;
-private $TechinicanId;
-private $atmBalance;
+private $tqId;
+private $balance;
 private $atmId;
 private $accId;
-private $transactionType;
-private $date;
+private $trsType;
+private $trsDate;
 private $amount;
-private $time;
 private $db;
 
 private function pinVerification($pass){
@@ -24,7 +24,7 @@ private function pinVerification($pass){
         return $password;
     }
 
-public function __construct($firstName=null,$lastName=null,$userName=null,$password=null,$TqId=null, $atmId=null, $balance=null, $accId=null, $trsType=null, $trsDate=null){
+public function __construct($firstName=null,$lastName=null,$userName=null,$password=null,$tqId=null, $atmId=null, $balance=null, $accId=null, $trsType=null, $trsDate=null){
         if($firstName && $lastName && $userName && $password && $TqId && $atmId && $balance && $accId && $trsType && $trsDate){
             $this->firstName= $firstName;
             $this->lastName = $lastName;
