@@ -41,7 +41,8 @@ class admin extends User
     public function addCustomer(customer $customer)
     {
         $card = $this->CreateCard();
-        
+        $hashedPIN = hash("sha256",$customer->getPin());
+
         $data["FirstName"] = $customer->getFirstName();
         $data["LastName"] = $customer->getLastName();
         $data["Email"] = $customer->getEmail();
@@ -49,7 +50,7 @@ class admin extends User
         $data["Area"] = $customer->getArea();
         $data["City"] = $customer->getCity();
         $data["SSN"] = $customer->getSSN();
-        $data["PIN"] = $customer->getPin();
+        $data["PIN"] = $hashedPIN;
         $data["Fingerprint"] = $customer->getFingerprint();
         $data["CardID"] = $card->getId();
 

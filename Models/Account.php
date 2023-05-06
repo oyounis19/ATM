@@ -46,9 +46,10 @@ class Account {
         $this->state = $State;
     }  
 
+
     /**
-     * @param $account_id The recipent's account id 
-     * @param $amount The Transfer amount
+     * @param account_id The recipent's account id 
+     * @param amount The Transfer amount
      * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 3 (Transfer is done)
      */
     public function transfer($account_id, $amount) {//Composition required
@@ -77,7 +78,7 @@ class Account {
     }
 
     /**
-     * @param $amount The Withdraw amount
+     * @param amount The Withdraw amount
      * @return int 0 (The balance is insufficient), 1 (Error in DB), 2 (Transfer is done)
      */
     public function withdraw($amount){//Composition required
