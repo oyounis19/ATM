@@ -1,7 +1,7 @@
 <?php 
     //Log Out
     if(isset($_POST['ptnLogOut'])){
-        $admin = new admin();
+        $admin = new admin("", "");
         $admin->logout();
         header("Location: ../loginAdmin.php");
         exit;
