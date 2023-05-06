@@ -11,6 +11,7 @@ require_once "../Models/customer.php";
     }
     if(isset($_POST['selectedAccount'])){
         $_SESSION['account_id']=$_POST['selectedAccount'];
+        header("location:menu.php");
     }
 
 ?>
