@@ -17,8 +17,7 @@ class ATM{
     private bool $balance;
     private $db;
 
-    public function __construct($ID, $city, $street, $area, $balance){
-        $this->ID = $ID;
+    public function __construct($city, $street, $area, $balance){
         $this->city = $city;
         $this->street = $street;
         $this->area = $area;
@@ -57,6 +56,12 @@ class ATM{
         return $this->ID;
     }
     public function getCity(){
+        return $this->city;
+    }
+    public function getArea(){
+        return $this->area;
+    }
+    public function getStreet(){
         return $this->city;
     }
 
