@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__.'/../Controllers/DBconnector.php';
 require_once __DIR__.'/../Models/Account.php';
 require_once __DIR__.'/../Models/Transaction.php';
@@ -46,7 +45,7 @@ $sender ->setAmount($_POST['amount']);
         <div class="screens d-flex">
             <div class="screen deposit">
                 <h2 class="text-white">Deposit</h2>
-                <form action="#" class="w-100" id="depositForm" method="post">
+                <form action="" class="w-100" id="depositForm" method="post">
                     <div class="lds-ring mb-4 loading" style="display:none;">
                         <div></div>
                         <div></div>

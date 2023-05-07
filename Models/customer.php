@@ -129,7 +129,7 @@ class Customer extends user
         $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
         if ($result) {
             // check if Card is blocked or not
-            $cardid = $result[0]['ID'];
+            $cardid = $result[0]['CardID'];
             $Block = $this->db->select("CreditCard", "State", "ID=?", array($cardid));
             if ($Block[0]['State'] == "Blocked") {
                 return -1;
@@ -143,11 +143,15 @@ class Customer extends user
             return 0;
         }
     }
-    public function logOut()
+    public function logOut($msg = null)
     {
+        echo $msg;
         session_unset();
         session_destroy();
-        header("location:index.php");
+        $refresh_delay = 2; // 3 seconds delay
+        $redirect_url = "index.php";
+        header("refresh:$refresh_delay;url=$redirect_url");
+        exit();
     }
     public function resetPIN($pass1, $pass2, $CardID)
     {
@@ -163,7 +167,7 @@ class Customer extends user
                 $where = 'CardID =?';
                 $params = array($CardID);
                 $affected_rows = $this->db->update($table, $data, $where, $params);
-                return $affected_rows;
+                return 3;
             }
         }
     }

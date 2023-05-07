@@ -6,11 +6,12 @@ $customer=new customer();
 
 if(isset($_POST['lg_out'])){
     $customer->logOut();
-    // $_SESSION['last_activity'] = time();
+    
 }
 if(isset($_POST['block'])){
     $customer->blockcard($_SESSION['card_id']);
-    $customer->logOut();
+    $msg="<b> redirecting to home page </b>";
+    $customer->logOut($msg);
 }
 ?>
 <!DOCTYPE html>

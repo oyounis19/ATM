@@ -34,6 +34,7 @@ class ATM{
             $this->ID = $id;
         }
         $this->db = new DBConnector();
+        $this->getAtmData(1264);
     }
 
     private function generateOTP() {
@@ -202,7 +203,7 @@ class ATM{
      * @param Account $account The account of the customer with the new balance
      * @return bool True if the Email was sent successfully and false otherwise
      */
-    public function notifyUser(Customer $customer, Transaction $transaction, Account $account){
+    public function notifyUser(Customer $customer, Transaction $transaction, Account $account, $insufficient = null){
         $mail = $this->serverSettings();
         $mail->addAddress($customer->getEmail(), 'Client');
         $mail->Subject = 'Transaction Notification';
@@ -218,7 +219,7 @@ class ATM{
         else
             $HTMLstate = '<!-- Error message -->
             <div class="error">
-                <p>The transaction failed due to a fraudulent activity detected on your account. Please contact our customer support for more information.</p>
+                <p>The transaction failed due to a fraudulent activity detected on your account OR an Insufficient Balance. Please contact our customer support for more information.</p>
             </div>';
 
 
@@ -294,8 +295,8 @@ class ATM{
             <tr>
                 <td colspan=\"2\" class=\"content\">
                     <p>Dear ".$customer->getFirstName() .",</p>
-                    <p>A transaction of type". $transaction->getType()." of <b>".$transaction->getAmount()."</b> LE on ".$current_date." $current_time occured at ATM with ID: ".$this->ID.".</p>
-                    <p>Your current account balance is <b>".$account->getBalance() - $transaction->getAmount()."</b> LE.</p>				
+                    <p>A transaction of type ". $transaction->getType()." of <b>".$transaction->getAmount()."</b> LE on ".$current_date." $current_time occured at ATM with ID: ".$this->ID.".</p>
+                    <p>Your current account balance is <b>".$account->getBalance()."</b> LE.</p>				
                     $HTMLstate
                     <p>Thank you for choosing our bank for your financial needs.</p>
                     <p>Sincerely,</p>
@@ -311,6 +312,19 @@ class ATM{
             return false;
         }
         return true;
+    }
+
+    private function getAtmData($atmID){
+        $result = $this->db->select("`ATM`", "*", "ID=?", array($atmID));
+        $this->ID = $result[0]['ID'];
+        $this->city = $result[0]['City'];
+        $this->street = $result[0]['Street'];
+        $this->area = $result[0]['Area'];
+        $this->balance = $result[0]['Balance'];
+    }
+    public function __destruct()
+    {
+        $this->db->close();
     }
 }
 ?>
