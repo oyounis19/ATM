@@ -125,3 +125,12 @@ button[aria-expanded="false"] i {
     margin-left: auto;
     text-align: right;
 }
+
+.DashBoard-screen{
+    padding-top: 10%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: center;
+}

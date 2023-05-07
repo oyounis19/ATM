@@ -3,11 +3,13 @@ require_once(__DIR__ . "/../../Models/admin.php");
 require_once(__DIR__ . "/Head.php");
 
 $showAlert = 0;
-$admin = new admin("", "");
+$admin = new admin();
 
 
 if (isset($_POST['atmId'])) {
-    $ok = $admin->deleteATM($_POST['atmId']);
+    $ATM = new ATM();
+    $ATM->setID($_POST['atmId']);
+    $ok = $admin->deleteATM($ATM);
     if ($ok) {
         $showAlert = 1;
     } else {

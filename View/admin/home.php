@@ -1,9 +1,11 @@
 <?php
 require_once __DIR__ . "/../../Models/admin.php";
+require_once __DIR__ . "/../../Controllers/Reports.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 $userID = "";
 $firstname = "";
 $lastname = "";
@@ -28,22 +30,32 @@ if (isset($_SESSION['userID']) && isset($_SESSION['firstname']) && isset($_SESSI
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
+
+if(isset($_POST["report"])){
+    $admin = new Admin("","",$userID,$firstname.$lastname);
+    $report = new Report();
+    $report->generateAdminPDF($admin);
+}
+
 require_once __DIR__ . "/nav.php";
 require_once(__DIR__ . "/Head.php");
 ?>
 <!-- start dashboard  -->
 
-<section class="DashBoard screen" id="DashBoard">
+<section class="DashBoard-screen" id="DashBoard">
     <div class="container-fluid">
         <ul>
             <li>
-                <h2>Welcome : <span><?php echo $firstname . ' ' . $lastname ?></span></h2>
+                <h1>Welcome <span><?php echo $firstname . ' ' . $lastname ?></span></h1>
             </li>
             <li>
-                <h2>Your Account ID : <span><?php echo $userID ?></span></h2>
+                <h3>Account ID : <span><?php echo $userID ?></span></h3>
             </li>
         </ul>
     </div>
+    <form method="post">
+        <input class = "btn btn-success" type="submit" name="report" value="Generate Report">
+    </form>
 </section>
 
 <!-- end dashboard  -->

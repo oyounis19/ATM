@@ -3,11 +3,12 @@ require_once(__DIR__ . "/../../Models/admin.php");
 require_once(__DIR__ . "/Head.php");
 
 $showAlert = 0;
-$admin = new admin("", "");
+$admin = new admin();
 
 
 if (isset($_POST['city']) && isset($_POST['area']) && isset($_POST['street'])) {
-    $ok = $admin->addATM($_POST['city'], $_POST['area'], $_POST['street']);
+    $ATM = new ATM($_POST['city'],$_POST['street'], $_POST['area'], 0);
+    $ok = $admin->addATM($ATM);
     if ($ok) {
         $showAlert = 1;
     } else {
