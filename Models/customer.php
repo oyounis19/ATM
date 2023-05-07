@@ -129,7 +129,7 @@ class Customer extends user
         $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
         if ($result) {
             // check if Card is blocked or not
-            $cardid = $result[0]['ID'];
+            $cardid = $result[0]['CardID'];
             $Block = $this->db->select("CreditCard", "State", "ID=?", array($cardid));
             if ($Block[0]['State'] == "Blocked") {
                 return -1;
@@ -163,7 +163,7 @@ class Customer extends user
                 $where = 'CardID =?';
                 $params = array($CardID);
                 $affected_rows = $this->db->update($table, $data, $where, $params);
-                return $affected_rows;
+                return 3;
             }
         }
     }

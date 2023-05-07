@@ -11,7 +11,7 @@ if (isset($_POST['change'])) {
         $errmsg = "<b style='color: white;'> All fields is rquired </b>";
     } else if ($value == 2) {
         $errmsg = "<b style='color: white;'>  Not match password </b>";
-    } else {
+    } else if ($value == 3) {
         $customer->logOut();
     }
 }
