@@ -3,11 +3,11 @@
     require_once(__DIR__ . "/Head.php");
 
     $showAlert = 0;
-    $admin = new admin("", "");
+  
     // create new admin
     if (isset($_POST['fName']) && isset($_POST['lName']) && isset($_POST['userName']) && isset($_POST['passWord'])) {
-        
-        $ok = $admin->createAdmin($_POST['fName'], $_POST['lName'], $_POST['userName'], $_POST['passWord']);
+        $admin = new admin($_POST['userName'], $_POST['passWord'],"",$_POST['fName'].",".$_POST['lName']);
+        $ok = $admin->createAdmin($admin);
         if ($ok) {
             $showAlert = 1;
         } else {

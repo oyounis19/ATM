@@ -64,9 +64,12 @@ class Customer extends user
     {
         return $this->phoneNO;
     }
+    public function setSSN($SSN){
+        $this->SSN = $SSN;
+    }
     public function __construct($SSN=null,$FirstName=null,$LastName=null,$PIN=null,$Fingerprint=null, $Street=null, $Area=null, $City=null, $Email=null, $CardID=null, $phoneNO=null)
     {
-        if($SSN && $FirstName && $LastName && $PIN && $Fingerprint && $Street && $Area && $City && $Email && $CardID && $phoneNO){
+        if($SSN && $FirstName && $LastName && $PIN && $Fingerprint && $Street && $Area && $City && $Email && $phoneNO){
             $this->SSN = $SSN;
             $this->CardID = $CardID;
             $this->Fingerprint = $Fingerprint;

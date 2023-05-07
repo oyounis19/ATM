@@ -32,7 +32,7 @@ if (isset($_SESSION['userID']) && isset($_SESSION['firstname']) && isset($_SESSI
 }
 
 if(isset($_POST["report"])){
-    $admin = new Admin("","",$_SESSION['userID']);
+    $admin = new Admin("","",$userID,$firstname.$lastname);
     $report = new Report();
     $report->generateAdminPDF($admin);
 }

@@ -1,7 +1,7 @@
 <?php
-require_once '../Controllers/lib/PHPMailer/src/PHPMailer.php';
-require_once 'DBconnector.php';
-include('../Controllers/lib/TCPDF/tcpdf.php');
+require_once __DIR__.'/../Controllers/lib/PHPMailer/src/PHPMailer.php';
+require_once __DIR__.'/DBconnector.php';
+include(__DIR__.'/../Controllers/lib/TCPDF/tcpdf.php');
 
 class Report{
     private $pdf;

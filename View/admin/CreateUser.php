@@ -3,33 +3,20 @@ require_once (__DIR__."/Head.php");
 require_once(__DIR__."/../../Models/customer.php");
 
 $showAlert = 0;
-echo "ahmed";
 
 $hashedFingerPrint = false;
 
 if(isset($_FILES['fprint'])){
     $target_file1 = $_FILES['fprint']["tmp_name"];
     $hashedFingerPrint = md5_file ($target_file1);
-    echo $hashedFingerPrint."<br>";
 }
 
 if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) && isset($_POST["street"]) && isset($_POST["area"])
-&& isset($_POST["city"]) && isset($_POST["SSN"]) &&  isset($_POST["PIN"]) && $hashedFingerPrint){
-    $customer = new customer();
-    $customer->setFirstName($_POST["fname"]);
-    $customer->setLastName($_POST["lname"]);
-    $customer->setEmail($_POST["email"]);
-    $customer->setStreet($_POST["street"]);
-    $customer->setArea($_POST["area"]);
-    $customer->setCity($_POST["city"]);
-    $customer->setSSN($_POST["SSN"]);
-    $customer->setPin($_POST["PIN"]);
-    $customer->setFingerprint($hashedFingerPrint);
-
-    $admin = new Admin("","");
-    echo "ahmed";
+&& isset($_POST["city"]) && isset($_POST["SSN"]) &&  isset($_POST["PIN"]) && $_POST["PhoneNum"] && $hashedFingerPrint){
+    $customer = new customer($_POST["SSN"],$_POST["fname"],$_POST["lname"],$_POST["PIN"],$hashedFingerPrint,
+    $_POST["street"],$_POST["area"],$_POST["city"],$_POST["email"],$_POST["PhoneNum"]);
+    $admin = new Admin("","","","");
     $result = $admin->addCustomer($customer);
-    echo "ahmed2";
     if ($result) 
         $showAlert = 1;
     else 
@@ -94,12 +81,19 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) &&
                 </div>
                 <div class="form-floating mb-3">
                     <input type="file" class="form-control" id="fingerprint" placeholder="Fingerprint Image" name="fprint">
-                    <label for="fingerprint">upload Fingerprint Image</label>
+                    <label for="fingerprint">Upload Fingerprint Image</label>
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="PINcode" placeholder="PIN Code" name="PIN">
-                    <label for="PINcode">PIN Code</label>
+                <div class="d-flex gap-4">
+                    <div class="form-floating w-50 mb-3">
+                        <input type="number" class="form-control" id="PINcode" placeholder="PIN Code" name="PIN">
+                        <label for="PINcode">PIN Code</label>
+                    </div>
+                    <div class="form-floating w-50 mb-3">
+                        <input type="number" class="form-control" id="Phone No." placeholder="Phone No." name="PhoneNum">
+                        <label for="Phone No.">Phone No.</label>
+                    </div>
                 </div>
+
                 <input class="btn btn-success" type = "submit" value="Add User">
             </form>
         </div>

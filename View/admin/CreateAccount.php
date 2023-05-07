@@ -12,7 +12,7 @@ if(isset($_POST["SSN"]) && isset($_POST["Type"])){
     $account->setType($_POST["Type"]);
     $customer = new customer();
     $customer->setSSN($_POST["SSN"]);
-    $admin = new admin("", "");
+    $admin = new admin();
     $result = $admin->createAccount($account,$customer);
     if ($result) {
         $showAlert = 1;

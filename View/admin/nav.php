@@ -1,7 +1,7 @@
 <?php 
     //Log Out
     if(isset($_POST['ptnLogOut'])){
-        $admin = new admin("", "");
+        $admin = new admin();
         $admin->logout();
         header("Location: ../loginAdmin.php");
         exit;
@@ -30,7 +30,7 @@
             <li>
                 <button class="btn-primary d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                     href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
-                    Mange Accounts <i class="fa-solid fa-chevron-down"></i>
+                    Manage Accounts <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </li>
             <div class="collapse" id="collapseExample1">
@@ -44,7 +44,7 @@
             <li>
                 <button class="btn-primary d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                     href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
-                    Mange users <i class="fa-solid fa-chevron-down"></i>
+                    Manage users <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </li>
             <div class="collapse" id="collapseExample2">
@@ -57,7 +57,7 @@
             <li>
                 <button class="btn-primary d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                     href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3">
-                    Mange ATMs <i class="fa-solid fa-chevron-down"></i>
+                    Manage ATMs <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </li>
             <div class="collapse" id="collapseExample3">
@@ -72,7 +72,7 @@
         </ul>
         
         <form method="POST" action="home.php">
-            <button class="btn btn-danger" name="ptnLogOut" style="width: 100%">Log Out</button>
+            <button class="btn btn-danger" name="ptnLogOut" style="width: 100%">Log out</button>
         </form>
     </div>
 

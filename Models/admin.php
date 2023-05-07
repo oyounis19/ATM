@@ -6,15 +6,28 @@ require_once (__DIR__."/User.php");
 require_once(__DIR__."/Card.php");
 class admin extends User
 {
-    private string $userName;
-    private string $passWord;
-    private string $ID;
+    private  $userName;
+    private  $passWord;
+    private  $ID;
 
-    public function __construct($user, $pass,$ID){
+    public function __construct($user=null, $pass=null,$ID=null,$name=null){
         $this->userName = $user;
         $this->passWord = $pass;
         $this->ID = $ID;
+        $this->name = $name;
     } 
+    public function getID(){
+        return $this->ID;
+    }
+    public function getName(){
+        return $this->name;
+    }
+    public function getUserName(){
+        return $this->userName;
+    }
+    public function getPassword(){
+        return $this->passWord;
+    }
     public function login($user, $pass)
     {
         $db = new DBconnector();
@@ -111,35 +124,35 @@ class admin extends User
     public function viewAtmTransactions()
     {
     }
-    public function addAtm($city, $area, $street)
+    public function addAtm(ATM $ATM)
     {
         $row = 0;
         $db = new DBconnector();
-        $data["City"] = $city;
-        $data["Area"] = $area;
-        $data["Street"] = $street;
-        $data["Balance"] = 0;
+        $data["City"] = $ATM->getCity();
+        $data["Area"] = $ATM->getArea();
+        $data["Street"] = $ATM->getStreet();
+        $data["Balance"] = $ATM->getBalance();
         $row = $db->insert("ATM", $data);
 
         return $row > 0 ? true : false;
     }
-    public function deleteAtm($atmId)
+    public function deleteAtm(ATM $ATM)
     {
         $db = new DBconnector();
-        $ok = $db->delete("ATM", "ID = ?", array($atmId));
+        $ok = $db->delete("ATM", "ID = ?", array($ATM->getID()));
         return $ok;
     }
     public function viewAtm()
     {
     }
-    public function createAdmin($fName, $lName, $userName, $passWord)
+    public function createAdmin(Admin $admin)
     {
-        $row = 0;
         $db = new DBconnector();
-        $data["FirstName"] = $fName;
-        $data["LastName"] = $lName;
-        $data["UserName"] = $userName;
-        $data["Password"] = hash("sha256", $passWord);
+        $name = explode(",",$admin->getName());
+        $data["FirstName"] = $name[0];
+        $data["LastName"] = $name[1];
+        $data["UserName"] = $admin->getUserName();
+        $data["Password"] = hash("sha256", $admin->getPassword());
         $row = $db->insert("Employee", $data);
 
         return $row > 0 ? true : false;
