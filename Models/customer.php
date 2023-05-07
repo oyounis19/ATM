@@ -106,31 +106,21 @@ class Customer extends user
     }
     public function login($id, $pass)
     {
-        if (empty($id) or empty($pass)) {
-            return false;
-        } else if (isset($id) and isset($pass)) {
-            $id = $this->validate($id);
-            $hashed_password = $this->pinVerification($pass);
-            $result = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_password));
-            $Block = $this->db->select("CreditCard", "State", "CardID=?", array($id));
-            if ($Block == 'Blocked') {
-                return 2;
-            }
-            if ($result) {
-                if (count($result) == 0) {
-                    return false;
-                } else if ($result) {
-                    //SetVariables
-                    $this->SetVariables($result);
-                    //sessions
-                    $this->setSessions();
-                    return true;
-                }
-            } else {
-                return false;
-            }
+        $id = $this->validate($id);
+        $hashed_password = $this->pinVerification($pass);
+        $result = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_password));
+        $Block = $this->db->select("CreditCard", "State", "CardID=?", array($id));
+        if ($Block == 'Blocked') {
+            return -1;//Blocked
+        }
+        if ($result) {
+            //SetVariables
+            $this->SetVariables($result);
+            //sessions
+            $this->setSessions();
+            return 1;//DONE
         } else {
-            return false;
+            return 0;//Not in DB
         }
     }
     public function logOut()
@@ -179,23 +169,19 @@ class Customer extends user
         $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
 
         if ($result) {
-            if (count($result) == 0) {
-                return false;
-            } else if ($result) {
-                // check if Card is blocked or not
-                $cardid = $result[0]['CardID'];
-                $Block = $this->db->select("CreditCard", "State", "CardID=?", array($cardid));
-                if ($Block == 'Blocked') {
-                    return 2;
-                }
-                //SetVariables
-                $this->SetVariables($result);
-                //sessions
-                $this->setSessions();
-                return true;
+            // check if Card is blocked or not
+            $cardid = $result[0]['CardID'];
+            $Block = $this->db->select("CreditCard", "State", "CardID=?", array($cardid));
+            if ($Block == 'Blocked') {
+                return -1;
             }
+            //SetVariables
+            $this->SetVariables($result);
+            //sessions
+            $this->setSessions();
+            return 1;
         } else {
-            return false;
+            return 0;
         }
     }
     // this function is called if user choose Account from his Accounts, it will take account_id

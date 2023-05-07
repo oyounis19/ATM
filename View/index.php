@@ -8,7 +8,9 @@ $customererrmsgfingerprint = "";
 /* login function using Credit Card or Fingerprint 
  */
 // if you want to session to check login by fingerprint or not go to line @14 & line @30
-if (isset($_POST['lg_in']) or isset($_FILES['image'])) {
+if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']))) {
+    //if (!file_exists($_FILES['image']['tmp_name']) || !is_uploaded_file($_FILES['image']['tmp_name'])) 
+
     $value;
     $Success = false;
     // session of fingerprint set to zero
@@ -17,20 +19,20 @@ if (isset($_POST['lg_in']) or isset($_FILES['image'])) {
         $cardID = $_POST['card_id'];
         $pass = $_POST['upass'];
         $value = $customer->login($cardID, $pass);
-        if ($value and $value != 2) {
+        if ($value == 1) {
             $Success = True;
-        } else if ($value == 2) {
+        } else if ($value == -1) {
             $customererrmsg = "<b style='color: white;'> Card is blocked </b>";
-        } else {
+        } else {//0
             $customererrmsg = "<b style='color: white;'> wrong username or password</b>";
         }
-    } else if (isset($_FILES['image'])) {
+    } else if (isset($_POST['upload'])) {
         $value = $customer->FingerprintValidation();
-        if ($value and $value != 2) {
+        if ($value == 1) {
             $Success = True;
             //session of fingerprint set to 1 if logged by it
             $_SESSION['fing'] = '1';
-        } else if ($value == 2) {
+        } else if ($value == -1) {
             $customererrmsgfingerprint = "<b style='color: white;'> Card is blocked </b>";
         } else {
             $customererrmsgfingerprint = "<b style='color: white;'> Not recognized </b>";

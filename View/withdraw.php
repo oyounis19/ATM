@@ -20,8 +20,18 @@ if(isset($_POST['amount'])){
         echo "Balance Insufficient";//SWEET ALERT
         else if(1 == $done)//Error in db
         echo "Withdrawal Failed, Try again later";//SWEET ALERT 
-        else
-        echo "Withdrawal completed Successfully";//SWEET ALERT
+        else{
+            echo "Withdrawal completed Successfully";//SWEET ALERT
+
+            $account->setBalance($account->getBalance() - $_POST['amount']);
+            $_SESSION['balance'] = $account->getBalance();
+
+            $refresh_delay = 3; // 3 seconds delay
+            $redirect_url = "menu.php";
+
+            header("refresh:$refresh_delay;url=$redirect_url");
+            exit();
+        }
     }
 }
 ?>

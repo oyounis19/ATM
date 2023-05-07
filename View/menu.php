@@ -43,12 +43,17 @@ if(isset($_POST['lg_out'])){
 
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $_SESSION['account_id'] ?>
                         </li>
-
+                        <?php
+                        if(isset($_SESSION['fing']) && $_SESSION['fing'] == 1){
+                        ?>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">
                             <a href="Changepin.php">
                                 Change PIN
                             </a>
                         </li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>
