@@ -177,15 +177,17 @@ class Customer extends user
         $target_file1 = $_FILES['image']["tmp_name"];
         $hash1 = md5_file($target_file1);
         $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
-        $cardid = $result[0]['CardID'];
-        $Block = $this->db->select("CreditCard", "State", "CardID=?", array($cardid));
-        if ($Block == 'Blocked') {
-            return 2;
-        }
+
         if ($result) {
             if (count($result) == 0) {
                 return false;
             } else if ($result) {
+                // check if Card is blocked or not
+                $cardid = $result[0]['CardID'];
+                $Block = $this->db->select("CreditCard", "State", "CardID=?", array($cardid));
+                if ($Block == 'Blocked') {
+                    return 2;
+                }
                 //SetVariables
                 $this->SetVariables($result);
                 //sessions
@@ -225,7 +227,7 @@ class Customer extends user
 
     }
     /* this function called two times : if user logged by card or fingerprint
-        and this sessions will be available for all pages not private but this method is the private one
+    and this sessions will be available for all pages not private but this method is the private one
     */
     private function setSessions()
     {
