@@ -1,39 +1,26 @@
 <?php
+ob_start();//Capture the HTML in output buffer instead of being sending to the browser immediately
 require_once __DIR__.'/../Models/Account.php';
 require_once __DIR__.'/../Models/customer.php';//Starts the sessions
 require_once __DIR__.'/../Models/Transaction.php';
 
+//Defining Objects
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
-$atm = new ATM(1264, 'Cairo', 'Arab elmaadi', 'El Maadi', 83250);//HARD CODED ATM VALUES
+$atm = new ATM();//HARD CODED ATM ID: 1264
+$transaction = new Transaction();
 $customer = new Customer($_SESSION['SSN'], $_SESSION['fName'], $_SESSION['lName'], $_SESSION['upass'],
-                        $_SESSION['fingerpint'], $_SESSION['Street'],  $_SESSION['Area'], $_SESSION['City'],
+                        $_SESSION['fingerpint'], $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],
                         $_SESSION['Email'], $_SESSION['card_id']);
 
-// if(isset($_POST['amount']) && $_POST['amount'] !=""){
-if(isset($_POST['amount'])){
-    if($_POST['amount'] == '')
-        echo 'Please enter amount before submitting';
-    else{
-        $transaction = new Transaction("Withdraw", $_POST['amount']);
-        $done = $transaction->withdraw($account, null, $atm, $customer);//ATM balance decrease fix && notification balance fix
-        if(0 == $done)
-        echo "Balance Insufficient";//SWEET ALERT
-        else if(1 == $done)//Error in db
-        echo "Withdrawal Failed, Try again later";//SWEET ALERT 
-        else{
-            echo "Withdrawal completed Successfully";//SWEET ALERT
+$sweetAlert = null;
+if(isset($_POST['amount']) && $_POST['amount'] != ''){
+    $transaction->setType("Withdraw");
+    $transaction->setAmount( $_POST['amount']);
+    $sweetAlert = $transaction->withdraw($account, $atm, $customer);
 
-            $account->setBalance($account->getBalance() - $_POST['amount']);
-            $_SESSION['balance'] = $account->getBalance();
-
-            $refresh_delay = 3; // 3 seconds delay
-            $redirect_url = "menu.php";
-
-            header("refresh:$refresh_delay;url=$redirect_url");
-            exit();
-        }
-    }
-}
+    $sweetAlert === 2 ? $_SESSION['balance'] = $account->getBalance() : null;
+}else if(isset($_POST['sbmtbtn']))
+    echo 'Please enter amount before submitting';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +32,7 @@ if(isset($_POST['amount'])){
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="icon" href="assets/img/atm.png">
     <title>ATM APP</title>
 </head>
@@ -58,16 +45,15 @@ if(isset($_POST['amount'])){
                 <h2 class="text-white fw-bolder">Withdraw</h2>
                 <div class="userInfo my-5">
                     <ul>
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $account->getBalance();?> LE
-
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3">
+                            <span>Balance</span> <?php echo $account->getBalance();?> LE
                         </li>
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $account->getID();?>
-
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3">
+                            <span>Account id</span> <?php echo $account->getID();?>
                         </li>
                     </ul>
                 </div>
             </div>
-
             <div class="screen menu">
                 <div class="buttons d-flex flex-wrap justify-content-between">
                     <form action="#" class="w-100" method="post">
@@ -103,7 +89,6 @@ if(isset($_POST['amount'])){
         </div>
     </div>
 
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
@@ -113,6 +98,59 @@ if(isset($_POST['amount'])){
     </script>
     <script src="assets/js/withdraw.js"></script>
     <script src="assets/js/sessionTimout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
 </body>
+<?php
+    if($sweetAlert === 0 || $sweetAlert === 1 || $sweetAlert === 2 || $sweetAlert === 3){
+        $icon = '';
+        $message = '';
+        switch($sweetAlert){
+            case 0:
+                $icon = 'error';
+                $message = 'Balance Insufficient';
+                break;
+            case 1:
+                $icon = 'error';
+                $message = 'Withdrawal Failed, Try again later';
+                break;
+            case 2:
+                $icon = 'success';
+                $message = 'Withdrawal completed Successfully';
+                break;
+            case 3:
+                $icon = 'error';
+                $message = 'Insufficient ATM balance, please Try another ATM';
+                break;
+        }
+?>
+    <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        })
 
+        Toast.fire({
+        icon: '<?php echo $icon; ?>',
+        title: '<?php echo $message; ?>'
+        })
+    </script>
+<?php
+    if($sweetAlert === 2){
+
+        $refresh_delay = 3; // 3 seconds delay
+        $redirect_url = "menu.php";
+        
+        header("refresh:$refresh_delay;url=$redirect_url");
+        ob_end_flush();//Sends the HTML to the browser
+    }
+}
+?>
 </html>
