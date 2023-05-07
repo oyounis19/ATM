@@ -108,11 +108,12 @@ class Customer extends user
         $id = $this->validate($id);
         $hashed_password = $this->pinVerification($pass);
         $result = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_password));
-        $Block = $this->db->select("CreditCard", "State", "CardID=?", array($id));
-        if ($Block == 'Blocked') {
-            return -1;//Blocked
-        }
+        
         if ($result) {
+            $Block = $this->db->select("CreditCard", "State", "ID=?", array($id));
+                if ($Block == 'Blocked') {
+                    return -1;//Blocked
+                }
             //SetVariables
             $this->SetVariables($result);
             //sessions
@@ -153,9 +154,9 @@ class Customer extends user
     }
     public function blockcard($CardID)
     {
-        $table = 'Card';
-        $data = array('State' => "Block");
-        $where = 'Card_ID =?';
+        $table = 'CreditCard';
+        $data = array('State' => 2);
+        $where = 'ID =?';
         $params = array($CardID);
         $affected_rows = $this->db->update($table, $data, $where, $params);
         return $affected_rows;

@@ -18,7 +18,6 @@ $customererrmsgfingerprint = "";
 
 // if you want to session to check login by fingerprint or not go to line @14 & line @30
 if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']))) {
-    $_SESSION['last_activity'] = time();//Reset timeout
     
     $value;
     $Success = false;
