@@ -139,7 +139,7 @@ public function rechargeAtm (){
 
 public function checkLoggers(){
     //$this->db = new DBconnector;
-    $result = $this->db->select("Transaction", "AccountID , Type , Date" , "", array());
+    $result = $this->db->select("Transaction", "AccountID , Type , Date" , "AtmID = ?", array($_SESSION['atmId']));
     return $result;
 }
 
