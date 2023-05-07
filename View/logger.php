@@ -71,25 +71,22 @@ $result =  $srvTeq->checkLoggers();
                 <h2 class="text-white fs-1 mb-5">Logger Details</h2>
                 <ul class="text-start text-white">
                     <li>
-                        <p>Account ID : <span>555555555555555</span></p>
+                        <p>Account ID : <span><?php echo $result[$i]["AccountID"] ?></span></p>
                     </li>
                     <li>
-                        <p>Transaction Type : <span>Withdraw</span></p>
+                        <p>Transaction Type : <span><?php echo $result[$i]["Type"] ?></span></p>
                     </li>
                     <li>
-                        <p>Transaction ID : <span>20230321</span></p>
+                        <p>Transaction ID : <span><?php echo $result[$i]["ID"] ?></span></p>
                     </li>
                     <li>
-                    <p>State : <span value="<?php echo $state ?>"><?php echo $state ?></span></p>
+                    <p>State : <span value="<?php echo $result[$i]["State"] ?>"><?php echo $result[$i]["State"]  ?></span></p>
                     </li>
                     <li>
-                        <p>Amount : <span>200 LE</span></p>
+                        <p>Amount : <span><?php echo $result[$i]["Amount"] ?></span></p>
                     </li>
                     <li>
-                        <p>Date : <span>2023/3/1</span></p>
-                    </li>
-                    <li>
-                        <p>time : <span>20:08</span></p>
+                        <p>Date : <span><?php echo $result[$i]["Date"] ?></span></p>
                     </li>
                 </ul>
             </div>

@@ -62,7 +62,13 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
 require_once(__DIR__ . "/../Models/servicesTechnican.php");
 $srvTeq = new servicesTechinican;
 if (isset($_POST['bLogin'])) {
-    $srvTeq->login();
+    if($srvTeq->login()){
+        header("location:../View/serviceMenu.php");
+    }else{
+        ?>
+        <script> alert('<?php echo $_SESSION['errMsg'] ?>')</script>
+        <?php
+    }
 }
 ?>
 
