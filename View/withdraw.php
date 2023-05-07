@@ -44,12 +44,19 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
             <div class="screen info">
                 <h2 class="text-white fw-bolder">Withdraw</h2>
                 <div class="userInfo my-5">
-                    <ul>
+                    <ul class="">
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">
                             <span>Balance</span> <?php echo $account->getBalance();?> LE
                         </li>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">
                             <span>Account id</span> <?php echo $account->getID();?>
+                        </li>
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3">
+                            <a href="menu.php">
+                                    <img src="assets/img/icons8-back-64.png" alt="Back button">
+                                    <br>
+                                    <b>Back</b>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -97,7 +104,7 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
         AOS.init();
     </script>
     <script src="assets/js/withdraw.js"></script>
-    <script src="assets/js/sessionTimout.js"></script>
+    <!-- <script src="assets/js/sessionTimout.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="sweetalert2.all.min.js"></script>
 </body>

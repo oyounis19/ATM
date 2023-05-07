@@ -277,6 +277,7 @@ p {
 /* CHAT GPT */
 a {
     width: fit-content;
+    text-decoration: none; /* remove underline */
 }
 
 span[value="Approved"]{
@@ -292,4 +293,9 @@ span[value="Denied"]{
     background-color: bisque;
     font-weight: bold;
     border-width: 3px;
+}
+
+img[alt="Back button"]{
+    width: 50px; /* set the desired width */
+    height: auto; /* maintain aspect ratio */
 }
