@@ -89,6 +89,7 @@ if (isset($_SESSION['SSN'])) {
         AOS.init();
     </script>
     <script src="assets/js/account.js"></script>
+    <script src="assets/js/sessionTimout.js"></script>
 </body>
 
 </html>

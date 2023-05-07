@@ -15,7 +15,7 @@ if(isset($_POST['amount'])){
         echo 'Please enter amount before submitting';
     else{
         $transaction = new Transaction("Withdraw", $_POST['amount']);
-        $done = $transaction->withdraw($account, null, $atm, $customer);
+        $done = $transaction->withdraw($account, null, $atm, $customer);//ATM balance decrease fix && notification balance fix
         if(0 == $done)
         echo "Balance Insufficient";//SWEET ALERT
         else if(1 == $done)//Error in db
@@ -112,6 +112,7 @@ if(isset($_POST['amount'])){
         AOS.init();
     </script>
     <script src="assets/js/withdraw.js"></script>
+    <script src="assets/js/sessionTimout.js"></script>
 </body>
 
 </html>

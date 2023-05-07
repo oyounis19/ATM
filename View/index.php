@@ -1,16 +1,25 @@
 <?php
 /* functions of Customer start from here
- */
-require_once "../Models/customer.php";
+*/
+if(session_status() !== PHP_SESSION_ACTIVE)//If session is closed open it to destroy it
+    session_start();
+
+if (session_status() === PHP_SESSION_ACTIVE) {//session is open
+    $_SESSION = array();//remove all data in the session
+    session_unset();
+    session_destroy();//destroy the previous session when logging out or first time in website
+}
+require_once "../Models/customer.php";//Actual session starts
 $customer = new customer;
+
 $customererrmsg = "";
 $customererrmsgfingerprint = "";
-/* login function using Credit Card or Fingerprint 
- */
+//login function using Credit Card or Fingerprint 
+
 // if you want to session to check login by fingerprint or not go to line @14 & line @30
 if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']))) {
-    //if (!file_exists($_FILES['image']['tmp_name']) || !is_uploaded_file($_FILES['image']['tmp_name'])) 
-
+    $_SESSION['last_activity'] = time();//Reset timeout
+    
     $value;
     $Success = false;
     // session of fingerprint set to zero
@@ -48,7 +57,7 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
 /////////////////////////////
 
 /* functions of Service technican start from here
- */
+*/
 require_once(__DIR__ . "/../Models/servicesTechnican.php");
 $srvTeq = new servicesTechinican;
 if (isset($_POST['bLogin'])) {
@@ -91,7 +100,7 @@ if (isset($_POST['bLogin'])) {
                         <label for="floatingPassword">Enter your PIN code</label>
                     </div>
                     <button name="lg_in" class="btn btn-primary mt-3 w-100" type="submit">Log in</button>
-                    <?php echo $customererrmsg ?>
+                    <?php echo $customererrmsg?>
                 </form>
 
             </div>

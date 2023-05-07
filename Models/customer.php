@@ -1,11 +1,9 @@
 <?php
-
+require_once(__DIR__ . '/../Controllers/DBconnector.php');
+require_once "user.php";
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-require_once(__DIR__ . '/../Controllers/DBconnector.php');
-require_once "user.php";
-
 class Customer extends user
 {
     private string $SSN;
@@ -91,6 +89,7 @@ class Customer extends user
 
         $this->db = new DBConnector;
     }
+
     private function pinVerification($pass)
     {
         $password = hash("sha256", $pass);
@@ -123,9 +122,13 @@ class Customer extends user
             return 0;//Not in DB
         }
     }
+    public function logOutFirst(){
+        session_start();
+        session_unset();
+        session_destroy();
+    }
     public function logOut()
     {
-        session_start();
         session_unset();
         session_destroy();
         header("location:index.php");

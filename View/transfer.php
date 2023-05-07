@@ -70,6 +70,7 @@ $account = new Account(1545105165, 203154, "Gold");
         AOS.init();
     </script>
     <script src="assets/js/transfer.js"></script>
+    <script src="assets/js/sessionTimout.js"></script>
 </body>
 
 </html>

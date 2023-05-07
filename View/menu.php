@@ -1,6 +1,7 @@
 <?php 
 /* functions of Customer start from here
 */
+// require_once '../Controllers/sessionTimeout.php';
 require_once "../Models/customer.php";
 
 $customer=new customer();
@@ -10,6 +11,7 @@ $customer=new customer();
 
 if(isset($_POST['lg_out'])){
     $customer->logOut();
+    // $_SESSION['last_activity'] = time();
 }
 ?>
 <!DOCTYPE html>
@@ -73,8 +75,11 @@ if(isset($_POST['lg_out'])){
                         Transaction History
                     </a>
                     <form action="" style="width: 100%;" method="post">
-                        <button name="lg_out" href="index.php" class="btn btnMenu btn-primary">
+                        <button name="lg_out" class="btn btnMenu btn-primary">
                             logOut
+                        </button>
+                        <button name="block" class="btn btnMenu btn-primary">
+                            Block Card
                         </button>
                     </form>
                 </div>
@@ -90,6 +95,7 @@ if(isset($_POST['lg_out'])){
         AOS.init();
     </script>
     <!-- <script src="assets/js/script.js"></script> -->
+    <script src="assets/js/sessionTimout.js"></script>
 </body>
 
 </html>
