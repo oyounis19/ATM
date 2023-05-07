@@ -26,7 +26,7 @@ class Account {
     public function getBalance() {
         return $this->balance;
     }
-    public function setBalance(float $balance) {
+    public function setBalance($balance) {
         $this->balance = $balance;
     }
     public function getType() {

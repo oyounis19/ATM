@@ -1,31 +1,36 @@
 <?php
 require_once(__DIR__ . '/../Controllers/DBconnector.php');
-require_once(__DIR__."/Account.php");
-require_once(__DIR__."/customer.php");
-require_once (__DIR__."/User.php");
-require_once(__DIR__."/Card.php");
+require_once(__DIR__ . "/Account.php");
+require_once(__DIR__ . "/customer.php");
+require_once(__DIR__ . "/User.php");
+require_once(__DIR__ . "/Card.php");
 class admin extends User
 {
     private  $userName;
     private  $passWord;
     private  $ID;
 
-    public function __construct($user=null, $pass=null,$ID=null,$name=null){
+    public function __construct($user = null, $pass = null, $ID = null, $name = null)
+    {
         $this->userName = $user;
         $this->passWord = $pass;
         $this->ID = $ID;
         $this->name = $name;
-    } 
-    public function getID(){
+    }
+    public function getID()
+    {
         return $this->ID;
     }
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
-    public function getUserName(){
+    public function getUserName()
+    {
         return $this->userName;
     }
-    public function getPassword(){
+    public function getPassword()
+    {
         return $this->passWord;
     }
     public function login($user, $pass)
@@ -39,15 +44,16 @@ class admin extends User
         session_unset();
         session_destroy();
     }
-    public function CreateCard(){
+    public function CreateCard()
+    {
         $card = new Card();
         $card->generateCard();
         $data["ID"] = $card->getId();
         $data["ExpDate"] = $card->getDate();
         $data["CVV"] = $card->getCVV();
         $db = new DBConnector();
-        $result = $db->insert("CreditCard",$data);
-        while(!$result){
+        $result = $db->insert("CreditCard", $data);
+        while (!$result) {
             $this->CreateCard();
         }
         return $card;
@@ -56,7 +62,7 @@ class admin extends User
     public function addCustomer(customer $customer)
     {
         $card = $this->CreateCard();
-        $hashedPIN = hash("sha256",$customer->getPin());
+        $hashedPIN = hash("sha256", $customer->getPin());
 
         $data["FirstName"] = $customer->getFirstName();
         $data["LastName"] = $customer->getLastName();
@@ -71,15 +77,15 @@ class admin extends User
         $data["CardID"] = $card->getId();
 
         $db = new DBConnector();
-        $result = $db->insert("User",$data);
-        if(!$result)
+        $result = $db->insert("User", $data);
+        if (!$result)
             return false;
 
         $account = new Account();
         $account->setType("Current");
 
-        $result = $this->createAccount($account,$customer);
-        if(!$result)
+        $result = $this->createAccount($account, $customer);
+        if (!$result)
             return false;
 
         return true;
@@ -87,7 +93,7 @@ class admin extends User
 
     public function editCustomer(customer $customer)
     {
-        $hashedPIN = hash("sha256",$customer->getPin());
+        $hashedPIN = hash("sha256", $customer->getPin());
 
         $data["Email"] = $customer->getEmail();
         $data["Street"] = $customer->getStreet();
@@ -98,7 +104,7 @@ class admin extends User
         $data["PhoneNO"] = $customer->getPhoneNO();
 
         $db = new DBConnector();
-        $result = $db->update("User",$data,"SSN=?",array($customer->getSSN()));
+        $result = $db->update("User", $data, "SSN=?", array($customer->getSSN()));
         return $result;
     }
     public function deleteCustomer($customerSNN)
@@ -125,17 +131,21 @@ class admin extends User
     public function editAccount(Account $account)
     {
         $db = new DBconnector();
-        $data["Balance"] = $account->getBalance();
-        $data["State"] = $account->getState();
-        $data["Type"] = $account->getType();
-        $result = $db->update("Account", $data, "ID=?", array($account->getId()));
-        return $result;
+        if ($account->getBalance() != -1) {
+            $data["Balance"] = $account->getBalance();
+        }
+
+        if ($account->getType() != "Same") {
+            $data["Type"] = $account->getType();
+        }
+        $ok = $db->update("Account", $data, "ID=?", array($account->getId()));
+        return $ok;
     }
 
     public function CreditCardState(Card $cc)
     {
         $db = new DBconnector();
-        $data["State"] = $cc->getState()?"Running" : "Blocked";
+        $data["State"] = $cc->getState() ? "Running" : "Blocked";
         $result = $db->update("CreditCard", $data, "ID=?", array($cc->getId()));
         return $result;
     }
@@ -166,7 +176,7 @@ class admin extends User
     public function createAdmin(Admin $admin)
     {
         $db = new DBconnector();
-        $name = explode(",",$admin->getName());
+        $name = explode(",", $admin->getName());
         $data["FirstName"] = $name[0];
         $data["LastName"] = $name[1];
         $data["UserName"] = $admin->getUserName();

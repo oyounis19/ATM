@@ -81,18 +81,15 @@ public function login(){
             $password = $this->pinVerification($password);
              $result = $this->db->select("Employee", "*" , "UserName=? AND Password=?", array($userName,$password));
             $result1 = $this->db->select("ATM", "*" , "ID=?", array($atmId));
-            if(!$result || $result[0]['Role'] == "Admin"){
-                //echo "PASS OR USER";
+            if(!$result){
+                $_SESSION['errMsg'] = 'Wrong UserName or Password';
                 return false;
             }else if(!$result1){
-                //echo "PASS atm USER";
-                //$_SESSION['$erMssg'] = ['No Matchs For This Atm_Id'];
+                $_SESSION['errMsg'] = "No Matchs For This Atm Id";
                 return false;
-            } else{
-                if(count($result) == 0 || count($result1) == 0){
-                    echo "0 result";
-                    return false;
-                }else{ 
+            } else if($result[0]['Role'] == "Admin"){
+                $_SESSION['errMsg'] = 'You Are Not A Services Technician';
+            }else{
                     $_SESSION['empId'] = $result[0]['ID'];
                     $_SESSION['firstName'] = $result[0]['FirstName'];
                     $_SESSION['lastName'] = $result[0]['LastName'];
@@ -100,9 +97,8 @@ public function login(){
                     $_SESSION['atmId'] = $result1[0]['ID'];
                     $_SESSION['atmBalance'] = $result1[0]['Balance'];
                     $_SESSION['check'] = 0;
-                    header("location:../View/serviceMenu.php");
+                    //header("location:../View/serviceMenu.php");
                     return true;
-                }
             }
     }else {
         return false;
@@ -133,13 +129,14 @@ public function rechargeAtm (){
             $where = 'ID = ?';
             $params = array($_SESSION['atmId']);
             $affected_rows = $this->db->update($table, $data, $where, $params);
+            return $affected_rows;
     }
 }
 
 
 public function checkLoggers(){
     //$this->db = new DBconnector;
-    $result = $this->db->select("Transaction", "AccountID , Type , Date" , "AtmID = ?", array($_SESSION['atmId']));
+    $result = $this->db->select("Transaction", "*" , "AtmID = ?", array($_SESSION['atmId']));
     return $result;
 }
 
