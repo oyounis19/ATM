@@ -6,18 +6,72 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 class Customer extends user
 {
-    private string $SSN;
-    private string $FirstName;
-    private string $LastName;
-    private string $PIN;
-    private string $Fingerprint;
-    private string $Street;
-    private string $Area;
-    private string $City;
-    private string $Email;
-    private string $CardID;
-    private string $phoneNO;
+    private  $SSN;
+    private  $FirstName;
+    private  $LastName;
+    private  $PIN;
+    private  $Fingerprint;
+    private  $Street;
+    private  $Area;
+    private  $City;
+    private  $Email;
+    private  $CardID;
+    private  $phoneNO;
     private $db;
+    public function setSSN($SSN)
+    {
+        $this->SSN = $SSN;
+    }
+
+    public function setFirstName($FirstName)
+    {
+        $this->FirstName = $FirstName;
+    }
+
+    public function setLastName($LastName)
+    {
+        $this->LastName = $LastName;
+    }
+
+    public function setPIN($PIN)
+    {
+        $this->PIN = $PIN;
+    }
+
+    public function setFingerprint($Fingerprint)
+    {
+        $this->Fingerprint = $Fingerprint;
+    }
+
+    public function setStreet($Street)
+    {
+        $this->Street = $Street;
+    }
+
+    public function setArea($Area)
+    {
+        $this->Area = $Area;
+    }
+
+    public function setCity($City)
+    {
+        $this->City = $City;
+    }
+
+    public function setEmail($Email)
+    {
+        $this->Email = $Email;
+    }
+
+    public function setCardID($CardID)
+    {
+        $this->CardID = $CardID;
+    }
+
+    public function setphoneNO($phoneNO)
+    {
+        $this->phoneNO = $phoneNO;
+    }
     public function getId()
     {
         return $this->CardID;
@@ -105,18 +159,18 @@ class Customer extends user
     }
     public function login($id, $pass)
     {
-        $id = $this->validate($id);
-        $hashed_password = $this->pinVerification($pass);
-        $result = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_password));
+        $id          = $this->validate($id);
+        $hashed_pass = $this->pinVerification($pass);
+        $result      = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_pass));
         if ($result) {
-            $Block = $this->db->select("CreditCard", "State", "ID=?", array($id));
+            $Block   = $this->db->select("CreditCard", "State", "ID=?", array($id));
             if ($Block[0]['State'] == "Blocked") {
                 return -1; //Blocked
             }
             //SetVariables
             //sessions
             $this->SetVariables($result);
-            $this->setSessions();
+            $this->setSessions($result);
             return 1; //DONE
         } else {
             return 0; //Not in DB
@@ -125,22 +179,22 @@ class Customer extends user
     public function FingerprintValidation()
     {
         $target_file1 = $_FILES['image']["tmp_name"];
-        $hash1 = md5_file($target_file1);
-        $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
+        $hash1        = md5_file($target_file1);
+        $result       = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
         if ($result) {
             // check if Card is blocked or not
-            $cardid = $result[0]['CardID'];
-            $Block = $this->db->select("CreditCard", "State", "ID=?", array($cardid));
+            $cardid   = $result[0]['CardID'];
+            $Block    = $this->db->select("CreditCard", "State", "ID=?", array($cardid));
             if ($Block[0]['State'] == "Blocked") {
-                return -1;
+                return -1; // card is blocled then not logged in 
             }
             //SetVariables
             //sessions
             $this->SetVariables($result);
-            $this->setSessions();
-            return 1;
+            $this->setSessions($result);
+            return 1; // Done
         } else {
-            return 0;
+            return 0; // not in DB
         }
     }
     public function logOut($msg = null)
@@ -148,7 +202,7 @@ class Customer extends user
         echo $msg;
         session_unset();
         session_destroy();
-        $refresh_delay = 2; // 3 seconds delay
+        $refresh_delay = 1;
         $redirect_url = "index.php";
         header("refresh:$refresh_delay;url=$redirect_url");
         exit();
@@ -156,26 +210,26 @@ class Customer extends user
     public function resetPIN($pass1, $pass2, $CardID)
     {
         if (empty($pass1) or empty($pass2)) {
-            return 1;
+            return 1; // empty password field
         } else {
             if ($pass1 != $pass2) {
-                return 2;
+                return 2; // fields not matching
             } else {
                 $hashed_password = $this->pinVerification($pass1);
-                $table = 'User';
-                $data = array('Pin' => $hashed_password);
-                $where = 'CardID =?';
+                $table  = 'User';
+                $data   = array('Pin' => $hashed_password);
+                $where  = 'CardID =?';
                 $params = array($CardID);
                 $affected_rows = $this->db->update($table, $data, $where, $params);
-                return 3;
+                return 3; // pin changed succesfully
             }
         }
     }
     public function blockcard($CardID)
     {
-        $table = 'CreditCard';
-        $data = array('State' => 2);
-        $where = 'ID =?';
+        $table  = 'CreditCard';
+        $data   = array('State' => 2);
+        $where  = 'ID =?';
         $params = array($CardID);
         $affected_rows = $this->db->update($table, $data, $where, $params);
         return $affected_rows;
@@ -188,11 +242,11 @@ class Customer extends user
     // this function is called if user choose Account from his Accounts, it will take account_id
     public function chooseAccount($account_id)
     {
-        $result = $this->db->select("Account", "ID,Balance,State,Type", "ID=?", array($account_id));
+        $result                 = $this->db->select("Account", "ID,Balance,State,Type", "ID=?", array($account_id));
         $_SESSION['account_id'] = $result[0]['ID'];
-        $_SESSION['balance'] = $result[0]['Balance'];
-        $_SESSION['state'] = $result[0]['State'];
-        $_SESSION['type'] = $result[0]['Type'];
+        $_SESSION['balance']    = $result[0]['Balance'];
+        $_SESSION['state']      = $result[0]['State'];
+        $_SESSION['type']       = $result[0]['Type'];
     }
     public function __destruct()
     {
@@ -201,34 +255,35 @@ class Customer extends user
     // this function called two times : if user logged by card or fingerprint
     private function SetVariables($row)
     {
-        $this->SSN = $row[0]['SSN'];
-        $this->CardID = $row[0]['CardID'];
+        $this->SSN         = $row[0]['SSN'];
+        $this->CardID      = $row[0]['CardID'];
         $this->Fingerprint = $row[0]['Fingerprint'];
-        $this->PIN = $row[0]['PIN'];
-        $this->FirstName = $row[0]['FirstName'];
-        $this->LastName = $row[0]['LastName'];
-        $this->Street = $row[0]['Street'];
-        $this->Area = $row[0]['Area'];
-        $this->City = $row[0]['City'];
-        $this->Email = $row[0]['Email'];
+        $this->PIN         = $row[0]['PIN'];
+        $this->FirstName   = $row[0]['FirstName'];
+        $this->LastName    = $row[0]['LastName'];
+        $this->Street      = $row[0]['Street'];
+        $this->Area        = $row[0]['Area'];
+        $this->City        = $row[0]['City'];
+        $this->Email       = $row[0]['Email'];
 
     }
     /* this function called two times : if user logged by card or fingerprint
     and this sessions will be available for all pages not private but this method is the private one
     */
-    private function setSessions()
+    private function setSessions($row)
     {
-        $_SESSION['SSN'] = $this->SSN;
-        $_SESSION['card_id'] = $this->CardID;
-        $_SESSION['fingerpint'] = $this->Fingerprint;
-        $_SESSION['upass'] = $this->PIN;
-        $_SESSION['fName'] = $this->FirstName;
-        $_SESSION['lName'] = $this->LastName;
-        $_SESSION['Street'] = $this->Street;
-        $_SESSION['Area'] = $this->Area;
-        $_SESSION['City'] = $this->City;
-        $_SESSION['Email'] = $this->Email;
+        $_SESSION['SSN']        = $row[0]['SSN'];
+        $_SESSION['card_id']    = $row[0]['CardID'];
+        $_SESSION['fingerpint'] = $row[0]['Fingerprint'];
+        $_SESSION['upass']      = $row[0]['PIN'];
+        $_SESSION['fName']      = $row[0]['FirstName'];
+        $_SESSION['lName']      = $row[0]['LastName'];
+        $_SESSION['Street']     = $row[0]['Street'];
+        $_SESSION['Area']       = $row[0]['Area'];
+        $_SESSION['City']       = $row[0]['City'];
+        $_SESSION['Email']      = $row[0]['Email'];
     }
+
 }
 
 ?>
