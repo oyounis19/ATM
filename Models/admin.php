@@ -118,8 +118,12 @@ class admin extends User
         return $result;
     }
 
-    public function unblockCreditCard()
+    public function CreditCardState(Card $cc)
     {
+        $db = new DBconnector();
+        $data["State"] = $cc->getState()?"Running" : "Blocked";
+        $result = $db->update("CreditCard", $data, "ID=?", array($cc->getId()));
+        return $result;
     }
     public function viewAtmTransactions()
     {
