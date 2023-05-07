@@ -127,6 +127,8 @@
 			if($this->amount > $sender->getBalance())
 				return 0;//Save but denied
 			
+			// if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004
+				$this->state = true;
 			if(!$this->db->update("`Account`", array("Balance"=>$sender->getBalance()-$this->amount),"ID=?", array($sender->getId())))
 				return 1;
 
