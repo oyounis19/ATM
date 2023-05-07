@@ -108,25 +108,40 @@ class Customer extends user
         $id = $this->validate($id);
         $hashed_password = $this->pinVerification($pass);
         $result = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_password));
-        
         if ($result) {
             $Block = $this->db->select("CreditCard", "State", "ID=?", array($id));
-                if ($Block == 'Blocked') {
-                    return -1;//Blocked
-                }
+            if ($Block[0]['State'] == "Blocked") {
+                return -1; //Blocked
+            }
             //SetVariables
-            $this->SetVariables($result);
             //sessions
+            $this->SetVariables($result);
             $this->setSessions();
-            return 1;//DONE
+            return 1; //DONE
         } else {
-            return 0;//Not in DB
+            return 0; //Not in DB
         }
     }
-    public function logOutFirst(){
-        session_start();
-        session_unset();
-        session_destroy();
+    public function FingerprintValidation()
+    {
+        $target_file1 = $_FILES['image']["tmp_name"];
+        $hash1 = md5_file($target_file1);
+        $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
+        if ($result) {
+            // check if Card is blocked or not
+            $cardid = $result[0]['ID'];
+            $Block = $this->db->select("CreditCard", "State", "ID=?", array($cardid));
+            if ($Block[0]['State'] == "Blocked") {
+                return -1;
+            }
+            //SetVariables
+            //sessions
+            $this->SetVariables($result);
+            $this->setSessions();
+            return 1;
+        } else {
+            return 0;
+        }
     }
     public function logOut()
     {
@@ -165,28 +180,6 @@ class Customer extends user
     {
         $result = $this->db->select("Account", "ID , Type , Balance", "SSN=?", array($SSN));
         return $result;
-    }
-    public function FingerprintValidation()
-    {
-        $target_file1 = $_FILES['image']["tmp_name"];
-        $hash1 = md5_file($target_file1);
-        $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
-
-        if ($result) {
-            // check if Card is blocked or not
-            $cardid = $result[0]['CardID'];
-            $Block = $this->db->select("CreditCard", "State", "CardID=?", array($cardid));
-            if ($Block == 'Blocked') {
-                return -1;
-            }
-            //SetVariables
-            $this->SetVariables($result);
-            //sessions
-            $this->setSessions();
-            return 1;
-        } else {
-            return 0;
-        }
     }
     // this function is called if user choose Account from his Accounts, it will take account_id
     public function chooseAccount($account_id)
