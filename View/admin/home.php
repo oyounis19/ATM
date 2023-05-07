@@ -1,9 +1,11 @@
 <?php
 require_once __DIR__ . "/../../Models/admin.php";
+require_once __DIR__ . "/../../Controllers/Reports.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 $userID = "";
 $firstname = "";
 $lastname = "";
@@ -28,6 +30,13 @@ if (isset($_SESSION['userID']) && isset($_SESSION['firstname']) && isset($_SESSI
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
+
+if(isset($_POST["report"])){
+    $admin = new Admin("","",$_SESSION['userID']);
+    $report = new Report();
+    $report->generateAdminPDF($admin);
+}
+
 require_once __DIR__ . "/nav.php";
 require_once(__DIR__ . "/Head.php");
 ?>
@@ -44,6 +53,9 @@ require_once(__DIR__ . "/Head.php");
             </li>
         </ul>
     </div>
+    <form method="post">
+        <input type="submit" name="report" value="Generate Report">
+    </form>
 </section>
 
 <!-- end dashboard  -->

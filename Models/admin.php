@@ -8,10 +8,12 @@ class admin extends User
 {
     private string $userName;
     private string $passWord;
+    private string $ID;
 
-    public function __construct($user, $pass){
+    public function __construct($user, $pass,$ID){
         $this->userName = $user;
         $this->passWord = $pass;
+        $this->ID = $ID;
     } 
     public function login($user, $pass)
     {

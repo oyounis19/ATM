@@ -10,7 +10,7 @@ class Report{
         $this->pdf = new TCPDF('P', 'mm', 'A4');
         $this->db = new DBConnector();
     }
-    public function generateAdminPDF(){
+    public function generateAdminPDF(Admin $admin){
         //remove deafault header and footer
         $this->pdf->setPrintFooter(false);
         $this->pdf->setPrintHeader(false);

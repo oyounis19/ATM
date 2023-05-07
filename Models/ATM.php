@@ -4,10 +4,10 @@ use PHPMailer\PHPMailer\PHPMailer;//like using namespace to make the code more r
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require_once '../Controllers/lib/PHPMailer/src/PHPMailer.php';
-require_once '../Controllers/lib/PHPMailer/src/SMTP.php';
-require_once '../Controllers/lib/PHPMailer/src/Exception.php';
-require_once '../Controllers/DBconnector.php';
+require_once __DIR__ . '/../Controllers/lib/PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/../Controllers/lib/PHPMailer/src/SMTP.php';
+require_once __DIR__ . '/../Controllers/lib/PHPMailer/src/Exception.php';
+require_once __DIR__ . '/../Controllers/DBconnector.php';
 
 class ATM{
     private $ID;
