@@ -1,42 +1,56 @@
 <?php
 /* functions of Customer start from here
  */
-    require_once "../Models/customer.php";
-    $customer=new customer;
-    $customererrmsg = "";
-    $customererrmsgfingerprint = "";
-    /* login function using Credit Card
-    */
+require_once "../Models/customer.php";
+$customer = new customer;
+$customererrmsg = "";
+$customererrmsgfingerprint = "";
+/* login function using Credit Card or Fingerprint 
+ */
+// if you want to session to check login by fingerprint or not go to line @14 & line @30
+if (isset($_POST['lg_in']) or isset($_FILES['image'])) {
+    $value;
+    $Success = false;
+    // session of fingerprint set to zero
+    $_SESSION['fing'] = '0';
     if (isset($_POST['lg_in'])) {
         $cardID = $_POST['card_id'];
         $pass = $_POST['upass'];
-        if ($customer->login($cardID, $pass)) {
-            header("location:Account.php");
-            exit();
+        $value = $customer->login($cardID, $pass);
+        if ($value and $value != 2) {
+            $Success = True;
+        } else if ($value == 2) {
+            $customererrmsg = "<b style='color: white;'> Card is blocked </b>";
         } else {
             $customererrmsg = "<b style='color: white;'> wrong username or password</b>";
         }
-    }
-    /*    login function using Fingerprint
-    */
-    if (isset($_FILES['image'])) {
+    } else if (isset($_FILES['image'])) {
         $value = $customer->FingerprintValidation();
-        if ($value == true) {
-            header("location:Account.php");
-            exit();
+        if ($value and $value != 2) {
+            $Success = True;
+            //session of fingerprint set to 1 if logged by it
+            $_SESSION['fing'] = '1';
+        } else if ($value == 2) {
+            $customererrmsgfingerprint = "<b style='color: white;'> Card is blocked </b>";
         } else {
             $customererrmsgfingerprint = "<b style='color: white;'> Not recognized </b>";
         }
+    }
+    if ($Success) {
+        header("location:Account.php");
+        exit();
+    }
 }
+
 
 /////////////////////////////
 
 /* functions of Service technican start from here
  */
-    require_once (__DIR__."/../Models/servicesTechnican.php");
-    $srvTeq = new servicesTechinican;
-    if (isset($_POST['bLogin'])) {
-        $srvTeq->login();
+require_once(__DIR__ . "/../Models/servicesTechnican.php");
+$srvTeq = new servicesTechinican;
+if (isset($_POST['bLogin'])) {
+    $srvTeq->login();
 }
 ?>
 
@@ -151,9 +165,9 @@
                 </form>
             </div>
         </div>
-            <button id="serviceBTN" name="service" class="btn btn-primary mt-5" pop="true">
-                Service ATM
-            </button>
+        <button id="serviceBTN" name="service" class="btn btn-primary mt-5" pop="true">
+            Service ATM
+        </button>
     </div>
 
     <div class="popup serviceLogin flex-column" pop="true">

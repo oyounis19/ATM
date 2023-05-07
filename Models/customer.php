@@ -64,32 +64,29 @@ class Customer extends user
     {
         return $this->phoneNO;
     }
-    public function setSSN($SSN){
-        $this->SSN = $SSN;
-    }
-    public function __construct($SSN=null,$FirstName=null,$LastName=null,$PIN=null,$Fingerprint=null, $Street=null, $Area=null, $City=null, $Email=null, $CardID=null, $phoneNO=null)
+    public function __construct($SSN = null, $FirstName = null, $LastName = null, $PIN = null, $Fingerprint = null, $Street = null, $Area = null, $City = null, $Email = null, $CardID = null, $phoneNO = null)
     {
-        if($SSN)
+        if ($SSN)
             $this->SSN = $SSN;
-        if($FirstName)
+        if ($FirstName)
             $this->FirstName = $FirstName;
-        if($LastName)
+        if ($LastName)
             $this->LastName = $LastName;
-        if($PIN)
+        if ($PIN)
             $this->PIN = $PIN;
-        if($Fingerprint)
+        if ($Fingerprint)
             $this->Fingerprint = $Fingerprint;
-        if($Street)
+        if ($Street)
             $this->Street = $Street;
-        if($Area)
+        if ($Area)
             $this->Area = $Area;
-        if($City)
+        if ($City)
             $this->City = $City;
-        if($Email)
+        if ($Email)
             $this->Email = $Email;
-        if($CardID)
+        if ($CardID)
             $this->CardID = $CardID;
-        if($phoneNO)
+        if ($phoneNO)
             $this->phoneNO = $phoneNO;
 
         $this->db = new DBConnector;
@@ -99,46 +96,34 @@ class Customer extends user
         $password = hash("sha256", $pass);
         return $password;
     }
+    private function validate($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        $data = str_replace(" ", "", $data);
+        return $data;
+    }
     public function login($id, $pass)
     {
-        function validate($data)
-        {
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            $data = str_replace(" ", "", $data);
-            return $data;
-        }
         if (empty($id) or empty($pass)) {
             return false;
         } else if (isset($id) and isset($pass)) {
-            $id = validate($id);
+            $id = $this->validate($id);
             $hashed_password = $this->pinVerification($pass);
             $result = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_password));
+            $Block = $this->db->select("CreditCard", "State", "CardID=?", array($id));
+            if ($Block == 'Blocked') {
+                return 2;
+            }
             if ($result) {
                 if (count($result) == 0) {
                     return false;
                 } else if ($result) {
-                    $_SESSION['SSN'] = $result[0]['SSN'];
-                    $this->SSN = $result[0]['SSN'];
-                    $_SESSION['card_id'] = $result[0]['CardID'];
-                    $this->CardID = $result[0]['CardID'];
-                    $_SESSION['fingerpint'] = $result[0]['Fingerprint'];
-                    $this->Fingerprint = $result[0]['Fingerprint'];
-                    $_SESSION['upass'] = $result[0]['PIN'];
-                    $this->PIN = $result[0]['PIN'];
-                    $_SESSION['fName'] = $result[0]['FirstName'];
-                    $this->FirstName = $result[0]['FirstName'];
-                    $_SESSION['lName'] = $result[0]['LastName'];
-                    $this->LastName = $result[0]['LastName'];
-                    $_SESSION['Street'] = $result[0]['Street'];
-                    $this->Street = $result[0]['Street'];
-                    $_SESSION['Area'] = $result[0]['Area'];
-                    $this->Area = $result[0]['Area'];
-                    $_SESSION['City'] = $result[0]['City'];
-                    $this->City = $result[0]['City'];
-                    $_SESSION['Email'] = $result[0]['Email'];
-                    $this->Email = $result[0]['Email'];
+                    //SetVariables
+                    $this->SetVariables($result);
+                    //sessions
+                    $this->setSessions();
                     return true;
                 }
             } else {
@@ -180,6 +165,7 @@ class Customer extends user
         $where = 'Card_ID =?';
         $params = array($CardID);
         $affected_rows = $this->db->update($table, $data, $where, $params);
+        return $affected_rows;
     }
     public function accounts($SSN)
     {
@@ -191,36 +177,26 @@ class Customer extends user
         $target_file1 = $_FILES['image']["tmp_name"];
         $hash1 = md5_file($target_file1);
         $result = $this->db->select("User", "*", "Fingerprint=?", array($hash1));
+        $cardid = $result[0]['CardID'];
+        $Block = $this->db->select("CreditCard", "State", "CardID=?", array($cardid));
+        if ($Block == 'Blocked') {
+            return 2;
+        }
         if ($result) {
             if (count($result) == 0) {
                 return false;
             } else if ($result) {
-                $_SESSION['SSN'] = $result[0]['SSN'];
-                $this->SSN = $result[0]['SSN'];
-                $_SESSION['card_id'] = $result[0]['CardID'];
-                $this->CardID = $result[0]['CardID'];
-                $_SESSION['fingerpint'] = $result[0]['Fingerprint'];
-                $this->Fingerprint = $result[0]['Fingerprint'];
-                $_SESSION['upass'] = $result[0]['PIN'];
-                $this->PIN = $result[0]['PIN'];
-                $_SESSION['fName'] = $result[0]['FirstName'];
-                $this->FirstName = $result[0]['FirstName'];
-                $_SESSION['lName'] = $result[0]['LastName'];
-                $this->LastName = $result[0]['LastName'];
-                $_SESSION['Street'] = $result[0]['Street'];
-                $this->Street = $result[0]['Street'];
-                $_SESSION['Area'] = $result[0]['Area'];
-                $this->Area = $result[0]['Area'];
-                $_SESSION['City'] = $result[0]['City'];
-                $this->City = $result[0]['City'];
-                $_SESSION['Email'] = $result[0]['Email'];
-                $this->Email = $result[0]['Email'];
+                //SetVariables
+                $this->SetVariables($result);
+                //sessions
+                $this->setSessions();
                 return true;
             }
         } else {
             return false;
         }
     }
+    // this function is called if user choose Account from his Accounts, it will take account_id
     public function chooseAccount($account_id)
     {
         $result = $this->db->select("Account", "ID,Balance,State,Type", "ID=?", array($account_id));
@@ -232,6 +208,37 @@ class Customer extends user
     public function __destruct()
     {
         $this->db->close();
+    }
+    // this function called two times : if user logged by card or fingerprint
+    private function SetVariables($row)
+    {
+        $this->SSN = $row[0]['SSN'];
+        $this->CardID = $row[0]['CardID'];
+        $this->Fingerprint = $row[0]['Fingerprint'];
+        $this->PIN = $row[0]['PIN'];
+        $this->FirstName = $row[0]['FirstName'];
+        $this->LastName = $row[0]['LastName'];
+        $this->Street = $row[0]['Street'];
+        $this->Area = $row[0]['Area'];
+        $this->City = $row[0]['City'];
+        $this->Email = $row[0]['Email'];
+
+    }
+    /* this function called two times : if user logged by card or fingerprint
+        and this sessions will be available for all pages not private but this method is the private one
+    */
+    private function setSessions()
+    {
+        $_SESSION['SSN'] = $this->SSN;
+        $_SESSION['card_id'] = $this->CardID;
+        $_SESSION['fingerpint'] = $this->Fingerprint;
+        $_SESSION['upass'] = $this->PIN;
+        $_SESSION['fName'] = $this->FirstName;
+        $_SESSION['lName'] = $this->LastName;
+        $_SESSION['Street'] = $this->Street;
+        $_SESSION['Area'] = $this->Area;
+        $_SESSION['City'] = $this->City;
+        $_SESSION['Email'] = $this->Email;
     }
 }
 
