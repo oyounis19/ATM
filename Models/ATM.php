@@ -295,7 +295,7 @@ class ATM{
             <tr>
                 <td colspan=\"2\" class=\"content\">
                     <p>Dear ".$customer->getFirstName() .",</p>
-                    <p>A transaction of type ". $transaction->getType()." of <b>".$transaction->getAmount()."</b> LE on ".$current_date." $current_time occured at ATM with ID: ".$this->ID.".</p>
+                    <p>A transaction of type ". $transaction->getType()." of <b>".$transaction->getAmount()."</b> LE on ".$current_date." $current_time occured at ATM with ID: ".$this->ID." on account with ID: ".$account->getId().".</p>
                     <p>Your current account balance is <b>".$account->getBalance()."</b> LE.</p>				
                     $HTMLstate
                     <p>Thank you for choosing our bank for your financial needs.</p>

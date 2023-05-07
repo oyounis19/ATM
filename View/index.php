@@ -32,7 +32,7 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
         } if ($value == -1) {
             $customererrmsg = "<b style='color: white;'> Card is blocked </b>";
         } else {//0
-            $customererrmsg = "<b style='color: white;'> wrong username or password</b>";
+            $customererrmsg = "<b style='color: white;'> Wrong Credit Card number or PIN</b>";
         }
     } else if (isset($_POST['upload'])) {
         $value = $customer->FingerprintValidation();

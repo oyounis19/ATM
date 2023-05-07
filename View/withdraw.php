@@ -15,12 +15,12 @@ $customer = new Customer($_SESSION['SSN'], $_SESSION['fName'], $_SESSION['lName'
 $sweetAlert = null;
 if(isset($_POST['amount']) && $_POST['amount'] != ''){
     $transaction->setType("Withdraw");
-    $transaction->setAmount( $_POST['amount']);
+    $transaction->setAmount($_POST['amount']);
     $sweetAlert = $transaction->withdraw($account, $atm, $customer);
 
     $sweetAlert === 2 ? $_SESSION['balance'] = $account->getBalance() : null;
 }else if(isset($_POST['sbmtbtn']))
-    echo 'Please enter amount before submitting';
+    $sweetAlert = 4;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,6 +128,14 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
             case 3:
                 $icon = 'error';
                 $message = 'Insufficient ATM balance, please Try another ATM';
+                break;
+            case 4:
+                $icon = 'warning';
+                $message = 'Please enter amount before submitting';
+                break;
+            default:
+                $icon = 'error';
+                $message = 'Something went wrong...';
                 break;
         }
 ?>

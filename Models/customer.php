@@ -148,7 +148,7 @@ class Customer extends user
         echo $msg;
         session_unset();
         session_destroy();
-        $refresh_delay = 2; // 3 seconds delay
+        $refresh_delay = 2; // 2 seconds delay
         $redirect_url = "index.php";
         header("refresh:$refresh_delay;url=$redirect_url");
         exit();

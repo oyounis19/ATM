@@ -1,26 +1,27 @@
 <?php
-require_once __DIR__.'/../Controllers/DBconnector.php';
+ob_start();
 require_once __DIR__.'/../Models/Account.php';
+require_once __DIR__.'/../Models/customer.php';//Starts the sessions
 require_once __DIR__.'/../Models/Transaction.php';
 
-if(isset($_POST['amount'])){
-$sender = new Transaction(112700, 0, "Gold");
-// $reciver = new Account();
-// $transaction = new Transaction();
-// $customer = new Customer();
-// $atm = new ATM();
-$sender ->setAmount($_POST['amount']);
+//Defining Objects
+$account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
+$atm = new ATM();//HARD CODED ATM ID: 1264
+$transaction = new Transaction();
+$customer = new Customer($_SESSION['SSN'], $_SESSION['fName'], $_SESSION['lName'], $_SESSION['upass'],
+                        $_SESSION['fingerpint'], $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],
+                        $_SESSION['Email'], $_SESSION['card_id']);
 
-    // if($sender->deposit($sender , $reciver , $atm , $customer))
-    //     echo "Deposit successfully";// SWEET ALERT 
-    // else
-    //     echo "Try again Later...";//SWEET ALERT
-}
-
+$sweetAlert = null;
+if(isset($_POST['amount']) && $_POST['amount'] != ''){
+    $transaction->setType("Deposit");
+    $transaction->setAmount($_POST['amount']);
+    $sweetAlert = $transaction->deposit($account, $atm, $customer);
+    
+    $sweetAlert? $_SESSION['balance'] = $account->getBalance() : null;
+}else if(isset($_POST['amount']) && $_POST['amount'] == '')//Checked by amount bec. js submits the form not the button
+    $sweetAlert = 2;
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,7 +46,7 @@ $sender ->setAmount($_POST['amount']);
         <div class="screens d-flex">
             <div class="screen deposit">
                 <h2 class="text-white">Deposit</h2>
-                <form action="" class="w-100" id="depositForm" method="post">
+                <form action="#" class="w-100" id="depositForm" method="post">
                     <div class="lds-ring mb-4 loading" style="display:none;">
                         <div></div>
                         <div></div>
@@ -59,13 +60,17 @@ $sender ->setAmount($_POST['amount']);
                         <input type="amount" class="form-control" id="Amount" placeholder="01234 5648 6542 3156" maxlength="5" minlength="2" name="amount">
                         <label for="Amount">Enter Amount</label>
                     </div>
-                    <button type = "submit" class="btn btn-primary w-100 depositBTN">
+                    <button type = "submit" class="btn btn-primary w-100 depositBTN mb-3" name="sbmtbtn">
                         Deposit
                     </button>
                 </form>
+                <a href="menu.php">
+                    <img src="assets/img/icons8-back-64.png" alt="Back button">
+                    <br>
+                    <b>Back</b>
+                </a>
             </div>
         </div>
-
     </div>
 
 
@@ -77,7 +82,61 @@ $sender ->setAmount($_POST['amount']);
         AOS.init();
     </script>
     <script src="assets/js/deposit.js"></script>
-    <script src="assets/js/sessionTimout.js"></script>
+    <!-- <script src="assets/js/sessionTimout.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+<?php
+if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2){
+    if($sweetAlert){
+        
+    }else{
+        
+    }
+    switch($sweetAlert){
+        case 0:
+            $icon = 'error';
+            $message = 'Deposit Failed, Try again';
+            break;
+        case 1:
+            $icon = 'success';
+            $message = 'Deposit completed Successfully';
+            break;
+        case 2:
+            $icon = 'warning';
+            $message = 'Please enter amount before submitting';
+            break;
+        default:
+            $icon = 'error';
+            $message = 'Something went wrong...';
+            break;
+    }
+?>
+    <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        })
 
+        Toast.fire({
+        icon: '<?php echo $icon; ?>',
+        title: '<?php echo $message; ?>'
+        })
+    </script>
+<?php
+    if($sweetAlert === 1){
+
+        $refresh_delay = 3; // 3 seconds delay
+        $redirect_url = "menu.php";
+        
+        header("refresh:$refresh_delay;url=$redirect_url");
+        ob_end_flush();//Sends the HTML to the browser
+    }
+}?>
 </html>

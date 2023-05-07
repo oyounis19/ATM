@@ -57,7 +57,7 @@ if (isset($_SESSION['SSN'])) {
                             <div class="accountInfo">
                                 <ul>
                                     <li>
-                                        <p>Account NO. : <span>
+                                        <p>Account ID : <span>
                                                 <?php echo $result[$i]['ID'] ?>
                                             </span></p>
                                     </li>
@@ -65,7 +65,7 @@ if (isset($_SESSION['SSN'])) {
                                         <p>Account Type : <span>
                                                 <?php echo $result[$i]['Type'] ?>
                                             </span></p>
-                                        <p>Balnace : <span>
+                                        <p>Balance : <span>
                                                 <?php echo $result[$i]['Balance'] ?>
                                             </span></p>
                                     </li>

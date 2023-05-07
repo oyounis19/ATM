@@ -111,12 +111,20 @@ class Transaction {
 	}
 
 	public function deposit(Account $account, ATM $atm, Customer $customer) {//Composition required
+		//if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004{
+		//	$this->state = false;
+		//	$this->saveTransaction($customer, $account, $atm);
+		//	return false;
+		// }
+		$this->state = 1;//Fraud not detected
 		if(!$this->db->update("`Account`", array("Balance"=>$account->getBalance() + $this->amount), "ID=?", array($account->getid())))
-			return false;
-		//add the ATM balance
-		$atm->setBalance($atm->getBalance()+$this->amount);
+			return 0;
+
+		$this->db->update("`ATM`", array("Balance"=>$atm->getBalance() + $this->amount),"ID=?", array($atm->getID()));
+		$atm->setBalance($atm->getBalance() + $this->amount);
+		$account->setBalance($account->getBalance() + $this->amount);
 		$this->saveTransaction($customer, $account, $atm);
-		return true;
+		return 1;
 	}
 
 	/**
@@ -124,7 +132,11 @@ class Transaction {
 	 * @return int 0 (The balance is insufficient), 1 (Error in DB), 2 (Withdrawal completed), 3(Insufficient ATM balance)
 	 */
 	public function withdraw(Account $account, ATM $atm , Customer $customer){//Composition required
-		//VERIFICATION goes here
+		//if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004{
+		//	$this->state = false;
+		//	$this->saveTransaction($customer, $account, $atm);
+		//	return false;
+		// }
 		if($this->amount > $account->getBalance()){//Insufficient Account Balance
 			$this->state = false;
 			$this->saveTransaction($customer, $account, $atm);
@@ -134,7 +146,7 @@ class Transaction {
 			return 3;
 		// if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004
 		$this->state = true;
-		if(!$this->db->update("`Account`", array("Balance"=>$account->getBalance()-$this->amount),"ID=?", array($account->getId())))
+		if(!$this->db->update("`Account`", array("Balance"=>$account->getBalance() - $this->amount),"ID=?", array($account->getId())))
 			return 1;
 
 		$this->db->update("`ATM`", array("Balance"=>$atm->getBalance()-$this->amount),"ID=?", array($atm->getID()));

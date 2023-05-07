@@ -3,16 +3,19 @@ const amount = document.querySelector('#Amount');
 const verifyingCashDiv = document.querySelector('.verifyingCash');
 
 depositForm.addEventListener('submit', (e) => {//Waits 5 seconds before submitting form to show "veryfing cash"
-    e.preventDefault();
-    verifyingCashDiv.style.display = 'block';
-    document.querySelector('.loading').style.display = 'inline-block';
-    setTimeout(() => {
-        verifyingCashDiv.style.display = 'none';
-        document.querySelector('.loading').style.display = 'none';
+    if(amount.value !== ''){
 
-        //SWEET ALERTS//
-        depositForm.submit();
-    }, 5000); // 5 seconds
+        e.preventDefault();
+        verifyingCashDiv.style.display = 'block';
+        document.querySelector('.loading').style.display = 'inline-block';
+        setTimeout(() => {
+            verifyingCashDiv.style.display = 'none';
+            document.querySelector('.loading').style.display = 'none';
+            
+            //SWEET ALERTS//
+            depositForm.submit();
+        }, 3000); // 5 seconds
+    }
 });
 
 
