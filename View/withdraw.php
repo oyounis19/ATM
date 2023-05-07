@@ -1,22 +1,30 @@
 <?php
-require_once '../Models/Account.php';
-require_once '../Models/customer.php';
+require_once __DIR__.'/../Models/Account.php';
+require_once __DIR__.'/../Models/customer.php';//Starts the sessions
+require_once __DIR__.'/../Models/Transaction.php';
 
-$customer = new Customer();
+$account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
+$atm = new ATM(1264, 'Cairo', 'Arab elmaadi', 'El Maadi', 83250);//HARD CODED ATM VALUES
+$customer = new Customer($_SESSION['SSN'], $_SESSION['fName'], $_SESSION['lName'], $_SESSION['upass'],
+                        $_SESSION['fingerpint'], $_SESSION['Street'],  $_SESSION['Area'], $_SESSION['City'],
+                        $_SESSION['Email'], $_SESSION['card_id']);
 
-
-// $account = new Account(1545105165, 203154, "Gold");
-// if(isset($_POST['amount'])){
-//     if($account->withdraw($_POST['amount'])){
-//         $account->setBalance(203154-$_POST['amount']);
-//         echo "Withdrawal was successful";//SWEET ALERT
-//     }
-//     else
-//         echo "Withdrawal Failed";//SWEET ALERT
-// }
+// if(isset($_POST['amount']) && $_POST['amount'] !=""){
+if(isset($_POST['amount'])){
+    if($_POST['amount'] == '')
+        echo 'Please enter amount before submitting';
+    else{
+        $transaction = new Transaction("Withdraw", $_POST['amount']);
+        $done = $transaction->withdraw($account, null, $atm, $customer);
+        if(0 == $done)
+        echo "Balance Insufficient";//SWEET ALERT
+        else if(1 == $done)//Error in db
+        echo "Withdrawal Failed, Try again later";//SWEET ALERT 
+        else
+        echo "Withdrawal completed Successfully";//SWEET ALERT
+    }
+}
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +60,7 @@ $customer = new Customer();
 
             <div class="screen menu">
                 <div class="buttons d-flex flex-wrap justify-content-between">
-                    <form action="" class="w-100" method="post">
+                    <form action="#" class="w-100" method="post">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="Amount" minlength="2" maxlength="5"
                                 placeholder="01234 5648 6542 3156" name="amount">
@@ -76,7 +84,7 @@ $customer = new Customer();
                         <div class="btn btnMenu withdrawBTN" value="2000">
                             2000 LE
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 py-3 mt-4">
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-4" name="sbmtbtn">
                             Withdraw
                         </button>
                     </form>

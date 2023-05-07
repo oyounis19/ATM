@@ -66,18 +66,29 @@ class Customer extends user
     }
     public function __construct($SSN=null,$FirstName=null,$LastName=null,$PIN=null,$Fingerprint=null, $Street=null, $Area=null, $City=null, $Email=null, $CardID=null, $phoneNO=null)
     {
-        if($SSN && $FirstName && $LastName && $PIN && $Fingerprint && $Street && $Area && $City && $Email && $CardID && $phoneNO){
+        if($SSN)
             $this->SSN = $SSN;
-            $this->CardID = $CardID;
-            $this->Fingerprint = $Fingerprint;
-            $this->PIN = $PIN;
+        if($FirstName)
             $this->FirstName = $FirstName;
+        if($LastName)
             $this->LastName = $LastName;
+        if($PIN)
+            $this->PIN = $PIN;
+        if($Fingerprint)
+            $this->Fingerprint = $Fingerprint;
+        if($Street)
             $this->Street = $Street;
+        if($Area)
             $this->Area = $Area;
+        if($City)
             $this->City = $City;
+        if($Email)
             $this->Email = $Email;
-        }
+        if($CardID)
+            $this->CardID = $CardID;
+        if($phoneNO)
+            $this->phoneNO = $phoneNO;
+
         $this->db = new DBConnector;
     }
     private function pinVerification($pass)

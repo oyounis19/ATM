@@ -17,12 +17,21 @@ class ATM{
     private $balance;
     private $db;
 
-    public function __construct($city = null, $street = null, $area = null, $balance = null){
+    public function __construct($id = null, $city = null, $street = null, $area = null, $balance = null){
         if($city){
             $this->city = $city;
+        }
+        if($street){
             $this->street = $street;
+        }
+        if($area){
             $this->area = $area;
+        }
+        if($balance){
             $this->balance = $balance;
+        }
+        if($id){
+            $this->ID = $id;
         }
         $this->db = new DBConnector();
     }
@@ -284,7 +293,7 @@ class ATM{
             <!-- Content -->
             <tr>
                 <td colspan=\"2\" class=\"content\">
-                    <p>Dear ".$customer->getName() .",</p>
+                    <p>Dear ".$customer->getFirstName() .",</p>
                     <p>A transaction of type". $transaction->getType()." of <b>".$transaction->getAmount()."</b> LE on ".$current_date." $current_time occured at ATM with ID: ".$this->ID.".</p>
                     <p>Your current account balance is <b>".$account->getBalance()."</b> LE.</p>				
                     $HTMLstate

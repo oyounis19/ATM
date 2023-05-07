@@ -13,13 +13,10 @@
 		private $db;
 
 
-		public function __construct($type = null, $date = null, $amount = null, $id = null, $state = null){
-			if($type && $date && $amount && $id && $state){
+		public function __construct($type = null, $amount = null){
+			if($type && $amount){
 				$this->type = $type;
-				$this->date = $date;
 				$this->amount = $amount;
-				$this->id = $id;
-				$this->state = $state;
 			}
 			$this->db = new DBConnector();
 		}
@@ -74,14 +71,17 @@
 		}
 
 
-		public function saveTransaction(Customer $customer, Account $sender, ATM $atm , Account $reciever){
-			if (!($this->type == "Transfer")) {
-				$reciever->getId() == null;
-			}
-			$ok = $this->db ->insert("`Transaction`",array("AccountID"=>$sender->getId(),"SSN"=>$customer->getSSN(),"AtmID"=>$atm->getID(),
-									"Amount"=>$this->amount,"Date"=>"now()","State"=>$this->state,"Type"=>$this->type,
+		private function saveTransaction(Customer $customer, Account $sender, ATM $atm , Account $reciever = null){
+			$ok = 0;
+			$currentDate = date("Y-m-d");
+			if($reciever){//Transfer Transaction
+				$ok = $this->db ->insert("`Transaction`",array("AccountID"=>$sender->getId(),"SSN"=>$customer->getSSN(),"AtmID"=>$atm->getID(),
+									"Amount"=>$this->amount,"Date"=>"$currentDate","State"=>$this->state,"Type"=>$this->type,
 									"receiverId"=>$reciever->getId()));
-			
+			}else{//Deposit or Withdraw
+				$ok = $this->db ->insert("`Transaction`",array("AccountID"=>$sender->getId(),"SSN"=>$customer->getSSN(),"AtmID"=>$atm->getID(),
+										"Amount"=>$this->amount,"Date"=>"$currentDate","State"=>$this->state,"Type"=>$this->type));
+			}
 			if($ok) 
 				$atm->notifyUser($customer, $this, $sender);
 		} 
@@ -122,7 +122,7 @@
 		 * @param $amount The Withdraw amount
 		 * @return int 0 (The balance is insufficient), 1 (Error in DB), 2 (Transfer is done)
 		 */
-		public function withdraw(Account $sender, Account $reciever ,ATM $atm , Customer $customer){//Composition required
+		public function withdraw(Account $sender, Account $reciever = null ,ATM $atm , Customer $customer){//Composition required
 			//VERIFICATION goes here
 			if($this->amount > $sender->getBalance())
 				return 0;//Save but denied
@@ -130,8 +130,10 @@
 			if(!$this->db->update("`Account`", array("Balance"=>$sender->getBalance()-$this->amount),"ID=?", array($sender->getId())))
 				return 1;
 
-				$atm->setBalance($atm->getBalance()-$this->amount);
-				$this->saveTransaction($customer, $sender, $atm , $reciever);
+			// $this->db->update("`ATM`", array("Balance"=>$atm->getBalance()-$this->amount),"ID=?", array($atm->getID()));
+
+			// $atm->setBalance($atm->getBalance()-$this->amount);
+			$this->saveTransaction($customer, $sender, $atm , $reciever);
 			return 2;
 		}
 

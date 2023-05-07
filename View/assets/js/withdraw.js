@@ -1,5 +1,5 @@
 const withdrawButtons = document.querySelectorAll('.withdrawBTN');
-const amountInput = document.querySelector('#Amount');
+let amountInput = document.querySelector('#Amount');
 
 withdrawButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -7,7 +7,7 @@ withdrawButtons.forEach(button => {
     });
   });
 
-inputAmount.addEventListener('keydown', (event) => {
+  amountInput.addEventListener('keydown', (event) => {
     // Allow: backspace, delete, tab, escape, enter and .
     if (event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' || event.key === 'Escape' || event.key === 'Enter') {
         return;
