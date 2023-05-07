@@ -1,22 +1,21 @@
 <?php
-/* functions of Customer start from here
-*/
 if(session_status() !== PHP_SESSION_ACTIVE)//If session is closed open it to destroy it
-    session_start();
+session_start();
 
 if (session_status() === PHP_SESSION_ACTIVE) {//session is open
     $_SESSION = array();//remove all data in the session
     session_unset();
     session_destroy();//destroy the previous session when logging out or first time in website
 }
+/* functions of Customer start from here
+*/
 require_once "../Models/customer.php";//Actual session starts
 $customer = new customer;
-
 $customererrmsg = "";
 $customererrmsgfingerprint = "";
-//login function using Credit Card or Fingerprint 
 
-// if you want to session to check login by fingerprint or not go to line @14 & line @30
+//login function using Credit Card or Fingerprint 
+// if you want to check login by fingerprint or not go to line @14 & line @30
 if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']))) {
     $value;
     $Success = false;

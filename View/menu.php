@@ -5,7 +5,8 @@ require_once "../Models/customer.php";//Starts session
 $customer=new customer();
 
 if(isset($_POST['lg_out'])){
-    $customer->logOut();
+    $msg="<b> redirecting to home page </b>";
+    $customer->logOut($msg);
     
 }
 if(isset($_POST['block'])){
@@ -30,7 +31,6 @@ if(isset($_POST['block'])){
 </head>
 
 <body>
-
     <div class="insert h-100 d-flex align-items-center justify-content-center">
         <div class="screens bg d-flex">
             <div class="screen info">
