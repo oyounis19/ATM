@@ -143,11 +143,15 @@ class Customer extends user
             return 0;
         }
     }
-    public function logOut()
+    public function logOut($msg = null)
     {
+        echo $msg;
         session_unset();
         session_destroy();
-        header("location:index.php");
+        $refresh_delay = 2; // 3 seconds delay
+        $redirect_url = "index.php";
+        header("refresh:$refresh_delay;url=$redirect_url");
+        exit();
     }
     public function resetPIN($pass1, $pass2, $CardID)
     {

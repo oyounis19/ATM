@@ -12,7 +12,8 @@ if (isset($_POST['change'])) {
     } else if ($value == 2) {
         $errmsg = "<b style='color: white;'>  Not match password </b>";
     } else if ($value == 3) {
-        $customer->logOut();
+        $msg="<b>Pin changed Successfully, please wait</b>"; //SWEET ALERT
+        $customer->logOut($msg);
     }
 }
 ?>
