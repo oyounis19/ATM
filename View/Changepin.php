@@ -75,7 +75,9 @@ if (isset($_POST['change'])) {
     <script>
         AOS.init();
     </script>
-    <script src="./assets/js/transfer.js"></script>
+    <script src="assets/js/transfer.js"></script>
+    <script src="assets/js/sessionTimout.js"></script>
+
 </body>
 
 </html>

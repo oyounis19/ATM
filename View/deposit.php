@@ -78,6 +78,7 @@ $sender ->setAmount($_POST['amount']);
         AOS.init();
     </script>
     <script src="assets/js/deposit.js"></script>
+    <script src="assets/js/sessionTimout.js"></script>
 </body>
 
 </html>

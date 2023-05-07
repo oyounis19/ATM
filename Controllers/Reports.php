@@ -92,4 +92,3 @@ class Report{
         $this->pdf->Output();
     }
 }
-?>

@@ -1,14 +1,15 @@
 <?php 
-/* functions of Customer start from here
-*/
-require_once "../Models/customer.php";
+//functions of Customer start from here
+require_once "../Models/customer.php";//Starts session
 
 $customer=new customer();
-// $account = new Account();
-// $atm = new ATM();
-// $card = new Card();
 
 if(isset($_POST['lg_out'])){
+    $customer->logOut();
+    // $_SESSION['last_activity'] = time();
+}
+if(isset($_POST['block'])){
+    $customer->blockcard($_SESSION['card_id']);
     $customer->logOut();
 }
 ?>
@@ -43,12 +44,17 @@ if(isset($_POST['lg_out'])){
 
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $_SESSION['account_id'] ?>
                         </li>
-
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3">
-                            <a href="Changepin.php">
-                                Change PIN
-                            </a>
-                        </li>
+                        <?php
+                        if(isset($_SESSION['fing']) && $_SESSION['fing'] == 1){//User blocks card if he is logged in by fingerprint
+                        ?>
+                            <li class="text-white d-flex flex-column text-start fs-5 mb-3">
+                                <a href="Changepin.php">
+                                    Change PIN
+                                </a>
+                            </li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -68,7 +74,16 @@ if(isset($_POST['lg_out'])){
                         Transaction History
                     </a>
                     <form action="" style="width: 100%;" method="post">
-                        <button name="lg_out" href="index.php" class="btn btnMenu btn-primary">
+                    <?php
+                        if(isset($_SESSION['fing']) && $_SESSION['fing'] == 1){//User blocks card if he is logged in by fingerprint
+                        ?>
+                            <button name="block" class="btn btnMenu btn-primary" id ="blockCard">
+                                Block Card
+                            </button>
+                        <?php
+                        }
+                        ?>
+                        <button name="lg_out" class="btn btnMenu btn-primary"style="font-weight: bold;">
                             logOut
                         </button>
                     </form>
@@ -85,6 +100,7 @@ if(isset($_POST['lg_out'])){
         AOS.init();
     </script>
     <!-- <script src="assets/js/script.js"></script> -->
+    <script src="assets/js/sessionTimout.js"></script>
 </body>
 
 </html>

@@ -15,13 +15,23 @@ if(isset($_POST['amount'])){
         echo 'Please enter amount before submitting';
     else{
         $transaction = new Transaction("Withdraw", $_POST['amount']);
-        $done = $transaction->withdraw($account, null, $atm, $customer);
+        $done = $transaction->withdraw($account, null, $atm, $customer);//ATM balance decrease fix && notification balance fix
         if(0 == $done)
         echo "Balance Insufficient";//SWEET ALERT
         else if(1 == $done)//Error in db
         echo "Withdrawal Failed, Try again later";//SWEET ALERT 
-        else
-        echo "Withdrawal completed Successfully";//SWEET ALERT
+        else{
+            echo "Withdrawal completed Successfully";//SWEET ALERT
+
+            $account->setBalance($account->getBalance() - $_POST['amount']);
+            $_SESSION['balance'] = $account->getBalance();
+
+            $refresh_delay = 3; // 3 seconds delay
+            $redirect_url = "menu.php";
+
+            header("refresh:$refresh_delay;url=$redirect_url");
+            exit();
+        }
     }
 }
 ?>
@@ -102,6 +112,7 @@ if(isset($_POST['amount'])){
         AOS.init();
     </script>
     <script src="assets/js/withdraw.js"></script>
+    <script src="assets/js/sessionTimout.js"></script>
 </body>
 
 </html>

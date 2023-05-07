@@ -139,6 +139,7 @@ $transactions = $tr->viewTransactionHistory($account);
         AOS.init();
     </script>
     <script src="assets/js/logger.js"></script>
+    <script src="assets/js/sessionTimout.js"></script>
 </body>
 
 </html>

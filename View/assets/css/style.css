@@ -286,3 +286,10 @@ span[value="Approved"]{
 span[value="Denied"]{
     color: rgb(255, 0, 0);
 }
+
+#blockCard{
+    color: crimson;
+    background-color: bisque;
+    font-weight: bold;
+    border-width: 3px;
+}
