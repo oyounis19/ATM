@@ -85,10 +85,15 @@ class admin extends User
         return true;
     }
 
-    public function editCustomer(customer $customer)
+    public function editCustomer(customer $customer , $hash)
     {
-        $hashedPIN = hash("sha256",$customer->getPin());
-
+        if($hash){
+            $hashedPIN = hash("sha256",$customer->getPin());
+        }
+        else{
+            $hashedPIN = $customer->getPin();
+        }
+        
         $data["Email"] = $customer->getEmail();
         $data["Street"] = $customer->getStreet();
         $data["Area"] = $customer->getArea();

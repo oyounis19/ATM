@@ -13,8 +13,9 @@ if(isset($_FILES['fprint'])){
 
 if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) && isset($_POST["street"]) && isset($_POST["area"])
 && isset($_POST["city"]) && isset($_POST["SSN"]) &&  isset($_POST["PIN"]) && $_POST["PhoneNum"] && $hashedFingerPrint){
+    
     $customer = new customer($_POST["SSN"],$_POST["fname"],$_POST["lname"],$_POST["PIN"],$hashedFingerPrint,
-    $_POST["street"],$_POST["area"],$_POST["city"],$_POST["email"],$_POST["PhoneNum"]);
+    $_POST["street"],$_POST["area"],$_POST["city"],$_POST["email"],"",$_POST["PhoneNum"]);
     $admin = new Admin();
     $result = $admin->addCustomer($customer);
     if ($result) 
