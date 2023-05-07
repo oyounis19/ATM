@@ -67,6 +67,7 @@ class admin extends User
         $data["SSN"] = $customer->getSSN();
         $data["PIN"] = $hashedPIN;
         $data["Fingerprint"] = $customer->getFingerprint();
+        $data["PhoneNO"] = $customer->getPhoneNO();
         $data["CardID"] = $card->getId();
 
         $db = new DBConnector();
@@ -84,8 +85,21 @@ class admin extends User
         return true;
     }
 
-    public function editCustomer()
+    public function editCustomer(customer $customer)
     {
+        $hashedPIN = hash("sha256",$customer->getPin());
+
+        $data["Email"] = $customer->getEmail();
+        $data["Street"] = $customer->getStreet();
+        $data["Area"] = $customer->getArea();
+        $data["City"] = $customer->getCity();
+        $data["PIN"] = $hashedPIN;
+        $data["Fingerprint"] = $customer->getFingerprint();
+        $data["PhoneNO"] = $customer->getPhoneNO();
+
+        $db = new DBConnector();
+        $result = $db->update("User",$data,"SSN=?",array($customer->getSSN()));
+        return $result;
     }
     public function deleteCustomer($customerSNN)
     {
