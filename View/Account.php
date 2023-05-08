@@ -16,7 +16,12 @@ if (isset($_SESSION['SSN'])) {
         header("location:menu.php");
     }
 }else{
-    $msg = "<b style='color: white;'> Sorry you Don't have any Accounts yet </b>";
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 2; // 2 seconds delay
+    $redirect_url = "index.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
 }
 
 ?>

@@ -1,5 +1,13 @@
 <?php
 require_once "../Models/customer.php";
+if(!isset($_SESSION['SSN'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 2; // 2 seconds delay
+    $redirect_url = "index.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 $errmsg = "";
 $customer = new customer;
 if (isset($_POST['change'])) {
@@ -46,19 +54,19 @@ if (isset($_POST['change'])) {
                     <div class="form-floating mb-3">
                         <input type="password" name="pass1" class="form-control input" maxlength="4" minlength="4"
                             placeholder="Password">
-                        <label for="floatingPassword">Enter your new pin code</label>
+                        <label for="floatingPassword">Enter your new PIN code</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="password" name="pass2" class="form-control input" maxlength="4" minlength="4"
                             placeholder="Password">
-                        <label for="floatingPassword">Retype pin code</label>
+                        <label for="floatingPassword">Retype PIN code</label>
                     </div>
                     <button name="change" class="btn btn-primary w-100">
                         Change PIN
                     </button>
                     <div class="popup">
                         <img src="/View/assets/img/404-tick.png">
-                        <h2>Password is successfully updated</h2>
+                        <h2>PIN is successfully updated</h2>
                         <button type="button">OK</button>
                     </div>
                     <?php echo $errmsg ?>

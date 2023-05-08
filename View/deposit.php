@@ -4,6 +4,14 @@ require_once __DIR__.'/../Models/Account.php';
 require_once __DIR__.'/../Models/customer.php';//Starts the sessions
 require_once __DIR__.'/../Models/Transaction.php';
 
+if(!isset($_SESSION['SSN'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 2; // 2 seconds delay
+    $redirect_url = "index.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 //Defining Objects
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
 $atm = new ATM();//HARD CODED ATM ID: 1264
@@ -19,8 +27,17 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
     $sweetAlert = $transaction->deposit($account, $atm, $customer);
     
     $sweetAlert? $_SESSION['balance'] = $account->getBalance() : null;
-}else if(isset($_POST['amount']) && $_POST['amount'] == '')//Checked by amount bec. js submits the form not the button
+}
+else if(isset($_POST['amount']) && $_POST['amount'] == '')//Checked by amount bec. js submits the form not the button
     $sweetAlert = 2;
+else if(!isset($_SESSION['SSN'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 3; // 3 seconds delay
+    $redirect_url = "index.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

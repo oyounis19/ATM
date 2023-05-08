@@ -2,7 +2,16 @@
 //functions of Customer start from here
 require_once "../Models/customer.php";//Starts session
 
+if(!isset($_SESSION['SSN'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 2; // 2 seconds delay
+    $redirect_url = "index.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 $customer=new customer();
+
 
 if(isset($_POST['lg_out'])){
     $msg="<b> redirecting to home page </b>";
