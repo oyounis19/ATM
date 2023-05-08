@@ -63,7 +63,7 @@ if ($showAlert == 1) {
     <script>
         Toast.fire({
             icon: 'success',
-            title: 'ATM deleted successfully'
+            title: 'Account deleted successfully'
         })
     </script>
 <?php
