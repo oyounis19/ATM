@@ -167,9 +167,7 @@ class Customer extends user
             if ($Block[0]['State'] == "Blocked") {
                 return -1; //Blocked
             }
-            //SetVariables
             //sessions
-            $this->SetVariables($result);
             $this->setSessions($result);
             return 1; //DONE
         } else {
@@ -188,18 +186,15 @@ class Customer extends user
             if ($Block[0]['State'] == "Blocked") {
                 return -1; // card is blocled then not logged in 
             }
-            //SetVariables
             //sessions
-            $this->SetVariables($result);
             $this->setSessions($result);
             return 1; // Done
         } else {
             return 0; // not in DB
         }
     }
-    public function logOut($msg = null)
+    public function logOut()
     {
-        echo $msg;
         session_unset();
         session_destroy();
         header("location:index.php");
@@ -249,21 +244,6 @@ class Customer extends user
     public function __destruct()
     {
         $this->db->close();
-    }
-    // this function called two times : if user logged by card or fingerprint
-    private function SetVariables($row)
-    {
-        $this->SSN         = $row[0]['SSN'];
-        $this->CardID      = $row[0]['CardID'];
-        $this->Fingerprint = $row[0]['Fingerprint'];
-        $this->PIN         = $row[0]['PIN'];
-        $this->FirstName   = $row[0]['FirstName'];
-        $this->LastName    = $row[0]['LastName'];
-        $this->Street      = $row[0]['Street'];
-        $this->Area        = $row[0]['Area'];
-        $this->City        = $row[0]['City'];
-        $this->Email       = $row[0]['Email'];
-
     }
     /* this function called two times : if user logged by card or fingerprint
     and this sessions will be available for all pages not private but this method is the private one

@@ -10,18 +10,17 @@ if(!isset($_SESSION['SSN'])){
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
-$customer=new customer();
+$customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
+                         $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email']);
 
 
 if(isset($_POST['lg_out'])){
-    $msg="<b> redirecting to home page </b>";
-    $customer->logOut($msg);
+    $customer->logOut();
     
 }
 if(isset($_POST['block'])){
     $customer->blockcard($_SESSION['card_id']);
-    $msg="<b> redirecting to home page </b>";
-    $customer->logOut($msg);
+    $customer->logOut();
 }
 ?>
 <!DOCTYPE html>

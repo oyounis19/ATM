@@ -4,12 +4,13 @@ require_once "../Models/customer.php";
 
 /* Functions of customer starts here */
 $msg = "";
-$customer = new customer;
+$customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
+                         $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email']);
 $result=[];
 if (isset($_SESSION['SSN'])) {
-    $result = $customer->accounts($_SESSION['SSN']);
+    $result = $customer->accounts($customer->getSSN());
     if (count($result) == 0) {
-        
+        $msg ="<b style='color: white;'>You Don't have Account Yet </b>";
     }
     if (isset($_POST['selectedAccount'])) {
         $customer->chooseAccount($_POST['selectedAccount']);
