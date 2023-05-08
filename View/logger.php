@@ -2,7 +2,7 @@
 require_once (__DIR__."/../Models/servicesTechnican.php");
 require_once "../Models/customer.php";
 
-if(!isset($_SESSION['SSN'])){
+if(!isset($_SESSION['firstName'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 2; // 2 seconds delay
     $redirect_url = "index.php";
