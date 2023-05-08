@@ -168,6 +168,22 @@ class DBConnector
         return $stmt->affected_rows>0?true:false;
     }
 
+    public function join($sqlqry){
+        try{
+            $result = $this->connection->query($sqlqry);
+            // query function return false if the query is false and sql object if true
+            if($result == false)
+                throw new Exception();
+
+            return $result->fetch_assoc();
+        }
+        catch(Exception $e){
+            //use the below statment to know the error
+            echo "message: " . $e->getMessage();
+            return false;
+        }
+    }
+
     /**
      * Closes the Database Connection.
      */

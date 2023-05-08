@@ -66,7 +66,7 @@ class card
 		return $card_number;
 	}
 
-	function generateCVV()
+	public function generateCVV()
 	{
 		$CVV_number = rand(1, 9);
 		for ($i = 1; $i < 3; $i++) {
@@ -75,7 +75,7 @@ class card
 		return $CVV_number;
 	}
 
-	function generateExpDate()
+	public function generateExpDate()
 	{
 		// Get today's date
 		$today = new DateTime();
@@ -87,7 +87,7 @@ class card
 		return $three_years_from_today->format('Y-m-d');
 	}
 
-	function generateCard()
+	public function generateCard()
 	{
 		$this->setId($this->generateCardID());
 		$this->setCVV($this->generateCVV());

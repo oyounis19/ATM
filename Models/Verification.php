@@ -42,7 +42,57 @@ class verification{
         else
             return false;
     }
-        
+
+    public function CheckExpDate(Card $card)
+    {
+        $today = new DateTime();
+        date_format($today,'Y-m-d');
+        return $today == $card->getDate();
+    }
+
+    public function CheckLocation(Customer $customer,ATM $ATM){
+        if(strtolower($customer->getCity()) == strtolower($ATM->getCity())){
+            return true;
+        }
+        else{
+            try{
+                $db = new DBConnector();
+                $SSN =  $customer->getSSN();
+                $sql = "SELECT `City` From `ATM` inner join `Transaction` on ATM.ID = Transaction.AtmID where SSN = $SSN";
+                $result = $db->join($sql);
+                if($result){
+                    $i = count($result)-1;
+                    $lastLocation = $result[$i]["City"];
+                    if(strtolower($lastLocation) == strtolower($customer->getCity())){
+                        return true;
+                    }
+                    else{
+                        $OTP = $ATM->sendOTP($customer);
+                        return $OTP;
+                    }
+                }
+                else
+                    return false;
+            }
+            catch(Exception $e){
+                return false;
+            }
+        }
+    }
+     
+    public function CheckOTP($OTP,$userOTP){
+        return $OTP == $userOTP;
+    }
+
+    public function LoginVerifyAll(Customer $customer,ATM $ATM,Card $card){
+        $CheckExpDate = $this->CheckExpDate($card);
+        $CheckLocation = $this->CheckLocation($customer,$ATM);
+        if($CheckExpDate && $CheckLocation)
+            return true;
+        else
+            return false;
+    }
+
     public function VerifyAll(Account $account, Transaction $transaction){
         $CheckBalance = $this->CheckBalance($account,$transaction);
         $CheckBehavior = $this->CheckBehavior($account,$transaction);
