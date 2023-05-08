@@ -22,7 +22,7 @@ if(isset($_POST['bLogOut'])){
     $srvTeq->logOut();
 }
 if(isset($_POST['teqReport'])){
-    $teqRep->generateTechPDF($atm->getID());
+    $teqRep->generateTechPDF($_SESSION['atmId']);
 }
 if(isset($_POST['finish'])){
     $srvTeq->rechargeAtm ();
