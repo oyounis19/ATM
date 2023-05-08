@@ -12,7 +12,7 @@
         $account->setType($_POST["Type"]);
         $customer = new customer($_POST["SSN"]);
         $db = new DBConnector();
-        $result = $db->select('Account', "Type", "SSN = ?", array($customer->getSSN()));
+        $result = $db->select("'Account'", "Type", "SSN = ?", array($customer->getSSN()));
         $flag = true;
         for ($i = 0; $i < count($result); $i++) {
             if ($result[0]["Type"] == $account->getType()) {
