@@ -15,7 +15,6 @@ if(isset($_POST["SSN"]) && isset($_POST["Type"])){
     $result = $db->select('`Account`',"Type","SSN = ?",array($customer->getSSN()));
     $flag = true;
     for($i=0;$i<count($result);$i++){
-        echo $result[$i]["Type"];
         if($result[$i]["Type"]==$account->getType()){
             $flag = false;
         }
