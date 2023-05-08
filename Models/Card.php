@@ -3,10 +3,21 @@ class card
 {
 	private string $id;
 	private string $CVV;
-	private $date;
+	private $expDate;
 	private $state;
 	
 
+	public function __construct($id = null, $CVV = null, $expDate = null, $state = null){
+		if($id)
+			$this->id = $id;
+		if($CVV)
+			$this->CVV = $CVV;
+		if($expDate)
+			$this->expDate = $expDate;
+		if($state)
+			$this->state = $state;
+
+	}
 	public function getState()
 	{
 		return $this->state;
@@ -21,13 +32,13 @@ class card
 
 	public function getDate()
 	{
-		return $this->date;
+		return $this->expDate;
 	}
 
 
-	public function setDate($date): self
+	public function setDate($expDate): self
 	{
-		$this->date = $date;
+		$this->expDate = $expDate;
 		return $this;
 	}
 

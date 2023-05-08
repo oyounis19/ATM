@@ -1,6 +1,8 @@
 <?php
 require_once(__DIR__ . '/../Controllers/DBconnector.php');
 require_once "user.php";
+require_once "../Models/Card.php";
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -163,12 +165,13 @@ class Customer extends user
         $hashed_pass = $this->pinVerification($pass);
         $result      = $this->db->select("User", "*", "CardID=? AND PIN=?", array($id, $hashed_pass));
         if ($result) {
-            $Block   = $this->db->select("CreditCard", "State", "ID=?", array($id));
-            if ($Block[0]['State'] == "Blocked") {
+            $block   = $this->db->select("CreditCard", "*", "ID=?", array($id));
+            if ($block[0]['State'] == "Blocked") {
                 return -1; //Blocked
             }
             //sessions
             $this->setSessions($result);
+            $this->setCCSessions($block);
             return 1; //DONE
         } else {
             return 0; //Not in DB
@@ -261,7 +264,11 @@ class Customer extends user
         $_SESSION['City']       = $row[0]['City'];
         $_SESSION['Email']      = $row[0]['Email'];
     }
-
+    private function setCCSessions($row)
+    {
+        $card = new Card($row[0]['ID'], $row[0]['CVV'], $row[0]['ExpDate'], $row[0]['State']);
+        $_SESSION['card']    = serialize($card);
+    }
 }
 
 ?>

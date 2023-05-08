@@ -10,9 +10,11 @@ require_once __DIR__."/Account.php";
 class verification{
     private $db;
 
+    public function __construct(){
+        $this->db = new DBconnector();
+    }
     public function PIN(Customer $user,$PIN){// waiting for khaled class
-        $db = new DBconnector();
-        $result = $db->select("User", "PIN","SSN = ?",array($user->getSSN())); // $user is from class customer
+        $result = $this->db->select("User", "PIN","SSN = ?",array($user->getSSN())); // $user is from class customer
         if($result["PIN"]==$PIN)
             return true;
         else
@@ -25,8 +27,7 @@ class verification{
     }
 
     public function CheckBalance(Account $account, Transaction $transaction){
-        $db = new DBconnector();
-        $result = $db->select("Account","Balance","Account_ID = ?",array($account->getId()));
+        $result = $this->db->select("Account","Balance","Account_ID = ?",array($account->getId()));
         if($result["Balance"]>=$transaction->getAmount())
             return true;
         else
@@ -34,8 +35,7 @@ class verification{
     }
 
     public function CheckBehavior(Account $account, Transaction $transaction){
-        $db = new DBconnector();
-        $result = $db->select("Account","*","Account_ID = ?",array($account->getId()));
+        $result = $this->db->select("Account","*","Account_ID = ?",array($account->getId()));
         if($transaction->getType() == "Withdraw") // $transaction from class transaction
             $AvgAmount = $result["Avg_Withdraw"]/$result["Withdraw_Amount"];
         else
@@ -48,23 +48,28 @@ class verification{
             return false;
     }
 
-    public function CheckExpDate(Card $card)
-    {
+    public function CheckExpDate(Card $card){//Login
+        $date = new DateTime($card->getDate());
         $today = new DateTime();
-        date_format($today,'Y-m-d');
-        return $today == $card->getDate();
+        $result = $today->diff($date)->format('%R');//comparing
+
+        if ($result === '+')//Early (running)
+            return true;
+        else{//Late (expired)
+            //OTP VERIFICATION GOES HERE*************************************************************************************
+            return false;
+        }
     }
 
-    public function CheckLocation(Customer $customer,ATM $ATM){
+    public function CheckLocation(Customer $customer,ATM $ATM){//Login
         if(strtolower($customer->getCity()) == strtolower($ATM->getCity())){
             return true;
         }
         else{
             try{
-                $db = new DBConnector();
                 $SSN =  $customer->getSSN();
                 $sql = "SELECT `City` From `ATM` inner join `Transaction` on ATM.ID = Transaction.AtmID where SSN = $SSN";
-                $result = $db->join($sql);
+                $result = $this->db->join($sql);
                 if($result){
                     $i = count($result)-1;
                     $lastLocation = $result[$i]["City"];
@@ -89,14 +94,14 @@ class verification{
         return $OTP == $userOTP;
     }
 
-    public function LoginVerifyAll(Customer $customer,ATM $ATM,Card $card){
-        $CheckExpDate = $this->CheckExpDate($card);
-        $CheckLocation = $this->CheckLocation($customer,$ATM);
-        if($CheckExpDate && $CheckLocation)
-            return true;
-        else
-            return false;
-    }
+    // public function LoginVerifyAll(Customer $customer,ATM $ATM,Card $card){//Login
+    //     $CheckExpDate = $this->CheckExpDate($card);
+    //     $CheckLocation = $this->CheckLocation($customer,$ATM);
+    //     if($CheckExpDate && $CheckLocation)
+    //         return true;
+    //     else
+    //         return false;
+    // }
 
     public function VerifyAll(Account $account, Transaction $transaction){
         $CheckBalance = $this->CheckBalance($account,$transaction);

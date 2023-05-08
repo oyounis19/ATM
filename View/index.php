@@ -11,10 +11,13 @@ if (session_status() === PHP_SESSION_ACTIVE) {//session is open
 /* functions of Customer start from here
 */
 require_once "../Models/customer.php";//Actual session starts
+require_once "../Models/Verification.php";
+require_once "../Models/Card.php";
+
 $customer = new customer;
+$verify = new verification();
 $customererrmsg = "";
 $customererrmsgfingerprint = "";
-// echo session_id();
 
 //login function using Credit Card or Fingerprint 
 // if you want to check login by fingerprint or not go to line @14 & line @30
@@ -22,11 +25,15 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
     $value;
     $Success = false;
     $_SESSION['fing'] = '0';    // session of fingerprint set to zero
-    if (isset($_POST['lg_in'])) {
+    if (isset($_POST['lg_in'])) {//Credit Card
         $cardID = $_POST['card_id'];
         $pass = $_POST['upass'];
         $value = $customer->login($cardID, $pass);
         if ($value == 1) {
+            //Start Fraud Verify***********
+            $card = unserialize($_SESSION['card']);
+            $verify->CheckExpDate($card);
+            //End Fraud Verify***********
             $Success = True;
             goto here;
         } if ($value == -1) {
@@ -34,7 +41,7 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
         } else {//0
             $customererrmsg = "<b style='color: white;'> Wrong Credit Card number or PIN</b>";
         }
-    } else if (isset($_POST['upload'])) {
+    } else if (isset($_POST['upload'])) {//Fingerprint
         $value = $customer->FingerprintValidation();
         if ($value == 1) {
             $Success = True;
@@ -48,10 +55,12 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
         }
     }
     here:;
-    if ($Success) {
-        header("location:Account.php");
-        exit();
-    }
+    // if ($Success) {
+    //     header("location:Account.php");
+    //     exit();
+    // }
+}else if(isset($_POST['upload'])){
+    $customererrmsgfingerprint = "<b style='color: white;'> Upload image first.. </b>";
 }
 
 
@@ -177,8 +186,7 @@ if (isset($_POST['bLogin'])) {
                 </div>
                 <form action="#" method="post" enctype="multipart/form-data">
                     <input type="file" class="btn btn-primary mb-3" name="image">
-                    <!-- <button name="upload" class="btn btn-primary">upload</button> -->
-                    <input type="submit" name="upload" class="btn btn-primary" value="upload">
+                    <input type="submit" name="upload" class="btn btn-primary" value="Scan">
                     <?php echo "<pre>$customererrmsgfingerprint</pre>" ?>
                 </form>
             </div>
@@ -220,6 +228,7 @@ if (isset($_POST['bLogin'])) {
         AOS.init();
     </script>
     <script src="assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
