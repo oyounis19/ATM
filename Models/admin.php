@@ -143,7 +143,7 @@ class admin extends User
         $db = new DBconnector();
         if ($account->getBalance() >= 0) {
             $data["Balance"] = $account->getBalance();
-        } else if ($account->getBalance() < 0) {
+        } else if ($account->getBalance() < -1) {
             return false;
         }
 
