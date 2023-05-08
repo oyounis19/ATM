@@ -1,18 +1,40 @@
 <?php
+ob_start();//Capture the HTML in output buffer instead of being sending to the browser immediately
+require_once __DIR__.'/../Models/Account.php';
+require_once __DIR__.'/../Models/customer.php';//Starts the sessions
+require_once __DIR__.'/../Models/Transaction.php';
 
-require_once '../Models/Account.php';
+if(!isset($_SESSION['SSN'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 2; // 2 seconds delay
+    $redirect_url = "index.php";
 
-$account = new Account(1545105165, 203154, "Gold");
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
+//Defining Objects
+$sender = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
+$receiver = new Account();
+$atm = new ATM();//HARD CODED ATM ID: 1264
+$transaction = new Transaction();
+$customer = new Customer($_SESSION['SSN'], $_SESSION['fName'], $_SESSION['lName'], $_SESSION['upass'],
+                        $_SESSION['fingerpint'], $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],
+                        $_SESSION['Email'], $_SESSION['card_id']);
 
-// if(isset($_POST['amount']) && isset($_POST['accountID'])){
-//     // $code = $account->transfer($_POST['accountID'], $_POST['amount']);
-//     if(0 == $code){
-//         echo "Your Balance is insufficient";//SWEET ALERT
-//     }else if(1 == $code){
-//         echo "Wrong Account ID";//SWEET ALERT
-//     }else
-//         echo "Transfered". $_POST['amount'] ."sucessfully";//SWEET ALERT
-// }
+$sweetAlert = null;
+if(isset($_POST['amount']) && isset($_POST['accountID'])){
+    $receiver->setId($_POST['accountID']);
+    $transaction->setAmount($_POST['amount']);
+    $code = $transaction->transfer($sender, $receiver, $atm, $customer);
+    if(0 == $code){
+        echo "Your Balance is insufficient";//SWEET ALERT
+    }else if(1 == $code){
+        echo "Wrong Account ID";//SWEET ALERT
+    }else{
+        $_SESSION['balance'] = $sender->getBalance();
+        echo "Transfered". $_POST['amount'] ."sucessfully";//SWEET ALERT
+    }
+}
 
 
 ?>
@@ -70,7 +92,7 @@ $account = new Account(1545105165, 203154, "Gold");
         AOS.init();
     </script>
     <script src="assets/js/transfer.js"></script>
-    <script src="assets/js/sessionTimout.js"></script>
+    <!-- <script src="assets/js/sessionTimout.js"></script> -->
 </body>
 
 </html>
