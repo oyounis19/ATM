@@ -37,11 +37,6 @@ class ATM{
         $this->getAtmData(1264);
     }
 
-    private function generateOTP() {
-        $digits = 6;
-        return str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
-    }
-
     private function serverSettings(){
         $mail = new PHPMailer(true);
         try {
@@ -101,13 +96,12 @@ class ATM{
      * @param Customer $customer The customer to send the OTP to
      * @return mixed OTP if the Email was sent successfully and null otherwise
      */
-    public function sendOTP(Customer $customer){//customer class
+    public function sendOTP(Customer $customer, $OTP){//customer class
         $mail = $this->serverSettings();
 
         if($mail == null) 
             return null;
 
-        $OTP = $this->generateOTP();
 
         $mail->addAddress($customer->getEmail(), 'Client');              //Add a recipient
         $mail->Subject = 'OTP Verification for ATM Access';

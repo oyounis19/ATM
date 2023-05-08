@@ -19,6 +19,11 @@ class verification{
             return false;
     }
     
+    private function generateOTP() {
+        $digits = 6;
+        return str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
+    }
+
     public function CheckBalance(Account $account, Transaction $transaction){
         $db = new DBconnector();
         $result = $db->select("Account","Balance","Account_ID = ?",array($account->getId()));
@@ -67,7 +72,7 @@ class verification{
                         return true;
                     }
                     else{
-                        $OTP = $ATM->sendOTP($customer);
+                        $OTP = $ATM->sendOTP($customer, $this->generateOTP());
                         return $OTP;
                     }
                 }
