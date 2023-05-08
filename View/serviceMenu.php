@@ -2,6 +2,8 @@
 require_once (__DIR__."/../Models/servicesTechnican.php");
 require_once (__DIR__."/../Controllers/Reports.php");
 require_once "../Models/customer.php";
+require_once '../Models/ATM.php';
+
 if(!isset($_SESSION['firstName'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 2; // 2 seconds delay
@@ -12,6 +14,7 @@ if(!isset($_SESSION['firstName'])){
 }
 $srvTeq = new servicesTechinican; 
 $teqRep = new Report;
+$atm = new ATM();//HARD CODED ATM ID: 1264
 if(! $_SESSION['firstName']){
     header("location:../View/index.php");
 }
@@ -19,7 +22,7 @@ if(isset($_POST['bLogOut'])){
     $srvTeq->logOut();
 }
 if(isset($_POST['teqReport'])){
-    $teqRep->generateTechPDF();
+    $teqRep->generateTechPDF($atm->getID());
 }
 if(isset($_POST['finish'])){
     $srvTeq->rechargeAtm ();

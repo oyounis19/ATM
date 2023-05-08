@@ -48,7 +48,7 @@ class Report{
         $this->pdf->Output();
     }
 
-    public function generateTechPDF(){
+    public function generateTechPDF($atmID){
         //remove deafault header and footer
         $this->pdf->setPrintFooter(false);
         $this->pdf->setPrintHeader(false);
@@ -68,7 +68,7 @@ class Report{
         $this->pdf->writeHTMLCell(21.11,15, '', '', '<h4 style="text-align: center;">Type</h4>',1, 0);
         $this->pdf->writeHTMLCell(21.11,15, '', '', '<h4 style="text-align: center;">Reciver<br>Id</h4>',1, 1);
         //Getting data from Database
-        $result = $this->db->select("`Transaction`","*");
+        $result = $this->db->select("`Transaction`","*", "AtmID=?", array($atmID));
         $columnsNames = array("ID","AccountID", "SSN", "AtmID", "Amount", "Date", "State", "Type" , "receiverId" );
 
         if(!$result){
