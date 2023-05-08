@@ -87,11 +87,6 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
 </body>
 <?php
 if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2){
-    if($sweetAlert){
-        
-    }else{
-        
-    }
     switch($sweetAlert){
         case 0:
             $icon = 'error';
