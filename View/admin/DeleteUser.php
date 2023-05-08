@@ -30,7 +30,7 @@ if (isset($_POST['customerSSN'])) {
 
             <form method="POST" action="#">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="SSN" placeholder="SSN" name="customerSSN">
+                    <input type="text" class="form-control" id="SSN" placeholder="SSN" name="customerSSN" required>
                     <label for="SSN">SSN</label>
                 </div>
 

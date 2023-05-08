@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . "/../../Models/admin.php");
+require_once(__DIR__ . "/../../Models/ATM.php");
 require_once(__DIR__ . "/Head.php");
 
 $showAlert = 0;
@@ -31,7 +32,7 @@ if (isset($_POST['atmId'])) {
                 <h2>Delete ATM</h2>
                 <form method="POST" action="#">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="ATMid" placeholder="ATMid" name="atmId">
+                        <input type="text" class="form-control" id="ATMid" placeholder="ATMid" name="atmId" required>
                         <label for="ATMid">ATM ID</label>
                     </div>
                     <button class="btn btn-danger">

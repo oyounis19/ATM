@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . "/../../Models/admin.php");
+require_once(__DIR__ . "/../../Models/ATM.php");
 require_once(__DIR__ . "/Head.php");
 
 $showAlert = 0;

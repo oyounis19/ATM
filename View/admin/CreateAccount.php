@@ -48,7 +48,7 @@ if(isset($_POST["SSN"]) && isset($_POST["Type"])){
                 <h2>Create Account</h2>
                 <form method="post" action="#">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="floatingSSN" placeholder="Password" name="SSN">
+                        <input type="number" class="form-control" id="floatingSSN" placeholder="Password" name="SSN" required>
                         <label for="floatingSSN">SSN</label>
                     </div>
                     <div class="form-floating mb-3">

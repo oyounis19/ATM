@@ -32,7 +32,7 @@ if (isset($_POST['ccId']) && isset($_POST['ccState'])) {
                 <h2>Manage Credit Cards</h2>
                 <form method="POST" action="#">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="UserID" placeholder="name@example.com" name="ccId">
+                        <input type="number" class="form-control" id="UserID" placeholder="name@example.com" name="ccId" required>
                         <label for="UserID">Credit Card ID</label>
                     </div>
                     <div class="form-floating mb-3">

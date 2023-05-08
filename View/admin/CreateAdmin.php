@@ -42,7 +42,7 @@
                             <label for="UserName">User Name</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="Password" class="form-control" id="floatingPassword" placeholder="Password" name="passWord">
+                            <input type="Password" class="form-control" id="floatingPassword" placeholder="Password" name="passWord" required>
                             <label for="floatingCard">Password</label>
                         </div>
                         <input class="btn btn-success" type="submit" name="Add Admin">

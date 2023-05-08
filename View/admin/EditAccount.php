@@ -38,7 +38,7 @@ if (isset($_POST['ID']) && isset($_POST['type'])) {
                 <h2>Edit Account</h2>
                 <form action="#" method="post">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="UserID" placeholder="name@example.com" name="ID" >
+                        <input type="number" class="form-control" id="UserID" placeholder="name@example.com" name="ID" required>
                         <label for="UserID">Account ID</label>
                     </div>
                     <div class="form-floating mb-3">

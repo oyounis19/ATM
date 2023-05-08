@@ -141,8 +141,10 @@ class admin extends User
     public function editAccount(Account $account)
     {
         $db = new DBconnector();
-        if ($account->getBalance() != -1) {
+        if ($account->getBalance() >= 0) {
             $data["Balance"] = $account->getBalance();
+        } else {
+            return false;
         }
 
         if ($account->getType() != "Same") {

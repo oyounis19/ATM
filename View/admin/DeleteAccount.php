@@ -29,7 +29,7 @@ if (isset($_POST["AccId"])) {
                 <h2>Delete Account</h2>
                 <form action="#" method="post">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="UserID" placeholder="name@example.com" name="AccId">
+                        <input type="number" class="form-control" id="UserID" placeholder="name@example.com" name="AccId" required>
                         <label for="UserID">Account ID</label>
                     </div>
                     <input class="btn btn-danger rounded" value="Delete Account" type="submit">
