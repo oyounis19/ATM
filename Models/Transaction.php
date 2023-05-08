@@ -91,7 +91,7 @@ class Transaction {
 	/**
 	 * @param $account_id The recipent's account id 
 	 * @param $amount The Transfer amount
-	 * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 3 (Transfer is done)
+	 * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 2 (Transfer is done)
 	 */
 	public function transfer(Account $sender, Account $reciever ,ATM $atm , Customer $customer) {//Composition required
 		
@@ -99,14 +99,20 @@ class Transaction {
 		if($this->amount > $sender->getBalance())
 			return 0;
 
-		$result = $this->db->select("`Account`", "*", "ID=?", array($reciever));
-
+		$result = $this->db->select("`Account`", "*", "ID=?", array($reciever->getId()));
+		// print_r($this->amount);
 		if(!$result)
 			return 1;
-		
-		$this->db->update("`Account`", array("Balance"=>$sender->getBalance()-$this->amount),"ID=?", array($sender->getId()));
-		$this->db->update("`Account`", array("Balance"=>$reciever->getBalance()+$this->amount),"ID=?", array($reciever->getId()));
-		$this->saveTransaction($customer, $sender, $atm , $reciever);
+		$reciever->setBalance($result[0]['Balance']);
+		echo $sender->getBalance().'<br>'.$this->amount;
+		echo $sender->getBalance() - $this->amount;
+
+		$this->db->update("`Account`", array("Balance"=>   $sender->getBalance() - $this->amount),"ID=?", array($sender->getId()));
+		$this->db->update("`Account`", array("Balance"=> $reciever->getBalance() + $this->amount),"ID=?", array($reciever->getId()));
+
+		$sender->setBalance($sender->getBalance() - $this->amount);
+		$reciever->setBalance($reciever->getBalance() + $this->amount);
+		// $this->saveTransaction($customer, $sender, $atm , $reciever);
 		return 2;
 	}
 
