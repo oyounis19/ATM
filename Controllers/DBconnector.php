@@ -75,7 +75,7 @@ class DBConnector
         try {
             $stmt = $this->conn->prepare($query);
             if (!$stmt) {
-                throw new Exception();
+                $e = new Exception();
             }
 
             $values = array_values($data);
@@ -86,10 +86,11 @@ class DBConnector
 
 
             if (!$stmt->bind_param(...$params))
-                throw new Exception();
+                $e = new Exception();
+
 
             if (!$stmt->execute())
-                throw new Exception();
+                $e = new Exception();
         } catch (Exception $e) {
             return false;
         }

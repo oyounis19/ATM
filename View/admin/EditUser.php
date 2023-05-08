@@ -17,7 +17,7 @@ $test = new customer();
         <div class="container-fluid">
             <h2>Edit User</h2>
 
-            <form action="#" method="post">
+            <form action="#" method="get">
                 <input type="hidden" value="true" name="Search">
                 <div class="form-floating mb-3">
                     <input type="number" class="form-control" id="SSN" placeholder="SSN" name="SSN">
@@ -30,10 +30,10 @@ $test = new customer();
         <?php
             $showAlert = 0;
             $continue = true;
-            if(isset($_POST["Search"])){
-                if(isset($_POST["SSN"])){
+            if(isset($_GET["Search"])){
+                if(isset($_GET["SSN"])){
                     $db = new DBConnector();
-                    $testCustomer = new Customer($_POST["SSN"]);
+                    $testCustomer = new Customer($_GET["SSN"]);
                     $result = $db->select('User',"*","SSN=?",array($testCustomer->getSSN()));
                     print_r($result);
                     if(!$result){
@@ -41,7 +41,7 @@ $test = new customer();
                         $continue = false;
                     }
                     else{
-                        $customer = new Customer($_POST["SSN"],$result[0]["FirstName"],$result[0]["LastName"],$result[0]["PIN"],$result[0]["Fingerprint"],$result[0]["Street"],
+                        $customer = new Customer($_GET["SSN"],$result[0]["FirstName"],$result[0]["LastName"],$result[0]["PIN"],$result[0]["Fingerprint"],$result[0]["Street"],
                         $result[0]["Area"],$result[0]["City"],$result[0]["Email"],"",$result[0]["PhoneNo"]);
                         $test = $customer;
                     }
@@ -77,7 +77,8 @@ $test = new customer();
                     <label for="Phone No.">Edit Phone No.</label>
                 </div>                
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="email" placeholder="Email" name = "email" value='<?php echo($customer->getEmail())?>' required>
+                    <input type="email" class="form-control" id="email" placeholder="Email" name = "email" value='<?php echo($customer->getEmail())?>' required
+                    >
                     <label for="email">Edit Email</label>
                 </div>
                 <div class="form-floating mb-3">
@@ -90,7 +91,7 @@ $test = new customer();
         </div>
 
         <?php
-            if($continue && isset($_POST["SSN"])){
+            if($continue && isset($_GET["SSN"])){
                     ?>
                     <script>
                         editUser = document.getElementById("Formpopup")
