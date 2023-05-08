@@ -12,6 +12,12 @@ if(!isset($_SESSION['SSN'])){
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
+
+if($_SESSION['fing'] == '1' and $_SESSION['correctPIN'] != '1'){
+    $_SESSION['transType'] = 'withdraw';
+    header("Location: pin.php");
+    exit();
+}
 //Defining Objects
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
 $atm = new ATM();//HARD CODED ATM ID: 1264
@@ -112,9 +118,8 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
         AOS.init();
     </script>
     <script src="assets/js/withdraw.js"></script>
-    <script src="assets/js/sessionTimout.js"></script>
+    <!-- <script src="assets/js/sessionTimout.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="sweetalert2.all.min.js"></script>
 </body>
 <?php
     if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2 or $sweetAlert === 3 or $sweetAlert === 4){

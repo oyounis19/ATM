@@ -144,7 +144,7 @@ class Customer extends user
         $this->db = new DBConnector;
     }
 
-    private function pinVerification($pass)
+    public function pinVerification($pass)
     {
         $password = hash("sha256", $pass);
         return $password;

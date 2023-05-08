@@ -12,6 +12,12 @@ if(!isset($_SESSION['SSN'])){
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
+
+if($_SESSION['fing'] == '1' and $_SESSION['correctPIN'] != '1'){
+    $_SESSION['transType'] = 'deposit';
+    header("Location: pin.php");
+    exit();
+}
 //Defining Objects
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
 $atm = new ATM();//HARD CODED ATM ID: 1264
