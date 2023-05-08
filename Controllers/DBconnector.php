@@ -170,7 +170,7 @@ class DBConnector
 
     public function join($sqlqry){
         try{
-            $result = $this->connection->query($sqlqry);
+            $result = $this->conn->query($sqlqry);
             // query function return false if the query is false and sql object if true
             if($result == false)
                 throw new Exception();

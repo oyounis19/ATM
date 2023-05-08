@@ -21,7 +21,6 @@ class Transaction {
 		$this->db = new DBConnector();
 	}
 
-
 	public function getType() {
 	return $this->type;
 	}
@@ -44,8 +43,7 @@ class Transaction {
 		return $this->amount;
 	}
 	
-	public function setAmount($amount)
-	{
+	public function setAmount($amount){
 		$this->amount = $amount;
 	}
 
@@ -70,7 +68,12 @@ class Transaction {
 		return $this;
 	}
 
-
+	/**
+	 * @param Customer $customer customer's data 
+	 * @param Account $sender sender's data 
+	 * @param ATM $atm current ATM
+	 * @param Account $reciever|null receipent's account
+	 */
 	private function saveTransaction(Customer $customer, Account $sender, ATM $atm , Account $reciever = null){
 		$ok = 0;
 		$currentDate = date("Y-m-d");
@@ -89,40 +92,53 @@ class Transaction {
 
 
 	/**
-	 * @param $account_id The recipent's account id 
-	 * @param $amount The Transfer amount
+	 * @param Account $sender sender's account 
+	 * @param Account $reciever receipent's account 
+	 * @param ATM $atm current ATM
+	 * @param Customer $customer customer's data
 	 * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 2 (Transfer is done)
 	 */
-	public function transfer(Account $sender, Account $reciever ,ATM $atm , Customer $customer) {//Composition required
-		
-		//VERIFICATION goes here
-		if($this->amount > $sender->getBalance())
+	public function transfer(Account $sender, Account $reciever, ATM $atm , Customer $customer) {//Composition required
+		//if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004{
+		//	$this->state = false;
+		//	$this->saveTransaction($customer, $account, $atm);
+		//	return false;
+		// }
+		$this->state = true;//Fraud not detected
+		if($this->amount > $sender->getBalance()){
+			$this->state = false;//saved but denied
+			$this->saveTransaction($customer, $sender, $atm , $reciever);
 			return 0;
+		}
 
 		$result = $this->db->select("`Account`", "*", "ID=?", array($reciever->getId()));
-		// print_r($this->amount);
+
 		if(!$result)
 			return 1;
 		$reciever->setBalance($result[0]['Balance']);
-		// echo $sender->getBalance().'<br>'.$this->amount;
-		// echo $sender->getBalance() - $this->amount;
 
 		$this->db->update("`Account`", array("Balance"=>   $sender->getBalance() - $this->amount),"ID=?", array($sender->getId()));
 		$this->db->update("`Account`", array("Balance"=> $reciever->getBalance() + $this->amount),"ID=?", array($reciever->getId()));
 
 		$sender->setBalance($sender->getBalance() - $this->amount);
 		$reciever->setBalance($reciever->getBalance() + $this->amount);
-		// $this->saveTransaction($customer, $sender, $atm , $reciever);
+		$this->saveTransaction($customer, $sender, $atm , $reciever);
 		return 2;
 	}
-
+	
+	/**
+	 * @param Account $account sender's account 
+	 * @param ATM $atm current ATM
+	 * @param Customer $customer customer's data
+	 * @return int 0 (DB error), 1 (Deposit is done)
+	 */
 	public function deposit(Account $account, ATM $atm, Customer $customer) {//Composition required
 		//if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004{
 		//	$this->state = false;
 		//	$this->saveTransaction($customer, $account, $atm);
 		//	return false;
 		// }
-		$this->state = 1;//Fraud not detected
+		$this->state = true;//Fraud not detected
 		if(!$this->db->update("`Account`", array("Balance"=>$account->getBalance() + $this->amount), "ID=?", array($account->getid())))
 			return 0;
 
@@ -134,8 +150,10 @@ class Transaction {
 	}
 
 	/**
-	 * @param $amount The Withdraw amount
-	 * @return int 0 (The balance is insufficient), 1 (Error in DB), 2 (Withdrawal completed), 3(Insufficient ATM balance)
+	 * @param Account $account sender's account 
+	 * @param ATM $atm current ATM
+	 * @param Customer $customer customer's data
+	 * @return int 0 (Insufficient Account Balance), 1 (DB error), 2 (Withdraw done),3 (Insufficient ATM balance)
 	 */
 	public function withdraw(Account $account, ATM $atm , Customer $customer){//Composition required
 		//if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004{
@@ -163,6 +181,10 @@ class Transaction {
 		return 2;
 	}
 
+	/**
+	 * @param Account $account account 
+	 * @return array transactions
+	 */
 	public function viewTransactionHistory(Account $account) {//Composition required
 		return $this->db->select("`Transaction`", "*", "AccountID=?", array($account->getId()));
 	}
