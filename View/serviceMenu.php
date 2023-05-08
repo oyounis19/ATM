@@ -1,12 +1,28 @@
 <?php
 require_once (__DIR__."/../Models/servicesTechnican.php");
+require_once (__DIR__."/../Controllers/Reports.php");
 require_once "../Models/customer.php";
+require_once '../Models/ATM.php';
+
+if(!isset($_SESSION['firstName'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 2; // 2 seconds delay
+    $redirect_url = "index.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 $srvTeq = new servicesTechinican; 
+$teqRep = new Report;
+$atm = new ATM();//HARD CODED ATM ID: 1264
 if(! $_SESSION['firstName']){
     header("location:../View/index.php");
 }
 if(isset($_POST['bLogOut'])){
     $srvTeq->logOut();
+}
+if(isset($_POST['teqReport'])){
+    $teqRep->generateTechPDF($atm->getID());
 }
 if(isset($_POST['finish'])){
     $srvTeq->rechargeAtm ();
@@ -72,6 +88,10 @@ if(isset($_POST['finish'])){
                     <a href="../View/logger.php" class="btn btnMenu">
                         Check ATM Logger
                     </a>
+
+                    <form method="post">
+                        <input class = "btn btn-success" type="submit" name="teqReport" value="Generate Report">
+                    </form>
                     <form  method="POST" class="w-100">
                         <button name = "bLogOut" class="btn btn-primary mt-3 w-100">Log Out</button>
                     </form>

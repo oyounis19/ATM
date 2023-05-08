@@ -3,6 +3,14 @@ session_start();
 require_once __DIR__.'/../Models/Account.php';
 require_once __DIR__.'/../Models/Transaction.php';
 
+if(!isset($_SESSION['SSN'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 2; // 3 seconds delay
+    $redirect_url = "index.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 $tr = new Transaction();
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
 

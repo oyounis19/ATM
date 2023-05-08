@@ -1,28 +1,25 @@
     <!-- start createAccount  -->
     <?php
-require_once (__DIR__."/Head.php");
-require_once (__DIR__."/../../Models/Account.php");
-require_once (__DIR__."/../../Models/Card.php");
-require_once (__DIR__."/../../Models/customer.php");
+    require_once(__DIR__ . "/Head.php");
+    require_once(__DIR__ . "/../../Models/Account.php");
+    require_once(__DIR__ . "/../../Models/Card.php");
+    require_once(__DIR__ . "/../../Models/customer.php");
 
-$showAlert = 0;
+    $showAlert = 0;
 
 $account = new Account();
 if(isset($_POST["SSN"]) && isset($_POST["Type"])){
     $account->setType($_POST["Type"]);
     $customer = new customer($_POST["SSN"]);
-    echo $customer->getSSN();
     $db = new DBConnector();
     $result = $db->select('`Account`',"Type","SSN = ?",array($customer->getSSN()));
     $flag = true;
-    var_dump($result);
     for($i=0;$i<count($result);$i++){
         echo $result[$i]["Type"];
         if($result[$i]["Type"]==$account->getType()){
             $flag = false;
         }
     }
-    var_dump($flag);
     if($flag && $result){
         $admin = new admin();
         $yes = $admin->createAccount($account,$customer);  

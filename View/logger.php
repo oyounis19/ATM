@@ -1,11 +1,18 @@
 <?php 
 require_once (__DIR__."/../Models/servicesTechnican.php");
 require_once "../Models/customer.php";
+
+if(!isset($_SESSION['firstName'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 2; // 2 seconds delay
+    $redirect_url = "index.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
+
 $srvTeq = new servicesTechinican; 
 
-if(!$_SESSION['firstName']){
-    header("location:../View/index.php");
-}
 $result =  $srvTeq->checkLoggers();
 ?>
 
@@ -83,6 +90,9 @@ $result =  $srvTeq->checkLoggers();
                 <ul class="text-start text-white">
                     <li>
                         <p>Account ID : <span><?php echo $result[$i]["AccountID"] ?></span></p>
+                    </li>
+                    <li>
+                        <p>Received ID : <span><?php if($result[$i]["receiverId"] == "") echo "-------" ;else echo$result[$i]["receiverId"]?></span></p>
                     </li>
                     <li>
                         <p>Transaction Type : <span><?php echo $result[$i]["Type"] ?></span></p>
