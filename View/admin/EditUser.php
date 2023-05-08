@@ -17,23 +17,23 @@ $test = new customer();
         <div class="container-fluid">
             <h2>Edit User</h2>
 
-            <form action="#" method="get">
-                <input type="hidden" name="form1" value="true">
+            <form action="#" method="post">
+                <input type="hidden" value="true" name="Search">
                 <div class="form-floating mb-3">
                     <input type="number" class="form-control" id="SSN" placeholder="SSN" name="SSN">
                     <label for="SSN">SSN</label>
                 </div>
 
-                <button class="btn btn-success mb-3 ">Edit User</button>
+                <input class="btn btn-success mb-3 " type = "submit" value="Search" >
             </form>
         </div>
         <?php
             $showAlert = 0;
             $continue = true;
-            //if(isset($_POST["form1"])){
-                if(isset($_GET["SSN"])){
+            if(isset($_POST["Search"])){
+                if(isset($_POST["SSN"])){
                     $db = new DBConnector();
-                    $testCustomer = new Customer($_GET["SSN"]);
+                    $testCustomer = new Customer($_POST["SSN"]);
                     $result = $db->select('User',"*","SSN=?",array($testCustomer->getSSN()));
                     print_r($result);
                     if(!$result){
@@ -41,30 +41,30 @@ $test = new customer();
                         $continue = false;
                     }
                     else{
-                        $customer = new Customer($_GET["SSN"],$result[0]["FirstName"],$result[0]["LastName"],$result[0]["PIN"],$result[0]["Fingerprint"],$result[0]["Street"],
+                        $customer = new Customer($_POST["SSN"],$result[0]["FirstName"],$result[0]["LastName"],$result[0]["PIN"],$result[0]["Fingerprint"],$result[0]["Street"],
                         $result[0]["Area"],$result[0]["City"],$result[0]["Email"],"",$result[0]["PhoneNo"]);
                         $test = $customer;
                     }
                 }
-            //}
+            }
         ?>
 
         <div class="Formpopup editForm " id = "Formpopup">
             <form action="#" method="post">
-                <input type="hidden" name="form2" value="true">
+            <input type="hidden" value="true" name="EditUser">
                 <div class="d-flex gap-4">
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="street" placeholder="Street" name = "street" value='<?php echo($customer->getStreet())?>'>
+                        <input type="text" class="form-control" id="street" placeholder="Street" name = "street" value='<?php echo($customer->getStreet())?>' required>
                         <label for="street">Edit Street</label>
                     </div>
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="area" placeholder="Area" name = "area" value='<?php echo($customer->getArea())?>'>
+                        <input type="text" class="form-control" id="area" placeholder="Area" name = "area" value='<?php echo($customer->getArea())?>' required>
                         <label for="area">Edit Area</label>
                     </div>
                 </div>
                 <div class="d-flex gap-4">
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="city" placeholder="City" name = "city" value='<?php echo($customer->getCity())?>'>
+                        <input type="text" class="form-control" id="city" placeholder="City" name = "city" value='<?php echo($customer->getCity())?>' required>
                         <label for="city">Edit City</label>
                     </div>
                     <div class="form-floating w-50 mb-3">
@@ -73,11 +73,11 @@ $test = new customer();
                     </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="PINcode" name = "PhoneNo" placeholder="Phone No." value='<?php echo($customer->getPhoneNO())?>'>
+                    <input type="text" class="form-control" id="PINcode" name = "PhoneNo" placeholder="Phone No." value='<?php echo($customer->getPhoneNO())?>' required>
                     <label for="Phone No.">Edit Phone No.</label>
                 </div>                
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="email" placeholder="Email" name = "email" value='<?php echo($customer->getEmail())?>'>
+                    <input type="email" class="form-control" id="email" placeholder="Email" name = "email" value='<?php echo($customer->getEmail())?>' required>
                     <label for="email">Edit Email</label>
                 </div>
                 <div class="form-floating mb-3">
@@ -85,47 +85,12 @@ $test = new customer();
                     <label for="fingerprint">Edit Fingerprint Image</label>
                 </div>
 
-                <input class="btn btn-success" type= "submit" value="Edit User">
+                <input class="btn btn-success" type= "submit" value="Edit User" >
             </form>
         </div>
-
-        <!--WTF is this???-->
-       <!-- <div class="OTPpopup">
-            <div class="alert alert-info" role="alert">
-                OTP Send to Your Email
-            </div>
-            <form action="#">
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="OTP" placeholder="OTP">
-                    <label for="OTP">OTP</label>
-                </div>
-                <button class="btn btn-success">
-                    Check OTP
-                </button>
-            </form>
-            <a href="#" class="forget">
-                Forget Email
-            </a>
-
-             <div class="form-floating mb-3">
-                <input type="file" class="form-control" id="fingerprint" placeholder="Fingerprint Image">
-                <label for="fingerprint">Edit Fingerprint Image</label>
-            </div> 
-        </div>
-        <div class="fingerPopup">
-            <form action="#">
-                <div class="form-floating mb-3">
-                    <input type="file" class="form-control" id="fingerprint" placeholder="Fingerprint Image">
-                    <label for="fingerprint">Edit Fingerprint Image</label>
-                </div>
-                <button class="btn btn-success">
-                    Check Fingerprint
-                </button>
-            </form>
-        </div>-->
 
         <?php
-            if($continue && isset($_GET["SSN"])){
+            if($continue && isset($_POST["SSN"])){
                     ?>
                     <script>
                         editUser = document.getElementById("Formpopup")
@@ -159,35 +124,37 @@ $test = new customer();
 $hashedFingerPrint = false;
 $hash = false;
 $newPIN = false;
-
-if(isset($_FILES['fprint'])){
-    $target_file1 = $_FILES['fprint']["tmp_name"];
-    $hashedFingerPrint = md5_file ($target_file1);
-}
-else{
-    $hashedFingerPrint = $customer->getFingerprint();
-}
-if(isset($_POST["PIN"]))
-    $newPIN = $_POST["PIN"];
-if($newPIN=="Not set"){
-    $newPIN = $test->getPin(); 
-}
-else{
-    $hash = true;
-}
-    
-//
-    if(isset($_POST["street"]) && isset($_POST["area"]) && isset($_POST["city"]) && isset($_POST["email"]) && isset($_POST["PhoneNo"]) && $newPIN && $hashedFingerPrint){
-
-        echo $newPIN;
-        $newCustomerData = new Customer($customer->getSSN(),"","",$newPIN,$hashedFingerPrint,$_POST["street"],$_POST["area"],
-        $_POST["city"],$_POST["email"],"",$_POST["PhoneNo"]);
-        
-        $admin = new admin();
-        $flag = $admin->editCustomer($newCustomerData,$hash);
-        print_r($flag);
-        $flag?$showAlert=1:$showAlert=3;
+if(isset($_POST["EditUser"])){
+    echo "wsap";
+    if(isset($_FILES['fprint'])){
+        $target_file1 = $_FILES['fprint']["tmp_name"];
+        $hashedFingerPrint = md5_file ($target_file1);
     }
+    else{
+        $hashedFingerPrint = $customer->getFingerprint();
+    }
+    if(isset($_POST["PIN"]))
+        $newPIN = $_POST["PIN"];
+    if($newPIN=="Not set"){
+        $newPIN = $test->getPin(); 
+    }
+    else{
+        $hash = true;
+    }
+        
+    //
+        if(isset($_POST["street"]) && isset($_POST["area"]) && isset($_POST["city"]) && isset($_POST["email"]) && isset($_POST["PhoneNo"]) && $newPIN && $hashedFingerPrint){
+
+            echo $newPIN;
+            $newCustomerData = new Customer($customer->getSSN(),"","",$newPIN,$hashedFingerPrint,$_POST["street"],$_POST["area"],
+            $_POST["city"],$_POST["email"],"",$_POST["PhoneNo"]);
+            
+            $admin = new admin();
+            $flag = $admin->editCustomer($newCustomerData,$hash);
+            print_r($flag);
+            $flag?$showAlert=1:$showAlert=3;
+        }
+}
 ?>
 
 <?php
