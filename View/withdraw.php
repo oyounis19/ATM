@@ -117,7 +117,7 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
     <script src="sweetalert2.all.min.js"></script>
 </body>
 <?php
-    if($sweetAlert === 0 || $sweetAlert === 1 || $sweetAlert === 2 || $sweetAlert === 3){
+    if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2 or $sweetAlert === 3 or $sweetAlert === 4){
         $icon = '';
         $message = '';
         switch($sweetAlert){

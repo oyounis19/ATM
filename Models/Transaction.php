@@ -104,8 +104,8 @@ class Transaction {
 		if(!$result)
 			return 1;
 		$reciever->setBalance($result[0]['Balance']);
-		echo $sender->getBalance().'<br>'.$this->amount;
-		echo $sender->getBalance() - $this->amount;
+		// echo $sender->getBalance().'<br>'.$this->amount;
+		// echo $sender->getBalance() - $this->amount;
 
 		$this->db->update("`Account`", array("Balance"=>   $sender->getBalance() - $this->amount),"ID=?", array($sender->getId()));
 		$this->db->update("`Account`", array("Balance"=> $reciever->getBalance() + $this->amount),"ID=?", array($reciever->getId()));

@@ -22,25 +22,17 @@ $customer = new Customer($_SESSION['SSN'], $_SESSION['fName'], $_SESSION['lName'
                         $_SESSION['Email'], $_SESSION['card_id']);
 
 $sweetAlert = null;
-if(isset($_POST['amount']) && isset($_POST['accountID'])){
+if(isset($_POST['amount']) and isset($_POST['accountID']) and $_POST['accountID'] != '' and $_POST['amount'] != ''){
+    $transaction->setType("Transfer");
     $receiver->setId($_POST['accountID']);
     $transaction->setAmount($_POST['amount']);
-    $code = $transaction->transfer($sender, $receiver, $atm, $customer);
-    if(0 == $code){
-        echo "Your Balance is insufficient";//SWEET ALERT
-    }else if(1 == $code){
-        echo "Wrong Account ID";//SWEET ALERT
-    }else{
+    $sweetAlert = $transaction->transfer($sender, $receiver, $atm, $customer);
+    
+    if($sweetAlert === 2) //Success
         $_SESSION['balance'] = $sender->getBalance();
-        echo "Transfered". $_POST['amount'] ."sucessfully";//SWEET ALERT
-    }
-}
-
-
+}else if(isset($_POST['sbmtbtn']))
+    $sweetAlert = 3;
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,9 +68,14 @@ if(isset($_POST['amount']) && isset($_POST['accountID'])){
                             placeholder="01234 5648 6542 3156" name="accountID">
                         <label for="account">Enter Receipent's account ID</label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary w-100" name="sbmtbtn">
                         Transfer
                     </button>
+                    <a href="menu.php">
+                        <img src="assets/img/icons8-back-64.png" alt="Back button">
+                        <br>
+                        <b>Back</b>
+                    </a>
                 </form>
             </div>
         </div>
@@ -93,6 +90,63 @@ if(isset($_POST['amount']) && isset($_POST['accountID'])){
     </script>
     <script src="assets/js/transfer.js"></script>
     <!-- <script src="assets/js/sessionTimout.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+<?php
+    if($sweetAlert === 0 || $sweetAlert === 1 || $sweetAlert === 2 || $sweetAlert === 3){
+        $icon = '';
+        $message = '';
+        switch($sweetAlert){
+            case 0:
+                $icon = 'error';
+                $message = 'Balance Insufficient';
+                break;
+            case 1:
+                $icon = 'error';
+                $message = "Wrong receipent's account ID";
+                break;
+            case 2:
+                $icon = 'success';
+                $message = 'Transfer completed Successfully';
+                break;
+            case 3:
+                $icon = 'warning';
+                $message = "Please enter amount and receipent's account ID before submitting";
+                break;
+            default:
+                $icon = 'error';
+                $message = 'Something went wrong...';
+                break;
+        }
+?>
+    <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        })
+
+        Toast.fire({
+        icon: "<?php echo $icon; ?>",
+        title: "<?php echo $message; ?>"
+        })
+    </script>
+<?php
+    if($sweetAlert === 2){
+
+        $refresh_delay = 3; // 3 seconds delay
+        $redirect_url = "menu.php";
+        
+        header("refresh:$refresh_delay;url=$redirect_url");
+        ob_end_flush();//Sends the HTML to the browser
+    }
+}
+?>
 
 </html>
