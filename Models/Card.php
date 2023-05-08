@@ -5,6 +5,7 @@ class card
 	private string $CVV;
 	private $date;
 	private $state;
+	
 
 	public function getState()
 	{

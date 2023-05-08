@@ -202,9 +202,7 @@ class Customer extends user
         echo $msg;
         session_unset();
         session_destroy();
-        $refresh_delay = 1;
-        $redirect_url = "index.php";
-        header("refresh:$refresh_delay;url=$redirect_url");
+        header("location:index.php");
         exit();
     }
     public function resetPIN($pass1, $pass2, $CardID)

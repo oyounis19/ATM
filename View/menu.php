@@ -40,7 +40,7 @@ if(isset($_POST['block'])){
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span><?php echo $_SESSION['fName'] , ' ' , $_SESSION['lName'] ?>
                         </li>
 
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $_SESSION['balance'].' L.E' ?>
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $_SESSION['balance'].' LE' ?>
                         </li>
 
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $_SESSION['account_id'] ?>
