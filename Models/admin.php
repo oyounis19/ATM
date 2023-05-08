@@ -76,10 +76,15 @@ class admin extends User
         $data["PhoneNO"] = $customer->getPhoneNO();
         $data["CardID"] = $card->getId();
 
-        $db = new DBConnector();
-        $result = $db->insert("User", $data);
-        if (!$result)
+        try{
+            $db = new DBConnector();
+            if(!$result = $db->insert("User", $data)){
+                throw new Exception();
+            }
+        }
+        catch(Exception $e){
             return false;
+        }
 
         $account = new Account();
         $account->setType("Current");

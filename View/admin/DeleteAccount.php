@@ -6,7 +6,7 @@ $showAlert = 0;
 if (isset($_POST["AccId"])) {
     $account = new Account();
     $account->setId($_POST["AccId"]);
-    $admin = new admin("", "");
+    $admin = new admin();
 
     $result = $admin->deleteAccount($account);
     if ($result) {
@@ -40,6 +40,19 @@ if (isset($_POST["AccId"])) {
         <!-- end deleteAccount -->
 
     </div>
+    <script>
+        const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })        
+    </script>
 
 </body>
 
@@ -48,18 +61,6 @@ if ($showAlert == 1) {
 
 ?>
     <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-
         Toast.fire({
             icon: 'success',
             title: 'ATM deleted successfully'
@@ -69,21 +70,9 @@ if ($showAlert == 1) {
 } else if ($showAlert == 2) {
 ?>
     <script>
-        const Tooast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-
-        Tooast.fire({
-            icon: 'error',
-            title: 'something went wrong with the ATM deleting'
+        Toast.fire({
+            icon: 'warning',
+            title: 'There is no account with this ID'
         })
     </script>
 <?php

@@ -7,17 +7,35 @@ require_once (__DIR__."/../../Models/customer.php");
 
 $showAlert = 0;
 
+$account = new Account();
 if(isset($_POST["SSN"]) && isset($_POST["Type"])){
-    $account = new Account();
     $account->setType($_POST["Type"]);
     $customer = new customer($_POST["SSN"]);
-    $admin = new admin();
-    $result = $admin->createAccount($account,$customer);
-    if ($result) {
-        $showAlert = 1;
-    } else {
-        $showAlert = 2;
+    $db = new DBConnector();
+    $result = $db->select('Account',"Type","SSN = ?",array($customer->getSSN()));
+    $flag = true;
+    for($i=0;$i<count($result);$i++){
+        if($result[0]["Type"]==$account->getType()){
+            $flag = false;
+        }
     }
+    
+    if($flag && $result){
+        $admin = new admin();
+        $yes = $admin->createAccount($account,$customer);  
+        if ($yes) 
+            $showAlert = 1;
+        else 
+            $showAlert = 2;
+    }
+    else{
+        if($result)
+            $showAlert = 3;
+        else
+            $showAlert = 4;
+    }  
+
+
 }
 ?>
 <body>
@@ -46,12 +64,6 @@ if(isset($_POST["SSN"]) && isset($_POST["Type"])){
             </div>
         </div>
     </div>
-
-</body>
-<?php
-if ($showAlert == 1) {
-
-?>
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -64,7 +76,12 @@ if ($showAlert == 1) {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-
+    </script>
+</body>
+<?php
+if ($showAlert == 1) {
+?>
+    <script>
         Toast.fire({
             icon: 'success',
             title: 'Account created successfully'
@@ -74,24 +91,29 @@ if ($showAlert == 1) {
 } else if ($showAlert == 2) {
 ?>
     <script>
-        const Tooast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-
-        Tooast.fire({
+        Toast.fire({
             icon: 'error',
             title: 'Something went wrong with creating the account'
         })
     </script>
 <?php
+} else if ($showAlert == 3) {
+?>
+    <script>
+        Toast.fire({
+            icon: 'warning',
+            title: 'This User has <?php echo "(".$account->gettype().")"; ?> account already'
+        })
+    </script>
+<?php
+} else if ($showAlert == 4) {
+?>
+    <script>
+        Toast.fire({
+            icon: 'warning',
+            title: 'There is no user with this SSN'
+        })
+    </script>
+<?php
 } ?>
-
     <!-- end createAccount  -->

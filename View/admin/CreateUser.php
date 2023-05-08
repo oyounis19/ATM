@@ -6,23 +6,25 @@ $showAlert = 0;
 
 $hashedFingerPrint = false;
 
-if(isset($_FILES['fprint'])){
-    $target_file1 = $_FILES['fprint']["tmp_name"];
-    $hashedFingerPrint = md5_file ($target_file1);
-}
 
-if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) && isset($_POST["street"]) && isset($_POST["area"])
-&& isset($_POST["city"]) && isset($_POST["SSN"]) &&  isset($_POST["PIN"]) && $_POST["PhoneNum"] && $hashedFingerPrint){
-    
-    $customer = new customer($_POST["SSN"],$_POST["fname"],$_POST["lname"],$_POST["PIN"],$hashedFingerPrint,
-    $_POST["street"],$_POST["area"],$_POST["city"],$_POST["email"],"",$_POST["PhoneNum"]);
-    $admin = new Admin();
-    $result = $admin->addCustomer($customer);
-    if ($result) 
-        $showAlert = 1;
-    else 
-        $showAlert = 2;
-    
+if(isset($_POST["AddUser"])){
+    if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) && isset($_POST["street"]) && isset($_POST["area"])
+    && isset($_POST["city"]) && isset($_POST["SSN"]) &&  isset($_POST["PIN"]) && $_POST["PhoneNum"] && isset($_FILES['fprint'])){
+        $target_file1 = $_FILES['fprint']["tmp_name"];
+        $hashedFingerPrint = md5_file ($target_file1);
+
+        $customer = new customer($_POST["SSN"],$_POST["fname"],$_POST["lname"],$_POST["PIN"],$hashedFingerPrint,
+        $_POST["street"],$_POST["area"],$_POST["city"],$_POST["email"],"",$_POST["PhoneNum"]);
+        $admin = new Admin();
+        $result = $admin->addCustomer($customer);
+        if ($result) 
+            $showAlert = 1;
+        else 
+            $showAlert = 2;
+    }
+    else{
+        $showAlert = 3;
+    }
 }
 ?>
 
@@ -95,20 +97,17 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) &&
                     </div>
                 </div>
 
-                <input class="btn btn-success" type = "submit" value="Add User">
+                <input class="btn btn-success" type = "submit" value="Add User" name="AddUser" onclick="upload()">
+                <script>
+                    function upload(){
+                        var x = document.getElementById("fingerprint").required = "true";
+                        document.getElementById("fingerprint").innerHTML = x;                        
+                    }
+                </script>
             </form>
         </div>
     </section>
-
-    <!-- end createUser  -->
-    </div>
-</body>
-
-<?php
-    if ($showAlert == 1) {
-
-    ?>
-        <script>
+<script>
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -120,7 +119,17 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) &&
                     toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
+    </script>
+    <!-- end createUser  -->
+    </div>
 
+</body>
+
+<?php
+    if ($showAlert == 1) {
+
+    ?>
+        <script>
             Toast.fire({
                 icon: 'success',
                 title: 'New customer created successfully'
@@ -130,21 +139,18 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) &&
     } else if ($showAlert == 2) {
     ?>
         <script>
-            const Tooast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-
-            Tooast.fire({
+            Toast.fire({
                 icon: 'error',
-                title: 'something went wrong with creating the customer'
+                title: 'Something went wrong with creating the customer'
+            })
+        </script>
+    <?php
+    } else if ($showAlert == 3) {
+    ?>
+        <script>
+            Toast.fire({
+                icon: 'warning',
+                title: 'Please fill all the data'
             })
         </script>
     <?php
