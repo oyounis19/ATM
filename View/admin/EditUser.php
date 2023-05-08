@@ -3,6 +3,7 @@ require_once (__DIR__."/Head.php");
 require_once (__DIR__."/../../Controllers/DBconnector.php");
 $customer = null;
 $test = new customer();
+$continue = true;
 ?>
 
 <body>  
@@ -29,14 +30,14 @@ $test = new customer();
         </div>
         <?php
             $showAlert = 0;
-            $continue = true;
+            
             if(isset($_GET["Search"])){
                 if(isset($_GET["SSN"])){
                     $db = new DBConnector();
                     $testCustomer = new Customer($_GET["SSN"]);
                     $result = $db->select('User',"*","SSN=?",array($testCustomer->getSSN()));
-                    print_r($result);
-                    if(!$result){
+
+                    if(!$result){                   
                         $showAlert = 2;
                         $continue = false;
                     }
@@ -87,9 +88,9 @@ $test = new customer();
                 </div>
 
                 <input class="btn btn-success" type= "submit" value="Edit User" >
+                <button class="btn btn-success" onclick='document.getElementById("Formpopup").style.display = "none"'>Cancel</button>
             </form>
         </div>
-
         <?php
             if($continue && isset($_GET["SSN"])){
                     ?>
@@ -122,28 +123,29 @@ $test = new customer();
 </body>
 
 <?php
-$hashedFingerPrint = false;
-$hash = false;
-$newPIN = false;
-if(isset($_POST["EditUser"])){
-    echo "wsap";
-    if(isset($_FILES['fprint'])){
-        $target_file1 = $_FILES['fprint']["tmp_name"];
-        $hashedFingerPrint = md5_file ($target_file1);
-    }
-    else{
-        $hashedFingerPrint = $customer->getFingerprint();
-    }
-    if(isset($_POST["PIN"]))
-        $newPIN = $_POST["PIN"];
-    if($newPIN=="Not set"){
-        $newPIN = $test->getPin(); 
-    }
-    else{
-        $hash = true;
-    }
-        
-    //
+echo $showAlert;
+if($continue){
+    $hashedFingerPrint = false;
+    $hash = false;
+    $newPIN = false;
+    if(isset($_POST["EditUser"])){
+        echo "wsap";
+        if(isset($_FILES['fprint'])){
+            $target_file1 = $_FILES['fprint']["tmp_name"];
+            $hashedFingerPrint = md5_file ($target_file1);
+        }
+        else{
+            $hashedFingerPrint = $customer->getFingerprint();
+        }
+        if(isset($_POST["PIN"]))
+            $newPIN = $_POST["PIN"];
+        if($newPIN=="Not set"){
+            $newPIN = $test->getPin(); 
+        }
+        else{
+            $hash = true;
+        }
+            
         if(isset($_POST["street"]) && isset($_POST["area"]) && isset($_POST["city"]) && isset($_POST["email"]) && isset($_POST["PhoneNo"]) && $newPIN && $hashedFingerPrint){
 
             echo $newPIN;
@@ -153,8 +155,27 @@ if(isset($_POST["EditUser"])){
             $admin = new admin();
             $flag = $admin->editCustomer($newCustomerData,$hash);
             print_r($flag);
-            $flag?$showAlert=1:$showAlert=3;
+            if($flag){
+            ?>
+                <script>
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Customer edited successfully'
+                })
+                </script>
+            <?php
+            } else {
+            ?>
+                <script>
+                Toast.fire({
+                icon: 'error',
+                title: 'Something went wrong , please try again'
+                })
+                </script>
+            <?php
         }
+    }
+}
 }
 ?>
 

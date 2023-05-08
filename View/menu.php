@@ -1,6 +1,7 @@
 <?php 
 //functions of Customer start from here
 require_once "../Models/customer.php";//Starts session
+require_once "../Models/Account.php";
 
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
@@ -10,18 +11,19 @@ if(!isset($_SESSION['SSN'])){
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
-$customer=new customer();
+$account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
+$customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
+                         $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email']);
+
 
 
 if(isset($_POST['lg_out'])){
-    $msg="<b> redirecting to home page </b>";
-    $customer->logOut($msg);
+    $customer->logOut();
     
 }
 if(isset($_POST['block'])){
     $customer->blockcard($_SESSION['card_id']);
-    $msg="<b> redirecting to home page </b>";
-    $customer->logOut($msg);
+    $customer->logOut();
 }
 ?>
 <!DOCTYPE html>
@@ -46,13 +48,13 @@ if(isset($_POST['block'])){
                 <h2 class="text-white fw-bolder">ATM </h2>
                 <div class="userInfo my-5">
                     <ul>
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span><?php echo $_SESSION['fName'] , ' ' , $_SESSION['lName'] ?>
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span><?php echo $customer->getFirstName() , ' ' , $customer->getLastName() ?>
                         </li>
 
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $_SESSION['balance'].' LE' ?>
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $account->getBalance().' LE' ?>
                         </li>
 
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $_SESSION['account_id'] ?>
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $account->getId() ?>
                         </li>
                         <?php
                         if(isset($_SESSION['fing']) && $_SESSION['fing'] == 1){//User blocks card if he is logged in by fingerprint
