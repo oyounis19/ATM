@@ -92,6 +92,9 @@ $result =  $srvTeq->checkLoggers();
                         <p>Account ID : <span><?php echo $result[$i]["AccountID"] ?></span></p>
                     </li>
                     <li>
+                        <p>Received ID : <span><?php if($result[$i]["receiverId"] == "") echo "-------" ;else echo$result[$i]["receiverId"]?></span></p>
+                    </li>
+                    <li>
                         <p>Transaction Type : <span><?php echo $result[$i]["Type"] ?></span></p>
                     </li>
                     <li>
