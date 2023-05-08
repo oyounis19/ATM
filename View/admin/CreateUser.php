@@ -43,26 +43,26 @@ if(isset($_POST["AddUser"])){
                 <div class="name d-flex gap-4">
 
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="firstName" placeholder="First Name" name="fname">
+                        <input type="text" class="form-control" id="firstName" placeholder="First Name" name="fname" required>
                         <label for="firstName">First Name</label>
                     </div>
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lname">
+                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lname" required>
                         <label for="lastName">Last Name</label>
                     </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                    <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
                     <label for="email">Email</label>
                 </div>
 
                 <div class="d-flex gap-4">
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="street" placeholder="Street" name="street">
+                        <input type="text" class="form-control" id="street" placeholder="Street" name="street" required>
                         <label for="street">Street</label>
                     </div>
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="area" placeholder="Area" name="area">
+                        <input type="text" class="form-control" id="area" placeholder="Area" name="area" required>
                         <label for="area">Area</label>
                     </div>
                 </div>
@@ -70,29 +70,29 @@ if(isset($_POST["AddUser"])){
                 <div class="d-flex gap-4">
 
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="city" placeholder="City" name="city">
+                        <input type="text" class="form-control" id="city" placeholder="City" name="city" required>
                         <label for="city">City</label>
                     </div>
                     <div class="form-floating w-50 mb-3">
-                        <input type="text" class="form-control" id="country" placeholder="country" name="country">
+                        <input type="text" class="form-control" id="country" placeholder="country" name="country" required>
                         <label for="country">Country</label>
                     </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="floatingSSN" placeholder="SSN" name="SSN">
+                    <input type="number" class="form-control" id="floatingSSN" placeholder="SSN" name="SSN" required>
                     <label for="floatingSSN">SSN</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="file" class="form-control" id="fingerprint" placeholder="Fingerprint Image" name="fprint">
+                    <input type="file" class="form-control" id="fingerprint" placeholder="Fingerprint Image" name="fprint" required>
                     <label for="fingerprint">Upload Fingerprint Image</label>
                 </div>
                 <div class="d-flex gap-4">
                     <div class="form-floating w-50 mb-3">
-                        <input type="number" class="form-control" id="PINcode" placeholder="PIN Code" name="PIN">
+                        <input type="number" class="form-control" id="PINcode" placeholder="PIN Code" name="PIN" required>
                         <label for="PINcode">PIN Code</label>
                     </div>
                     <div class="form-floating w-50 mb-3">
-                        <input type="number" class="form-control" id="Phone No." placeholder="Phone No." name="PhoneNum">
+                        <input type="number" class="form-control" id="Phone No." placeholder="Phone No." name="PhoneNum" required>
                         <label for="Phone No.">Phone No.</label>
                     </div>
                 </div>
