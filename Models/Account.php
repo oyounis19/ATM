@@ -1,8 +1,4 @@
 <?php
-// require_once __DIR__."/Verification.php";
-require_once __DIR__."/../Controllers/DBconnector.php";
-// require_once __DIR__."/Models/ATM.php";
-
 class Account {
     private $id;
     private $balance;
@@ -11,9 +7,13 @@ class Account {
     
     public function __construct($id = null, $balance = null, $type = null) 
     {
-        if($id && $balance && $type){
+        if($id){
             $this->id = $id;
+        }
+        if($balance){
             $this->balance = $balance;
+        }
+        if($type){
             $this->type = $type;
         }
     }

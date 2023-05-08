@@ -56,6 +56,11 @@ if(isset($_POST['block'])){
                         <?php
                         }
                         ?>
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3">
+                                <a href="Account.php">
+                                    Change Account
+                                </a>
+                        </li>
                     </ul>
                 </div>
             </div>

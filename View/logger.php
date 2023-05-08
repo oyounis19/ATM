@@ -36,6 +36,10 @@ $result =  $srvTeq->checkLoggers();
                 <div class="transactions">
                 <?php 
                 for($i = 0 ; $i < sizeof($result);$i++){
+                    if($result[$i]['Type'] == "Withdraw" || $result[$i]['Type'] == "Transfer")
+                                    $arrow = "fa-arrow-up";
+                                else
+                                    $arrow = "fa-arrow-down";
                     ?>
                     <div class="transaction d-flex mt-4 justify-content-between" id="<?php echo $i+1;?>">
                         <div class="accountInfo">
@@ -51,7 +55,7 @@ $result =  $srvTeq->checkLoggers();
                                 </li>
                             </ul>
                         </div>
-                        <i class="fa-solid fa-arrow-up"></i>
+                        <i class="fa-solid <?php echo $arrow?>"></i>
                     </div>
                 <?php 
                 }
@@ -59,6 +63,13 @@ $result =  $srvTeq->checkLoggers();
                 </div>
             </div>
                 
+        </div>
+        <div class="backk">
+            <a href="serviceMenu.php" style="margin-left: 50px;">
+                <img src="assets/img/icons8-back-64.png" alt="Back button">
+                <br>
+                <b style="color:azure">Back</b>
+            </a>
         </div>
     </div>
 
