@@ -9,11 +9,12 @@ if(!isset($_SESSION['SSN'])){
     exit();
 }
 $errmsg = "";
-$customer = new customer;
+$customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
+                         $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email']);
 if (isset($_POST['change'])) {
     $pass1 = $_POST['pass1'];
     $pass2 = $_POST['pass2'];
-    $card_id = $_SESSION['card_id'];
+    $card_id = $customer->getId();
     $value = $customer->resetPin($pass1, $pass2, $card_id);
     if ($value == 1) {
         $errmsg = "<b style='color: white;'> All fields is rquired </b>";
@@ -21,7 +22,7 @@ if (isset($_POST['change'])) {
         $errmsg = "<b style='color: white;'>  Not match password </b>";
     } else if ($value == 3) {
         $msg="<b>Pin changed Successfully, please wait</b>"; //SWEET ALERT
-        $customer->logOut($msg);
+        $customer->logOut();
     }
 }
 ?>
