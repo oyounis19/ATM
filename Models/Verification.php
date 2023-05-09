@@ -12,34 +12,27 @@ class verification{
 
     public function __construct(){
         $this->db = new DBconnector();
-    }
-    public function PIN(Customer $user,$PIN){// waiting for khaled class
-        $result = $this->db->select("User", "PIN","SSN = ?",array($user->getSSN())); // $user is from class customer
-        if($result["PIN"]==$PIN)
-            return true;
-        else
-            return false;
-    }
+    }   
     
     private function generateOTP() {
         $digits = 6;
         return str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
     }
 
+    public function CheckPIN(Customer $customer,$PIN){
+        return ($customer->getPin()==$PIN);
+    }
+
     public function CheckBalance(Account $account, Transaction $transaction){
-        $result = $this->db->select("Account","Balance","Account_ID = ?",array($account->getId()));
-        if($result["Balance"]>=$transaction->getAmount())
-            return true;
-        else
-            return false;
+        return ($account->getBalance()==$transaction->getAmount());
     }
 
     public function CheckBehavior(Account $account, Transaction $transaction){
         $result = $this->db->select("Account","*","Account_ID = ?",array($account->getId()));
         if($transaction->getType() == "Withdraw") // $transaction from class transaction
-            $AvgAmount = $result["Avg_Withdraw"]/$result["Withdraw_Amount"];
+            $AvgAmount = $result["totalWithdraws"]/$result["numberOfWithdraws"];
         else
-            $AvgAmount = $result["Avg_Transfer"]/$result["Transfer_Amount"];
+            $AvgAmount = $result["totalTransfer"]/$result["numberTransfer"];
     
         $ValidAmount = $AvgAmount + $AvgAmount*(30/100);
         if($ValidAmount >= $transaction->getAmount()) // $transaction from class transaction
@@ -57,6 +50,7 @@ class verification{
             return true;
         else{//Late (expired)
             //OTP VERIFICATION GOES HERE*************************************************************************************
+            // ازاي لول؟
             return false;
         }
     }
