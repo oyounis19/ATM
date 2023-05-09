@@ -147,8 +147,7 @@ class DBConnector
      * @return int The number of rows affected by the delete operation.
      * @throws Exception If there was an error executing the delete query.
      */
-    public function delete($table, $where, $params = array())
-    {
+    public function delete($table, $where, $params = array()){
         $query = "DELETE FROM $table WHERE $where";
         try {
             $stmt = $this->conn->prepare($query);
@@ -169,20 +168,42 @@ class DBConnector
     }
 
     public function join($sqlqry){
-        try{
-            $result = $this->conn->query($sqlqry);
-            // query function return false if the query is false and sql object if true
-            if($result == false)
-                throw new Exception();
-
-            return $result->fetch_assoc();
-        }
-        catch(Exception $e){
-            //use the below statment to know the error
-            echo "message: " . $e->getMessage();
-            return false;
-        }
+        $result = $this->conn->query($sqlqry);
+        // print_r($result->fetch_assoc());
+        
+        
+        // echo $sqlqry;
+        // query function return false if the query is false and sql object if true
+        // if($result == false)
+        //     throw new Exception();
+        
+        return $result->fetch_assoc();
+        
     }
+
+    // public function join($table1, $table2, $joinCondition, $columns = "*", $where = null, $params = array()) {
+    //     $query = "SELECT $columns FROM $table1 INNER JOIN $table2 ON $joinCondition";
+    //     if ($where) {
+    //         $query .= " WHERE $where";
+    //     }
+    //     $stmt = $this->conn->prepare($query);
+    //     if (!$stmt) {
+    //         throw new Exception("Failed to prepare query: " . $this->conn->error);
+    //     }
+    //     if ($params) {
+    //         $types = str_repeat("s", count($params));
+    //         $stmt->bind_param($types, ...$params);
+    //     }
+    //     if (!$stmt->execute()) {
+    //         throw new Exception("Failed to execute query: " . $stmt->error);
+    //     }
+    //     $result = $stmt->get_result();
+    //     $rows = array();
+    //     while ($row = $result->fetch_assoc()) {
+    //         $rows[] = $row;
+    //     }
+    //     return $rows;
+    // }
 
     /**
      * Closes the Database Connection.

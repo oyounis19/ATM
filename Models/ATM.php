@@ -34,7 +34,7 @@ class ATM{
             $this->ID = $id;
         }
         $this->db = new DBConnector();
-        $this->getAtmData(1264);
+        $this->getAtmData(1268);
     }
 
     private function serverSettings(){
@@ -45,14 +45,14 @@ class ATM{
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'atm86596@gmail.com';                //SMTP username
-            $mail->Password   = 'qlualdikbwjtwfir';                     //SMTP password
+            $mail->Username   = 'oyounis1922@gmail.com';                //SMTP username
+            $mail->Password   = 'mosrcwtykwmvmlpo';                     //SMTP password
             $mail->SMTPSecure = 'tls';                                  //Enable implicit TLS encryption
             $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
             $mail->isHTML(true);   
 
             //Recipients
-            $mail->setFrom('atm86596@gmail.com', 'ATM');
+            $mail->setFrom('oyounis1922@gmail.com', 'ATM');
             return $mail;
         }catch (Exception $e) {
             return null;
