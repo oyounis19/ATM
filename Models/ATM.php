@@ -45,14 +45,14 @@ class ATM{
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'oyounis1922@gmail.com';                //SMTP username
-            $mail->Password   = 'mosrcwtykwmvmlpo';                     //SMTP password
+            $mail->Username   = 'amrkalledsaleh1@gmail.com';                //SMTP username
+            $mail->Password   = 'zclvtztvnpaogweq';                     //SMTP password
             $mail->SMTPSecure = 'tls';                                  //Enable implicit TLS encryption
             $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
             $mail->isHTML(true);   
 
             //Recipients
-            $mail->setFrom('oyounis1922@gmail.com', 'ATM');
+            $mail->setFrom('amrkalledsaleh1@gmail.com', 'ATM');
             return $mail;
         }catch (Exception $e) {
             return null;
@@ -316,6 +316,63 @@ class ATM{
         $this->area = $result[0]['Area'];
         $this->balance = $result[0]['Balance'];
     }
+
+    public function notifyNewUser(Card $card, Customer $customer){
+        $mail = $this->serverSettings();
+        $mail->addAddress($customer->getEmail(), 'Client');
+        $mail->Subject = 'Transaction Notification';
+
+        $emailBody = "<head>
+        <meta charset=\"UTF-8\">
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+          }
+          h2 {
+            color: #333;
+          }
+          ul {
+            list-style-type: none;
+            padding: 0;
+          }
+          li {
+            margin-bottom: 10px;
+          }
+          strong {
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <div>
+          <h2>New Credit Card Details</h2>
+          <p>Dear ".$customer->getFirstName().",</p>
+          <p>We are pleased to inform you that your new credit card details have been successfully created. Please find the details below:</p>
+          <ul>
+            <li><strong>Credit Card Number:</strong> ".$card->getId()."</li>
+            <li><strong>Cardholder Name:</strong> ".$customer->getFirstName().' '.$customer->getLastName()."</li>
+            <li><strong>Expiration Date:</strong> ".$card->getDate()."</li>
+            <li><strong>CVV:</strong> ".$card->getCVV()."</li>
+            <li><strong>CVV:</strong> ".$customer->getPin()."</li>
+          </ul>
+          <p>Please ensure to keep this information secure and do not share it with anyone. If you have any questions or concerns regarding your credit card, please feel free to contact our customer support team.</p>
+          <p>Thank you for choosing our services!</p>
+          <p>Sincerely,</p>
+          <p>FCAIH Bank</p>
+        </div>
+      </body>";
+
+      $mail->Body = $emailBody;
+        try{
+            $mail->send();
+        }catch(Exception $e){
+            return false;
+        }
+        return true;
+    }
+
     public function __destruct()
     {
         $this->db->close();

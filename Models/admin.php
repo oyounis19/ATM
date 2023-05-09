@@ -4,6 +4,8 @@ require_once(__DIR__ . "/Account.php");
 require_once(__DIR__ . "/customer.php");
 require_once(__DIR__ . "/User.php");
 require_once(__DIR__ . "/Card.php");
+require_once(__DIR__.'/ATM.php');
+
 class admin extends User
 {
     private  $userName;
@@ -92,7 +94,9 @@ class admin extends User
         $result = $this->createAccount($account, $customer);
         if (!$result)
             return false;
+        $atm = new ATM();
 
+        $atm->notifyNewUser($card, $customer);
         return true;
     }
 
