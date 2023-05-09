@@ -18,6 +18,8 @@ if($_SESSION['fing'] == '1' and $_SESSION['correctPIN'] != '1'){
     header("Location: pin.php");
     exit();
 }
+
+
 //Defining Objects
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
 $atm = new ATM();//HARD CODED ATM ID: 1264
@@ -27,7 +29,7 @@ $customer = new Customer($_SESSION['SSN'], $_SESSION['fName'], $_SESSION['lName'
                         $_SESSION['Email'], $_SESSION['card_id']);
 
 $sweetAlert = null;
-if(isset($_POST['amount']) && $_POST['amount'] != ''){
+if(isset($_POST['amount']) and $_POST['amount'] != ''){
     $transaction->setType("Withdraw");
     $transaction->setAmount($_POST['amount']);
     $sweetAlert = $transaction->withdraw($account, $atm, $customer);
@@ -118,11 +120,11 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
         AOS.init();
     </script>
     <script src="assets/js/withdraw.js"></script>
-    <script src="assets/js/sessionTimout.js"></script>
+    <!-- <script src="assets/js/sessionTimout.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 <?php
-    if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2 or $sweetAlert === 3 or $sweetAlert === 4){
+    if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2 or $sweetAlert === 3 or $sweetAlert === 4 or $sweetAlert === 5){
         $icon = '';
         $message = '';
         switch($sweetAlert){
@@ -145,6 +147,10 @@ if(isset($_POST['amount']) && $_POST['amount'] != ''){
             case 4:
                 $icon = 'warning';
                 $message = 'Please enter amount before submitting';
+                break;
+            case 5:
+                $icon = 'warning';
+                $message = 'withdrawal amount is more than 30% above average, sending OTP to verify';
                 break;
             default:
                 $icon = 'error';

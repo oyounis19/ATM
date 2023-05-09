@@ -24,21 +24,38 @@ class verification{
     }
 
     public function CheckBalance(Account $account, Transaction $transaction){
-        return ($account->getBalance()==$transaction->getAmount());
+        return ($transaction->getAmount() > $account->getBalance());
     }
 
     public function CheckBehavior(Account $account, Transaction $transaction){
-        $result = $this->db->select("Account","*","Account_ID = ?",array($account->getId()));
-        if($transaction->getType() == "Withdraw") // $transaction from class transaction
-            $AvgAmount = $result["totalWithdraws"]/$result["numberOfWithdraws"];
-        else
-            $AvgAmount = $result["totalTransfer"]/$result["numberTransfer"];
-    
-        $ValidAmount = $AvgAmount + $AvgAmount*(30/100);
-        if($ValidAmount >= $transaction->getAmount()) // $transaction from class transaction
+        if($this->CheckBalance($account, $transaction)){//Insufficient Account Balance
+			$transaction->setState(false);
+			return -1;//Save but denied
+		}
+        $result = $this->db->select("Account","*","ID = ?",array($account->getId()));
+
+        $AvgAmount = null;
+        if($transaction->getType() == "Withdraw"){
+            if((int)$result[0]["numberOfWithdraws"] == 0){
+                return true;//first time
+            }
+            $AvgAmount = (int)$result[0]["totalWithdraws"]/(int)$result[0]["numberOfWithdraws"];
+        } // $transaction from class transaction
+        else{
+            if((int)$result[0]["numberTransfer"] == 0){
+                return true;//first time
+            }
+            $AvgAmount = (int)$result[0]["totalTransfer"]/(int)$result[0]["numberTransfer"];
+        }
+
+        $ValidAmount = $AvgAmount + $AvgAmount*(30/100);//30% above Average
+        if($ValidAmount >= $transaction->getAmount())
             return true; 
-        else
+        else{
+            //OTP
             return false;
+        }
+        
     }
 
     public function CheckExpDate(Card $card){//Login

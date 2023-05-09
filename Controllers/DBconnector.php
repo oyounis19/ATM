@@ -169,14 +169,6 @@ class DBConnector
 
     public function join($sqlqry){
         $result = $this->conn->query($sqlqry);
-        // print_r($result->fetch_assoc());
-        
-        
-        // echo $sqlqry;
-        // query function return false if the query is false and sql object if true
-        // if($result == false)
-        //     throw new Exception();
-        
         return $result->fetch_assoc();
         
     }

@@ -3,6 +3,7 @@ require_once 'ATM.php';
 require_once 'Account.php';
 require_once 'customer.php';
 require_once '../Controllers/DBconnector.php';
+require_once '../Models/Verification.php';
 
 class Transaction {
 	private $type;
@@ -99,11 +100,6 @@ class Transaction {
 	 * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 2 (Transfer is done)
 	 */
 	public function transfer(Account $sender, Account $reciever, ATM $atm , Customer $customer) {//Composition required
-		//if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004{
-		//	$this->state = false;
-		//	$this->saveTransaction($customer, $account, $atm);
-		//	return false;
-		// }
 		$this->state = true;//Fraud not detected
 		if($this->amount > $sender->getBalance()){
 			$this->state = false;//saved but denied
@@ -120,6 +116,11 @@ class Transaction {
 		$this->db->update("`Account`", array("Balance"=>   $sender->getBalance() - $this->amount),"ID=?", array($sender->getId()));
 		$this->db->update("`Account`", array("Balance"=> $reciever->getBalance() + $this->amount),"ID=?", array($reciever->getId()));
 
+		$result = $this->db->select("Account","*","ID = ?",array($sender->getId()));
+
+		$this->db->update("`Account`", array("numberTransfer"=> (int)$result[0]['numberTransfer'] + 1),"ID=?", array($sender->getId()));
+		$this->db->update("`Account`", array("totalTransfer"=> (int)$result[0]['totalTransfer'] + $this->amount),"ID=?", array($sender->getId()));
+
 		$sender->setBalance($sender->getBalance() - $this->amount);
 		$reciever->setBalance($reciever->getBalance() + $this->amount);
 		$this->saveTransaction($customer, $sender, $atm , $reciever);
@@ -133,11 +134,6 @@ class Transaction {
 	 * @return int 0 (DB error), 1 (Deposit is done)
 	 */
 	public function deposit(Account $account, ATM $atm, Customer $customer) {//Composition required
-		//if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004{
-		//	$this->state = false;
-		//	$this->saveTransaction($customer, $account, $atm);
-		//	return false;
-		// }
 		$this->state = true;//Fraud not detected
 		if(!$this->db->update("`Account`", array("Balance"=>$account->getBalance() + $this->amount), "ID=?", array($account->getid())))
 			return 0;
@@ -156,24 +152,26 @@ class Transaction {
 	 * @return int 0 (Insufficient Account Balance), 1 (DB error), 2 (Withdraw done),3 (Insufficient ATM balance)
 	 */
 	public function withdraw(Account $account, ATM $atm , Customer $customer){//Composition required
-		//if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004{
-		//	$this->state = false;
-		//	$this->saveTransaction($customer, $account, $atm);
-		//	return false;
-		// }
-		if($this->amount > $account->getBalance()){//Insufficient Account Balance
-			$this->state = false;
+		$verify = new verification();
+		$fraud = $verify->CheckBehavior($account, $this);
+		if(!$fraud){
 			$this->saveTransaction($customer, $account, $atm);
-			return 0;//Save but denied
-		}
+			return 5;
+		}else if($fraud === -1)
+			return 0;
 		if($this->amount > $atm->getBalance())//Insufficient ATM balance
 			return 3;
-		// if(Verification->verifyTransaction())//Waiting for @AhmedEbrahim2322004
+			
 		$this->state = true;
 		if(!$this->db->update("`Account`", array("Balance"=>$account->getBalance() - $this->amount),"ID=?", array($account->getId())))
 			return 1;
 
 		$this->db->update("`ATM`", array("Balance"=>$atm->getBalance()-$this->amount),"ID=?", array($atm->getID()));
+
+		$result = $this->db->select("Account","*","ID = ?",array($account->getId()));
+
+		$this->db->update("`Account`", array("numberOfWithdraws"=> (int)$result[0]['numberOfWithdraws'] + 1),"ID=?", array($account->getId()));
+		$this->db->update("`Account`", array("totalWithdraws"=> (int)$result[0]['totalWithdraws'] + + $this->amount),"ID=?", array($account->getId()));
 
 		$atm->setBalance($atm->getBalance() - $this->amount);
 		$account->setBalance($account->getBalance() - $this->amount);
