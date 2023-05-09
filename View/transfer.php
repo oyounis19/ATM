@@ -99,7 +99,7 @@ if(isset($_POST['amount']) and isset($_POST['accountID']) and $_POST['accountID'
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 <?php
-    if($sweetAlert === 0 || $sweetAlert === 1 || $sweetAlert === 2 || $sweetAlert === 3){
+    if($sweetAlert === 0 || $sweetAlert === 1 || $sweetAlert === 2 || $sweetAlert === 3 or $sweetAlert == 4){
         $icon = '';
         $message = '';
         switch($sweetAlert){
@@ -118,6 +118,10 @@ if(isset($_POST['amount']) and isset($_POST['accountID']) and $_POST['accountID'
             case 3:
                 $icon = 'warning';
                 $message = "Please enter amount and receipent's account ID before submitting";
+                break;
+            case 4:
+                $icon = 'warning';
+                $message = 'transfer amount is more than 30% above average, sending OTP to verify';
                 break;
             default:
                 $icon = 'error';
@@ -149,6 +153,12 @@ if(isset($_POST['amount']) and isset($_POST['accountID']) and $_POST['accountID'
         $refresh_delay = 3; // 3 seconds delay
         $redirect_url = "menu.php";
         
+        header("refresh:$refresh_delay;url=$redirect_url");
+        ob_end_flush();//Sends the HTML to the browser
+    }if($sweetAlert === 4){
+        $refresh_delay = 3; // 3 seconds delay
+        $redirect_url = "OTP.php";
+
         header("refresh:$refresh_delay;url=$redirect_url");
         ob_end_flush();//Sends the HTML to the browser
     }

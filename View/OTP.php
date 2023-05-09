@@ -2,7 +2,7 @@
 ob_start(); //Capture the HTML in output buffer instead of being sending to the browser immediately
 require_once '../Models/customer.php'; //starts session
 
-if(!isset($_SESSION['SSN']) or !isset($_SESSION['OTP'])){//check if user not logged in
+if(!isset($_SESSION['SSN'])){//check if user not logged in
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 2; // 2 seconds delay
     $redirect_url = "index.php";
@@ -10,18 +10,50 @@ if(!isset($_SESSION['SSN']) or !isset($_SESSION['OTP'])){//check if user not log
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
-$err = null;
+$OTP = null;
+$page = null;
+
+if(isset($_SESSION['OTP'])){//redirected from CCFS (Login)
+    $OTP = $_SESSION['OTP'];
+    $page = "Account.php";
+}
+//destroy session after done
+else if(isset($_SESSION['WOTP'])){//redirected from CCFS (Withdraw)
+    $OTP = $_SESSION['WOTP'];
+    $page = "withdraw.php";
+}
+
+else if(isset($_SESSION['TOTP'])){//redirected from CCFS (Transfer)
+    $OTP = $_SESSION['TOTP'];
+    $page = "transfer.php";
+}
+else{//logged in but no page redirected here
+    // Generate JavaScript code to navigate back
+    $javascript = '<script>';
+    $javascript .= 'window.history.back();';
+    $javascript .= '</script>';
+    // Output the JavaScript code
+    echo $javascript;
+}
+
+$sweetAlert = -1;
 if(isset($_POST['otp'])){
     if($_POST['otp'] != ''){
-        if($_POST['otp'] == $_SESSION['OTP']){
-            $err = "<b>Error occured while sending OTP</b>";//SWEET ALERT
-            $refresh_delay = 2;
-            $redirect_url = "Account.php";
-            header("refresh:$refresh_delay;url=$redirect_url");
-            exit();
+        if($_POST['otp'] == $OTP){
+            switch($page){
+                case "withdraw.php":
+                    $_SESSION['CWOTP'] = '1';
+                    break;
+                case "transfer.php":
+                    $_SESSION['CTOTP'] = '1';
+                    break;
+            }
+            $sweetAlert = 1;
         }
+        else
+            $sweetAlert = 0;
     }else{
-        $err = "<b>Enter OTP code to continue...</b>";//SWEET ALERT
+        $sweetAlert = 2;
     }
 }
 ?>
@@ -51,7 +83,6 @@ if(isset($_POST['otp'])){
                     </div>
                     <button name="continue" class="btn btn-primary mt-3 w-100" type="submit">Continue</button>
                 </form>
-                <?php echo $err;?>
             </div>
         </div>
     </div>
@@ -63,7 +94,35 @@ if(isset($_POST['otp'])){
     </script>
     <!-- <script src="assets/js/sessionTimout.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
 
+<?php
+    if($sweetAlert === -1 or $sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2 ){
+        $icon = '';
+        $message = '';
+        switch($sweetAlert){
+            case -1:
+                $icon = 'info';
+                $message = 'An OTP email has been sent to your account';
+                break;
+            case 0:
+                $icon = 'error';
+                $message = 'Wrong OTP, Try again';
+                break;
+            case 1:
+                $icon = 'success';
+                $message = 'Redirecting';
+                break;
+            case 2:
+                $icon = 'warning';
+                $message = 'Enter OTP to continue';
+                break;
+            default:
+                $icon = 'error';
+                $message = 'Something went wrong...';
+                break;
+        }
+?>
     <script>
         const Toast = Swal.mixin({
         toast: true,
@@ -78,10 +137,23 @@ if(isset($_POST['otp'])){
         })
 
         Toast.fire({
-        icon: 'info',
-        title: 'An OTP has been sent to your gmail'
+        icon: '<?php echo $icon; ?>',
+        title: '<?php echo $message; ?>'
         })
     </script>
-</body>
+<?php
+    if($sweetAlert == 1){//success
+        //destroying sessions
+        $refresh_delay = 2;
+        if(!$page){
+            header("Location:index.php");
+            exit();
+        }
+
+        header("refresh:$refresh_delay;url=$page");
+        ob_end_flush();
+    }
+}
+?>
 
 </html>

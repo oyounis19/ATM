@@ -117,7 +117,7 @@ if(isset($_POST['block'])){
         AOS.init();
     </script>
     <!-- <script src="assets/js/script.js"></script> -->
-    <script src="assets/js/sessionTimout.js"></script>
+    <!-- <script src="assets/js/sessionTimout.js"></script> -->
 </body>
 
 </html>

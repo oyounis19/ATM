@@ -19,7 +19,6 @@ if($_SESSION['fing'] == '1' and $_SESSION['correctPIN'] != '1'){
     exit();
 }
 
-
 //Defining Objects
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
 $atm = new ATM();//HARD CODED ATM ID: 1264
@@ -182,6 +181,14 @@ if(isset($_POST['amount']) and $_POST['amount'] != ''){
         $refresh_delay = 3; // 3 seconds delay
         $redirect_url = "menu.php";
         
+        header("refresh:$refresh_delay;url=$redirect_url");
+        ob_end_flush();//Sends the HTML to the browser
+    }
+
+    if($sweetAlert === 5){
+        $refresh_delay = 3; // 3 seconds delay
+        $redirect_url = "OTP.php";
+
         header("refresh:$refresh_delay;url=$redirect_url");
         ob_end_flush();//Sends the HTML to the browser
     }

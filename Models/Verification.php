@@ -2,7 +2,7 @@
 
 
 require_once __DIR__."/../Controllers/DBconnector.php";
-require_once __DIR__."/Customer.php";
+require_once __DIR__."/Customer.php";//starts session
 require_once __DIR__."/Transaction.php";
 require_once __DIR__."/Account.php";
 
@@ -27,7 +27,7 @@ class verification{
         return ($transaction->getAmount() > $account->getBalance());
     }
 
-    public function CheckBehavior(Account $account, Transaction $transaction){
+    public function CheckBehavior(Account $account, Transaction $transaction, Customer $customer){
         if($this->CheckBalance($account, $transaction)){//Insufficient Account Balance
 			$transaction->setState(false);
 			return -1;//Save but denied
@@ -40,7 +40,7 @@ class verification{
                 return true;//first time
             }
             $AvgAmount = (int)$result[0]["totalWithdraws"]/(int)$result[0]["numberOfWithdraws"];
-        } // $transaction from class transaction
+        } 
         else{
             if((int)$result[0]["numberTransfer"] == 0){
                 return true;//first time
@@ -50,12 +50,29 @@ class verification{
 
         $ValidAmount = $AvgAmount + $AvgAmount*(30/100);//30% above Average
         if($ValidAmount >= $transaction->getAmount())
-            return true; 
-        else{
-            //OTP
-            return false;
+            return true; //No fraud detected
+        else{//Fraud detected
+            if($transaction->getType() == "Withdraw"){//Withdraw
+                if(!isset($_SESSION['CWOTP'])){//not verified yet
+                    $atm = new ATM();
+                    $_SESSION['WOTP'] = $atm->sendOTP($customer, $this->generateOTP());
+                    return false;
+                }else{
+                    unset($_SESSION['WOTP']);
+                    return true;
+                }
+            }
+            else{//Transfer
+                if(!isset($_SESSION['CTOTP'])){//not verified yet
+                    $atm = new ATM();
+                    $_SESSION['TOTP'] = $atm->sendOTP($customer, $this->generateOTP());
+                    return false;
+                }else{
+                    unset($_SESSION['TOTP']);
+                    return true;
+                }
+            }
         }
-        
     }
 
     public function CheckExpDate(Card $card){//Login
@@ -99,28 +116,6 @@ class verification{
                 return false;
             }
         }
-    }
-    
-    public function CheckOTP($OTP,$userOTP){
-        return $OTP == $userOTP;
-    }
-
-    // public function LoginVerifyAll(Customer $customer,ATM $ATM,Card $card){//Login
-    //     $CheckExpDate = $this->CheckExpDate($card);
-    //     $CheckLocation = $this->CheckLocation($customer,$ATM);
-    //     if($CheckExpDate && $CheckLocation)
-    //         return true;
-    //     else
-    //         return false;
-    // }
-
-    public function VerifyAll(Account $account, Transaction $transaction){
-        $CheckBalance = $this->CheckBalance($account,$transaction);
-        $CheckBehavior = $this->CheckBehavior($account,$transaction);
-        if($CheckBalance && $CheckBehavior)
-            return true;
-        else
-            return false;
     }
 }
 
