@@ -1,7 +1,7 @@
 <?php
-require_once(__DIR__ . '/../Controllers/DBconnector.php');
-require_once "user.php";
-require_once "../Models/Card.php";
+require_once (__DIR__ . '/../Controllers/DBconnector.php');
+require_once (__DIR__ ."/User.php");
+require_once (__DIR__ ."/Card.php");
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
