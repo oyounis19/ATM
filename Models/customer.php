@@ -172,7 +172,6 @@ class Customer extends user
             //sessions
             $this->setSessions($result);
             $this->setCCSessions($block);
-            $this->setAttributes();
             return 1; //DONE
         } else {
             return 0; //Not in DB
@@ -192,6 +191,7 @@ class Customer extends user
             }
             //sessions
             $this->setSessions($result);
+            $this->setCCSessions($Block);
             return 1; // Done
         } else {
             return 0; // not in DB
@@ -271,18 +271,7 @@ class Customer extends user
         $_SESSION['card']    = serialize($card);
     }
 
-    private function setAttributes(){
-        $this->SSN = $_SESSION['SSN'];
-        $this->CardID = $_SESSION['card_id'];
-        $this->Fingerprint = $_SESSION['fingerpint'];
-        $this->PIN = $_SESSION['upass'];
-        $this->FirstName = $_SESSION['fName'];
-        $this->LastName = $_SESSION['lName'];
-        $this->Street = $_SESSION['Street'];
-        $this->Area = $_SESSION['Area'];
-        $this->City = $_SESSION['City'];
-        $this->Email = $_SESSION['Email'];
-    }
+   
 }
 
 ?>
