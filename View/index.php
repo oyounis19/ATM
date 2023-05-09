@@ -13,30 +13,50 @@ if (session_status() === PHP_SESSION_ACTIVE) {//session is open
 require_once "../Models/customer.php";//Actual session starts
 require_once "../Models/Verification.php";
 require_once "../Models/Card.php";
+require_once "../Models/ATM.php";
 
 $customer = new customer;
 $verify = new verification();
+$atm = new ATM();
 $customererrmsg = "";
 $customererrmsgfingerprint = "";
-
+$card;
 //login function using Credit Card or Fingerprint 
 // if you want to check login by fingerprint or not go to line @14 & line @30
 if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']))) {
     $value;
-    $Success = false;
-    $_SESSION['fing'] = '0';    // session of fingerprint set to zero
+    $Success = 0;
+    $_SESSION['fing'] = '0';// session of fingerprint set to zero
     if (isset($_POST['lg_in'])) {//Credit Card
         $cardID = $_POST['card_id'];
         $pass = $_POST['upass'];
         $value = $customer->login($cardID, $pass);
-        if ($value == 1) {
-            //Start Fraud Verify***********
+        if ($value == 1) {//sessions has been set
             $card = unserialize($_SESSION['card']);
-            $verify->CheckExpDate($card);
+            //Start Fraud Verify***********
+            if ($verify->CheckExpDate($card))
+                $Success = 1;
+            else{
+                $customererrmsg = "<b style='color: white;'> Card has been blocked,Since the Card Expired </b>";
+                $Success = -1;
+            }
+            if($Success == 1){//Not expired
+                $otp = $verify->CheckLocation($customer, $atm);//Location
+                if($otp === true){
+                    $Success = 1;
+                    echo 'done';
+                }
+                else if($otp === false)
+                    echo 'error occured';
+                else{
+                    $_SESSION['OTP'] = $otp;
+                    header("location:OTP.php");
+                    exit();
+                }
+            }
             //End Fraud Verify***********
-            $Success = True;
             goto here;
-        } if ($value == -1) {
+        } else if ($value == -1) {
             $customererrmsg = "<b style='color: white;'> Card is blocked </b>";
         } else {//0
             $customererrmsg = "<b style='color: white;'> Wrong Credit Card number or PIN</b>";
@@ -44,7 +64,7 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
     } else if (isset($_POST['upload'])) {//Fingerprint
         $value = $customer->FingerprintValidation();
         if ($value == 1) {
-            $Success = True;
+            $Success = 1;
             //session of fingerprint set to 1 if logged by it
             $_SESSION['fing'] = '1';
             goto here;

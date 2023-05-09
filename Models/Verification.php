@@ -48,26 +48,22 @@ class verification{
 
         if ($result === '+')//Early (running)
             return true;
-        else{//Late (expired)
-            //OTP VERIFICATION GOES HERE*************************************************************************************
-            // ازاي لول؟
+        else
             return false;
-        }
     }
 
-    public function CheckLocation(Customer $customer,ATM $ATM){//Login
-        if(strtolower($customer->getCity()) == strtolower($ATM->getCity())){
+    public function CheckLocation(Customer $customer,ATM $ATM){//Login check 
+        if(strtolower($customer->getCity()) == strtolower($ATM->getCity()))//IF the ATM city = Customer city
             return true;
-        }
+            
         else{
             try{
                 $SSN =  $customer->getSSN();
-                $sql = "SELECT `City` From `ATM` inner join `Transaction` on ATM.ID = Transaction.AtmID where SSN = $SSN";
+                $sql = "SELECT ATM.City FROM Transaction INNER JOIN ATM ON Transaction.AtmID = ATM.ID WHERE Transaction.SSN = '$SSN' ORDER BY Transaction.ID DESC LIMIT 1;";
                 $result = $this->db->join($sql);
                 if($result){
-                    $i = count($result)-1;
-                    $lastLocation = $result[$i]["City"];
-                    if(strtolower($lastLocation) == strtolower($customer->getCity())){
+                    $lastLocation = $result['City'];
+                    if(strtolower($lastLocation) == strtolower($ATM->getCity())){//Last transaction's location with ATM's location
                         return true;
                     }
                     else{
@@ -75,15 +71,19 @@ class verification{
                         return $OTP;
                     }
                 }
-                else
-                    return false;
+                else{
+                    if($result['City'] == '')
+                        return true;//1st transaction
+
+                    return false;//error in Database
+                }
             }
             catch(Exception $e){
                 return false;
             }
         }
     }
-     
+    
     public function CheckOTP($OTP,$userOTP){
         return $OTP == $userOTP;
     }
