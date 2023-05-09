@@ -7,7 +7,7 @@ $msg = "";
 $result=[];
 if (isset($_SESSION['SSN'])) {
     $customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
-                                $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email']);
+                                $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email'],$_SESSION['card_id']);
     $result = $customer->accounts($customer->getSSN());
     if (count($result) == 0) {
         $msg ="<b style='color: white;'>You Don't have Account Yet </b>";
@@ -18,7 +18,7 @@ if (isset($_SESSION['SSN'])) {
     }
 }else{
     echo '<b>Redirecting you to login screen to login...</b>';
-    $refresh_delay = 2; // 2 seconds delay
+    $refresh_delay = 1; // 2 seconds delay
     $redirect_url = "index.php";
 
     header("refresh:$refresh_delay;url=$redirect_url");

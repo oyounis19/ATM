@@ -5,7 +5,7 @@ require_once __DIR__.'/../Models/Transaction.php';
 
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
-    $refresh_delay = 2; // 3 seconds delay
+    $refresh_delay = 1; // 3 seconds delay
     $redirect_url = "index.php";
 
     header("refresh:$refresh_delay;url=$redirect_url");

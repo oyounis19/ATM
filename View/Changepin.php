@@ -2,7 +2,7 @@
 require_once "../Models/customer.php";
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
-    $refresh_delay = 2; // 2 seconds delay
+    $refresh_delay = 1; // 2 seconds delay
     $redirect_url = "index.php";
 
     header("refresh:$refresh_delay;url=$redirect_url");
@@ -10,7 +10,7 @@ if(!isset($_SESSION['SSN'])){
 }
 $errmsg = "";
 $customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
-                         $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email']);
+                            $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email'],$_SESSION['card_id']); 
 if (isset($_POST['change'])) {
     $pass1 = $_POST['pass1'];
     $pass2 = $_POST['pass2'];
@@ -19,7 +19,7 @@ if (isset($_POST['change'])) {
     if ($value == 1) {
         $errmsg = "<b style='color: white;'> All fields is rquired </b>";
     } else if ($value == 2) {
-        $errmsg = "<b style='color: white;'>  Not match password </b>";
+        $errmsg = "<b style='color: white;'>  Password don't match </b>";
     } else if ($value == 3) {
         $msg="<b>Pin changed Successfully, please wait</b>"; //SWEET ALERT
         $customer->logOut();

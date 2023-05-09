@@ -213,7 +213,7 @@ class Customer extends user
             } else {
                 $hashed_password = $this->pinVerification($pass1);
                 $table  = 'User';
-                $data   = array('Pin' => $hashed_password);
+                $data   = array('PIN' => $hashed_password);
                 $where  = 'CardID =?';
                 $params = array($CardID);
                 $affected_rows = $this->db->update($table, $data, $where, $params);

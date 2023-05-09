@@ -5,7 +5,7 @@ require_once "../Models/Account.php";
 
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
-    $refresh_delay = 2; // 2 seconds delay
+    $refresh_delay = 1; // 2 seconds delay
     $redirect_url = "index.php";
 
     header("refresh:$refresh_delay;url=$redirect_url");
@@ -13,7 +13,7 @@ if(!isset($_SESSION['SSN'])){
 }
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
 $customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
-                         $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email']);
+                            $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email'],$_SESSION['card_id']);
 
 
 

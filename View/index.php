@@ -55,10 +55,10 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
         }
     }
     here:;
-    // if ($Success) {
-    //     header("location:Account.php");
-    //     exit();
-    // }
+    if ($Success) {
+        header("location:Account.php");
+        exit();
+    }
 }else if(isset($_POST['upload'])){
     $customererrmsgfingerprint = "<b style='color: white;'> Upload image first.. </b>";
 }
