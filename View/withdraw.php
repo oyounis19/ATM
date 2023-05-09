@@ -22,6 +22,7 @@ if($_SESSION['fing'] == '1' and $_SESSION['correctPIN'] != '1'){
 //Defining Objects
 $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION['type']);
 $atm = new ATM();//HARD CODED ATM ID: 1264
+$atm->getAtmData();
 $transaction = new Transaction();
 $customer = new Customer($_SESSION['SSN'], $_SESSION['fName'], $_SESSION['lName'], $_SESSION['upass'],
                         $_SESSION['fingerpint'], $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],

@@ -34,7 +34,7 @@ class ATM{
             $this->ID = $id;
         }
         $this->db = new DBConnector();
-        $this->getAtmData(1268);
+        // $this->getAtmData(1268);
     }
 
     private function serverSettings(){
@@ -308,8 +308,8 @@ class ATM{
         return true;
     }
 
-    private function getAtmData($atmID){
-        $result = $this->db->select("`ATM`", "*", "ID=?", array($atmID));
+    public function getAtmData(){
+        $result = $this->db->select("`ATM`", "*", "ID=?", array(1268));//**************************************** */
         $this->ID = $result[0]['ID'];
         $this->city = $result[0]['City'];
         $this->street = $result[0]['Street'];

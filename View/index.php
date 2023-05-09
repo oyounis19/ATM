@@ -18,6 +18,7 @@ require_once "../Models/ATM.php";
 $customer = new customer;
 $verify = new verification();
 $atm = new ATM();
+$atm->getAtmData();
 $customererrmsg = "";
 $customererrmsgfingerprint = "";
 $card;

@@ -95,6 +95,7 @@ class admin extends User
         if (!$result)
             return false;
         $atm = new ATM();
+        $atm->getAtmData();
 
         $atm->notifyNewUser($card, $customer);
         return true;

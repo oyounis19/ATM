@@ -55,6 +55,7 @@ class verification{
             if($transaction->getType() == "Withdraw"){//Withdraw
                 if(!isset($_SESSION['CWOTP'])){//not verified yet
                     $atm = new ATM();
+                    $atm->getAtmData();
                     $_SESSION['WOTP'] = $atm->sendOTP($customer, $this->generateOTP());
                     return false;
                 }else{
@@ -65,6 +66,7 @@ class verification{
             else{//Transfer
                 if(!isset($_SESSION['CTOTP'])){//not verified yet
                     $atm = new ATM();
+                    $atm->getAtmData();
                     $_SESSION['TOTP'] = $atm->sendOTP($customer, $this->generateOTP());
                     return false;
                 }else{

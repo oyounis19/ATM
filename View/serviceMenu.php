@@ -15,6 +15,7 @@ if(!isset($_SESSION['firstName'])){
 $srvTeq = new servicesTechinican; 
 $teqRep = new Report;
 $atm = new ATM();//HARD CODED ATM ID: 1264
+$atm->getAtmData();
 if(! $_SESSION['firstName']){
     header("location:../View/index.php");
 }

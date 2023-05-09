@@ -9,6 +9,7 @@ $admin = new admin();
 
 if (isset($_POST['atmId'])) {
     $ATM = new ATM();
+    $atm->getAtmData();
     $ATM->setID($_POST['atmId']);
     $ok = $admin->deleteATM($ATM);
     if ($ok) {
