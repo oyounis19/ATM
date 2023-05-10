@@ -16,8 +16,8 @@ if(!isset($_SESSION['firstname'])){
 }
 
 if (isset($_POST['city']) && isset($_POST['area']) && isset($_POST['street'])) {
-    $ATM = new ATM($_POST['city'],$_POST['street'], $_POST['area'], 0);
-    $ok = $admin->addATM($ATM);
+    $ATM = new ATM(0, $_POST['city'],$_POST['street'], $_POST['area'], 0);
+    $ok = $admin->addAtm($ATM);
     if ($ok) {
         $showAlert = 1;
     } else {

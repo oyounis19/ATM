@@ -73,12 +73,13 @@ class ATM{
     }
     public function getArea(){
         return $this->area;
+        
     }
     public function setArea($area){
         $this->area = $area;
     }
     public function getStreet(){
-        return $this->city;
+        return $this->street;
     }
     public function setStreet($street) {
         $this->street = $street;
