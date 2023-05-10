@@ -311,11 +311,14 @@ class ATM{
 
     public function getAtmData(){
         $result = $this->db->select("`ATM`", "*", "ID=?", array(1268));//**************************************** */
-        $this->ID = $result[0]['ID'];
-        $this->city = $result[0]['City'];
-        $this->street = $result[0]['Street'];
-        $this->area = $result[0]['Area'];
-        $this->balance = $result[0]['Balance'];
+        if($result){
+            $this->ID = $result[0]['ID'];
+            $this->city = $result[0]['City'];
+            $this->street = $result[0]['Street'];
+            $this->area = $result[0]['Area'];
+            $this->balance = $result[0]['Balance'];
+        }else
+        return false;//************** */
     }
 
     public function notifyNewUser(Card $card, Customer $customer){
