@@ -177,7 +177,7 @@ class admin extends User
         $data["Area"] = $ATM->getArea();
         $data["Street"] = $ATM->getStreet();
         $data["Balance"] = $ATM->getBalance();
-        $row = $db->insert("ATM", array("City"=>$data["City"], "Area"=>$data["Area"], "Street"=>$data["Street"], "Balance"=>$data["Balance"]));
+        $row = $db->insert("ATM", $data);
 
         return $row > 0 ? true : false;
     }
