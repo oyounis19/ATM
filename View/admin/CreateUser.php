@@ -6,6 +6,14 @@ $showAlert = 0;
 
 $hashedFingerPrint = false;
 
+if(!isset($_SESSION['firstname'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 1; // 2 seconds delay
+    $redirect_url = "../LoginAdmin.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 
 if(isset($_POST["AddUser"])){
     if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) && isset($_POST["street"]) && isset($_POST["area"])

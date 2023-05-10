@@ -4,6 +4,14 @@
 
     $showAlert = 0;
   
+    if(!isset($_SESSION['firstname'])){
+        echo '<b>Redirecting you to login screen to login...</b>';
+        $refresh_delay = 1; // 2 seconds delay
+        $redirect_url = "../LoginAdmin.php";
+    
+        header("refresh:$refresh_delay;url=$redirect_url");
+        exit();
+    }
     // create new admin
     if (isset($_POST['fName']) && isset($_POST['lName']) && isset($_POST['userName']) && isset($_POST['passWord'])) {
         $admin = new admin($_POST['userName'], $_POST['passWord'],"",$_POST['fName'].",".$_POST['lName']);

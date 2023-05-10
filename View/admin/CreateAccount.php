@@ -6,7 +6,14 @@
     require_once(__DIR__ . "/../../Models/customer.php");
 
     $showAlert = 0;
-
+    if(!isset($_SESSION['firstname'])){
+        echo '<b>Redirecting you to login screen to login...</b>';
+        $refresh_delay = 1; // 2 seconds delay
+        $redirect_url = "../LoginAdmin.php";
+    
+        header("refresh:$refresh_delay;url=$redirect_url");
+        exit();
+    }
 $account = new Account();
 if(isset($_POST["SSN"]) && isset($_POST["Type"])){
     $account->setType($_POST["Type"]);

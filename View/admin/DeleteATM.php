@@ -6,6 +6,14 @@ require_once(__DIR__ . "/Head.php");
 $showAlert = 0;
 $admin = new admin();
 
+if(!isset($_SESSION['firstname'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 1; // 2 seconds delay
+    $redirect_url = "../LoginAdmin.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 
 if (isset($_POST['atmId'])) {
     $ATM = new ATM();

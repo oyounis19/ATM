@@ -4,6 +4,14 @@ require_once (__DIR__."/../../Controllers/DBconnector.php");
 $customer = null;
 $test = new customer();
 $continue = true;
+if(!isset($_SESSION['firstname'])){
+    echo '<b>Redirecting you to login screen to login...</b>';
+    $refresh_delay = 1; // 2 seconds delay
+    $redirect_url = "../LoginAdmin.php";
+
+    header("refresh:$refresh_delay;url=$redirect_url");
+    exit();
+}
 ?>
 
 <body>  
