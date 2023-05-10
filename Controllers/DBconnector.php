@@ -2,10 +2,10 @@
 class DBConnector
 {
     private $conn;
-    private $username = "suiiii";
-    private $password = "oyounis1";
+    private $username = "root";
+    private $password = "";
     private $dbname = "atm_db";
-    private $host = "db4free.net";
+    private $host = "localhost";
 
     /**
      * Opens the connection with the Database.
