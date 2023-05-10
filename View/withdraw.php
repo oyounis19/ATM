@@ -62,7 +62,7 @@ if(isset($_POST['amount']) and $_POST['amount'] != ''){
                 <div class="userInfo my-5">
                     <ul class="">
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">
-                            <span>Balance</span> <?php echo $account->getBalance();?> LE
+                            <span>Balance</span> <?php if($account->getBalance() == '') echo '0'; else echo $account->getBalance();  ?> LE
                         </li>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">
                             <span>Account id</span> <?php echo $account->getID();?>

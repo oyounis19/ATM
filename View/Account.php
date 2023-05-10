@@ -11,14 +11,19 @@ if (isset($_SESSION['SSN'])) {
     $result = $customer->accounts($customer->getSSN());
     if (count($result) == 0) {
         $msg ="<b style='color: white;'>You Don't have Account Yet </b>";
+    }else if(count($result) == 1){
+        $customer->chooseAccount($result[0]['ID']);
+        header("location:menu.php");
+        exit();
     }
     if (isset($_POST['selectedAccount'])) {
         $customer->chooseAccount($_POST['selectedAccount']);
         header("location:menu.php");
+        exit();
     }
 }else{
     echo '<b>Redirecting you to login screen to login...</b>';
-    $refresh_delay = 1; // 2 seconds delay
+    $refresh_delay = 1; // 1 seconds delay
     $redirect_url = "index.php";
 
     header("refresh:$refresh_delay;url=$redirect_url");

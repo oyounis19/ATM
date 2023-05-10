@@ -110,7 +110,7 @@ $transactions = $tr->viewTransactionHistory($account);
                     <p>ATM ID : <span><?php echo $transactions[$i]['AtmID']; ?></span></p>
                 </li>
                 <li>
-                    <p>State : <span value="<?php echo $state ?>"><?php echo $transactions[$i]['State']; ?></span></p>
+                    <p>State : <span value="<?php echo $transactions[$i]['State']; ?>"><?php echo $transactions[$i]['State']; ?></span></p>
                 </li>
                 <li>
                     <p>Amount : <span><?php echo $transactions[$i]['Amount']; ?> LE</span></p>

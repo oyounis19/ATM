@@ -15,8 +15,6 @@ $account = new Account($_SESSION['account_id'], $_SESSION['balance'], $_SESSION[
 $customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
                             $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email'],$_SESSION['card_id']);
 
-
-
 if(isset($_POST['lg_out'])){
     $customer->logOut();
     
@@ -51,7 +49,7 @@ if(isset($_POST['block'])){
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>welcome</span><?php echo $customer->getFirstName() , ' ' , $customer->getLastName() ?>
                         </li>
 
-                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php echo $account->getBalance().' LE' ?>
+                        <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Balance</span> <?php if($account->getBalance() == '') echo '0'; else echo $account->getBalance();?> LE
                         </li>
 
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3"><span>Account id</span> <?php echo $account->getId() ?>
