@@ -83,6 +83,11 @@ if(isset($_POST['otp'])){
                     </div>
                     <button name="continue" class="btn btn-primary mt-3 w-100" type="submit">Continue</button>
                 </form>
+                <a href="<?php echo $page?>.php">
+                    <img src="assets/img/icons8-back-64.png" alt="Back button">
+                    <br>
+                    <b>Back</b>
+                </a>
             </div>
         </div>
     </div>

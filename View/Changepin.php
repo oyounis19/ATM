@@ -72,6 +72,11 @@ if (isset($_POST['change'])) {
                     </div>
                     <?php echo $errmsg ?>
                 </form>
+                <a href="menu.php">
+                    <img src="assets/img/icons8-back-64.png" alt="Back button">
+                    <br>
+                    <b>Back</b>
+                </a>
             </div>
         </div>
 

@@ -86,7 +86,11 @@ if (isset($_SESSION['SSN'])) {
                     <?php } ?>
                     <input type="hidden" name="selectedAccount" id="selectedAccount">
                 </form>
-
+                <a href="index.php">
+                    <img src="assets/img/icons8-back-64.png" alt="Back button">
+                    <br>
+                    <b>Back</b>
+                </a>
             </div>
         </div>
 

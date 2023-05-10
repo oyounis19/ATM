@@ -173,30 +173,6 @@ class DBConnector
         
     }
 
-    // public function join($table1, $table2, $joinCondition, $columns = "*", $where = null, $params = array()) {
-    //     $query = "SELECT $columns FROM $table1 INNER JOIN $table2 ON $joinCondition";
-    //     if ($where) {
-    //         $query .= " WHERE $where";
-    //     }
-    //     $stmt = $this->conn->prepare($query);
-    //     if (!$stmt) {
-    //         throw new Exception("Failed to prepare query: " . $this->conn->error);
-    //     }
-    //     if ($params) {
-    //         $types = str_repeat("s", count($params));
-    //         $stmt->bind_param($types, ...$params);
-    //     }
-    //     if (!$stmt->execute()) {
-    //         throw new Exception("Failed to execute query: " . $stmt->error);
-    //     }
-    //     $result = $stmt->get_result();
-    //     $rows = array();
-    //     while ($row = $result->fetch_assoc()) {
-    //         $rows[] = $row;
-    //     }
-    //     return $rows;
-    // }
-
     /**
      * Closes the Database Connection.
      */

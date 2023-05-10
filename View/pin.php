@@ -58,6 +58,11 @@ if(isset($_POST['pin'])){//Check entered PIN
                         </div>
                         <button name="lg_in" class="btn btn-primary mt-3 w-100" type="submit">Continue</button>
                     </form>
+                    <a href="menu.php">
+                        <img src="assets/img/icons8-back-64.png" alt="Back button">
+                        <br>
+                        <b>Back</b>
+                    </a>
                 </div>
             </div>
     </div>
