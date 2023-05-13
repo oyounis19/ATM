@@ -27,7 +27,7 @@ class admin extends User
     {
         return $this->name;
     }
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->userName;
     }

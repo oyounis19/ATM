@@ -18,58 +18,46 @@ class card
 			$this->state = $state;
 
 	}
-	public function getState()
-	{
+	public function getState() {
 		return $this->state;
 	}
 
 
-	public function setState(bool $state)
-	{
+	public function setState(bool $state) {
 		$this->state = $state;
 	}
 
 
-	public function getDate()
-	{
+	public function getDate() {
 		return $this->expDate;
 	}
 
 
-	public function setDate($expDate): self
-	{
+	public function setDate($expDate) {
 		$this->expDate = $expDate;
-		return $this;
 	}
 
 
-	public function getCVV(): string
-	{
+	public function getCVV() {
 		return $this->CVV;
 	}
 
 
-	public function setCVV(string $CVV): self
-	{
+	public function setCVV(string $CVV) {
 		$this->CVV = $CVV;
-		return $this;
 	}
 
 
-	public function getId(): string
-	{
+	public function getId() {
 		return $this->id;
 	}
 
 
-	public function setId(string $id): self
-	{
+	public function setId(string $id) {
 		$this->id = $id;
-		return $this;
 	}
 
-	public function generateCardID()
-	{
+	public function generateCardID() {
 		$card_number = rand(1, 9);
 		for ($i = 1; $i < 16; $i++) {
 			$card_number .= rand(0, 9);
@@ -77,8 +65,7 @@ class card
 		return $card_number;
 	}
 
-	public function generateCVV()
-	{
+	public function generateCVV() {
 		$CVV_number = rand(1, 9);
 		for ($i = 1; $i < 3; $i++) {
 			$CVV_number .= rand(0, 9);
@@ -86,8 +73,7 @@ class card
 		return $CVV_number;
 	}
 
-	public function generateExpDate()
-	{
+	public function generateExpDate() {
 		// Get today's date
 		$today = new DateTime();
 
@@ -98,8 +84,7 @@ class card
 		return $three_years_from_today->format('Y-m-d');
 	}
 
-	public function generateCard()
-	{
+	public function generateCard() {
 		$this->setId($this->generateCardID());
 		$this->setCVV($this->generateCVV());
 		$this->setDate($this->generateExpDate());

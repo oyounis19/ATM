@@ -14,10 +14,10 @@ if(!isset($_SESSION['firstName'])){
 }
 $srvTeq = new servicesTechinican; 
 $teqRep = new Report;
-$atm = new ATM();//HARD CODED ATM ID: 1264
+$atm = new ATM();//HARD CODED ATM ID: 1268
 $atm->getAtmData();
 if(! $_SESSION['firstName']){
-    header("location:../View/index.php");
+    header("location: index.php");
 }
 if(isset($_POST['bLogOut'])){
     $srvTeq->logOut();
@@ -26,7 +26,7 @@ if(isset($_POST['teqReport'])){
     $teqRep->generateTechPDF($_SESSION['atmId']);
 }
 if(isset($_POST['finish'])){
-    $srvTeq->rechargeAtm ();
+    $srvTeq->rechargeAtm();
 }
 ?>
 <!DOCTYPE html>
@@ -48,9 +48,6 @@ if(isset($_POST['finish'])){
 </head>
 
 <body>
-
-
-
     <div class="insert h-100 d-flex align-items-center justify-content-center">
         <div class="screens bg d-flex">
             <div class="screen info">
@@ -79,7 +76,6 @@ if(isset($_POST['finish'])){
                         </li>
                     </ul>
                 </div>
-
             </div>
             <div class="screen menu">
                 <div class="buttons d-flex flex-wrap justify-content-between">
@@ -126,11 +122,9 @@ if(isset($_POST['finish'])){
     <script>
         AOS.init();
     </script>
-
     <script src="assets/js/serviceMenu.js"></script>
     <script src="assets/js/transfer.js"></script>
     <script src="assets/js/sessionTimout.js"></script>
-
 </body>
 
 </html>

@@ -13,57 +13,45 @@ class Transaction {
 	private $state;
 	private $db;
 
-
 	public function __construct($type = null, $amount = null){
-		if($type && $amount){
+		if($type)
 			$this->type = $type;
+		if($amount)
 			$this->amount = $amount;
-		}
+		
 		$this->db = new DBConnector();
 	}
 
 	public function getType() {
 	return $this->type;
 	}
-	
 	public function setType($type){
 		$this->type = $type;
 		return $this;
 	}
-	
 	public function getDate() {
 		return $this->date;
 	}
-		
 	public function setDate($date) {
 		$this->date = $date;
 		return $this;
 	}
-	
 	public function getAmount(){
 		return $this->amount;
 	}
-	
 	public function setAmount($amount){
 		$this->amount = $amount;
 	}
-
 	public function getId() {
 		return $this->id;
 	}
-	
-
 	public function setId($id): self {
 		$this->id = $id;
 		return $this;
 	}
-
-
 	public function getState() {
 		return $this->state;
 	}
-	
-
 	public function setState($state): self {
 		$this->state = $state;
 		return $this;
@@ -85,25 +73,27 @@ class Transaction {
 								"receiverId"=>$reciever->getId()));
 		}else{//Deposit or Withdraw
 			$ok = $this->db ->insert("`Transaction`",array("AccountID"=>$sender->getId(),"SSN"=>$customer->getSSN(),"AtmID"=>$atm->getID(),
-									"Amount"=>$this->amount,"Date"=>"$currentDate","State"=>$enumDbState,"Type"=>$this->type));
+								"Amount"=>$this->amount,"Date"=>"$currentDate","State"=>$enumDbState,"Type"=>$this->type));
 		}
 		if($ok) 
 			$atm->notifyUser($customer, $this, $sender);
 	} 
 
-
 	/**
+	 * updates:  1) receiver's and sender's account balance.
+	 * 			 2) number of transfer transactions
+	 * 			 3) Total amount of transfer transaction
 	 * @param Account $sender sender's account 
 	 * @param Account $reciever receipent's account 
 	 * @param ATM $atm current ATM
 	 * @param Customer $customer customer's data
-	 * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 2 (Transfer is done)
+	 * @return int 0 (The balance is insufficient), 1 (recipent's account id is wrong), 2 (Transfer is done), 4 (Fraud is detected)
 	 */
-	public function transfer(Account $sender, Account $reciever, ATM $atm , Customer $customer) {//Composition required
+	public function transfer(Account $sender, Account $reciever, ATM $atm , Customer $customer) {
 		if($_SESSION['fing'] == '0'){//logged in by Credit Card (Fraud detection)
 			$verify = new verification();
 			$fraud = $verify->CheckBehavior($sender, $this, $customer);
-			if($fraud === false)
+			if($fraud === false)//fraud detected
 				return 4;
 			else if($fraud === -1){//Balance insufficent
 				$this->state = false;
@@ -119,11 +109,13 @@ class Transaction {
 			return 1;
 		$reciever->setBalance($result[0]['Balance']);
 
+		//Updating balance
 		$this->db->update("`Account`", array("Balance"=>   $sender->getBalance() - $this->amount),"ID=?", array($sender->getId()));
 		$this->db->update("`Account`", array("Balance"=> $reciever->getBalance() + $this->amount),"ID=?", array($reciever->getId()));
 
-		$result = $this->db->select("Account","*","ID = ?",array($sender->getId()));
+		$result = $this->db->select("Account","*","ID=?",array($sender->getId()));
 
+		//Increminting by 1 
 		$this->db->update("`Account`", array("numberTransfer"=> (int)$result[0]['numberTransfer'] + 1),"ID=?", array($sender->getId()));
 		$this->db->update("`Account`", array("totalTransfer"=> (int)$result[0]['totalTransfer'] + $this->amount),"ID=?", array($sender->getId()));
 
@@ -139,7 +131,7 @@ class Transaction {
 	 * @param Customer $customer customer's data
 	 * @return int 0 (DB error), 1 (Deposit is done)
 	 */
-	public function deposit(Account $account, ATM $atm, Customer $customer) {//Composition required
+	public function deposit(Account $account, ATM $atm, Customer $customer) {
 		$this->state = true;//Fraud not detected
 		if(!$this->db->update("`Account`", array("Balance"=>$account->getBalance() + $this->amount), "ID=?", array($account->getid())))
 			return 0;
@@ -157,7 +149,7 @@ class Transaction {
 	 * @param Customer $customer customer's data
 	 * @return int 0 (Insufficient Account Balance), 1 (DB error), 2 (Withdraw done),3 (Insufficient ATM balance)
 	 */
-	public function withdraw(Account $account, ATM $atm , Customer $customer){//Composition required
+	public function withdraw(Account $account, ATM $atm , Customer $customer){
 		if($_SESSION['fing'] == '0'){//logged in by Credit Card (Fraud detection)
 			$verify = new verification();
 			$fraud = $verify->CheckBehavior($account, $this, $customer);
@@ -190,9 +182,9 @@ class Transaction {
 
 	/**
 	 * @param Account $account account 
-	 * @return array transactions
+	 * @return array This user's transactions
 	 */
-	public function viewTransactionHistory(Account $account) {//Composition required
+	public function viewTransactionHistory(Account $account) {
 		return $this->db->select("`Transaction`", "*", "AccountID=?", array($account->getId()));
 	}
 

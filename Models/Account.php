@@ -5,8 +5,7 @@ class Account {
     private $type;
     private $state;
     
-    public function __construct($id = null, $balance = null, $type = null) 
-    {
+    public function __construct($id = null, $balance = null, $type = null) {
         if($id){
             $this->id = $id;
         }
@@ -35,11 +34,10 @@ class Account {
     public function setType(string $type) {
         $this->type = $type;
     }
-    public function getState(){
+    public function getState() {
         return $this->state;
     }
-    public function setState(string $State)
-    {
+    public function setState(string $State) {
         $this->state = $State;
     }  
 }

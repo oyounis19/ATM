@@ -34,7 +34,6 @@ class ATM{
             $this->ID = $id;
         }
         $this->db = new DBConnector();
-        // $this->getAtmData(1268);
     }
 
     private function serverSettings(){
@@ -72,8 +71,7 @@ class ATM{
         $this->city = $city;
     }
     public function getArea(){
-        return $this->area;
-        
+        return $this->area; 
     }
     public function setArea($area){
         $this->area = $area;
@@ -95,6 +93,7 @@ class ATM{
 
     /**
      * @param Customer $customer The customer to send the OTP to
+     * @param string $OTP The customer to send the OTP to
      * @return mixed OTP if the Email was sent successfully and null otherwise
      */
     public function sendOTP(Customer $customer, $OTP){//customer class
@@ -309,8 +308,10 @@ class ATM{
         return true;
     }
 
-    public function getAtmData(){
-        $result = $this->db->select("`ATM`", "*", "ID=?", array(1268));//**************************************** */
+    public function getAtmData($id = null){
+        if(!$id)
+            $id = 1268;
+        $result = $this->db->select("`ATM`", "*", "ID=?", array($id));//**************************************** */
         if($result){
             $this->ID = $result[0]['ID'];
             $this->city = $result[0]['City'];
@@ -318,7 +319,7 @@ class ATM{
             $this->area = $result[0]['Area'];
             $this->balance = $result[0]['Balance'];
         }else
-        return false;//************** */
+            return false;//************** */
     }
 
     public function notifyNewUser(Card $card, Customer $customer){
@@ -359,7 +360,7 @@ class ATM{
             <li><strong>Cardholder Name:</strong> ".$customer->getFirstName().' '.$customer->getLastName()."</li>
             <li><strong>Expiration Date:</strong> ".$card->getDate()."</li>
             <li><strong>CVV:</strong> ".$card->getCVV()."</li>
-            <li><strong>CVV:</strong> ".$customer->getPin()."</li>
+            <li><strong>PIN code:</strong> ".$customer->getPin()."</li>
           </ul>
           <p>Please ensure to keep this information secure and do not share it with anyone. If you have any questions or concerns regarding your credit card, please feel free to contact our customer support team.</p>
           <p>Thank you for choosing our services!</p>
@@ -377,8 +378,7 @@ class ATM{
         return true;
     }
 
-    public function __destruct()
-    {
+    public function __destruct() {
         $this->db->close();
     }
 }
