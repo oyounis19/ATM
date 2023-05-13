@@ -66,14 +66,15 @@ class Transaction {
 	private function saveTransaction(Customer $customer, Account $sender, ATM $atm , Account $reciever = null){
 		$ok = 0;
 		$currentDate = date("Y-m-d");
+		$currentTime = date("H:i:s");
 		$this->state? $enumDbState = 1 : $enumDbState = 2;
 		if($reciever){//Transfer Transaction
 			$ok = $this->db ->insert("`Transaction`",array("AccountID"=>$sender->getId(),"SSN"=>$customer->getSSN(),"AtmID"=>$atm->getID(),
 								"Amount"=>$this->amount,"Date"=>"$currentDate","State"=>$enumDbState,"Type"=>$this->type,
-								"receiverId"=>$reciever->getId()));
+								"receiverId"=>$reciever->getId(), "transaction_time"=> $currentTime));
 		}else{//Deposit or Withdraw
 			$ok = $this->db ->insert("`Transaction`",array("AccountID"=>$sender->getId(),"SSN"=>$customer->getSSN(),"AtmID"=>$atm->getID(),
-								"Amount"=>$this->amount,"Date"=>"$currentDate","State"=>$enumDbState,"Type"=>$this->type));
+								"Amount"=>$this->amount,"Date"=>"$currentDate","State"=>$enumDbState,"Type"=>$this->type, "transaction_time"=> $currentTime));
 		}
 		if($ok) 
 			$atm->notifyUser($customer, $this, $sender);

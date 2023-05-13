@@ -44,9 +44,9 @@ $result =  $srvTeq->checkLoggers();
                 <?php 
                 for($i = 0 ; $i < sizeof($result);$i++){
                     if($result[$i]['Type'] == "Withdraw" || $result[$i]['Type'] == "Transfer")
-                                    $arrow = "fa-arrow-up";
-                                else
-                                    $arrow = "fa-arrow-down";
+                        $arrow = "fa-arrow-up";
+                    else
+                        $arrow = "fa-arrow-down";
                     ?>
                     <div class="transaction d-flex mt-4 justify-content-between" id="<?php echo $i+1;?>">
                         <div class="accountInfo">
@@ -59,6 +59,9 @@ $result =  $srvTeq->checkLoggers();
                                 </li>
                                 <li>
                                     <p>Date : <span><?php echo $result[$i]["Date"] ?></span></p>
+                                </li>
+                                <li>
+                                    <p>Time : <span><?php echo $transactions[$i]['transaction_time']; ?></span></p>
                                 </li>
                             </ul>
                         </div>

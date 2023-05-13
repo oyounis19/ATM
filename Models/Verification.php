@@ -19,7 +19,13 @@ class verification{
         return str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
     }
 
-    private function CheckBalance(Account $account, Transaction $transaction){
+    /**
+     * Compares the transaction amount with the account balance
+     * @param Account $account user's account
+     * @param Transaction $transaction current transaction
+     * @return bool
+     */
+    private function CheckBalance(Account $account, Transaction $transaction){//At transaction
         return ($transaction->getAmount() > $account->getBalance());
     }
 
@@ -31,7 +37,7 @@ class verification{
      * @param Customer $customer customer's info (email address)
      * @return mixed -1 (Insufficient Account Balance), true (first transaction ever OR no fraud detected), false (fraud detected)
      */
-    public function CheckBehavior(Account $account, Transaction $transaction, Customer $customer){
+    public function CheckBehavior(Account $account, Transaction $transaction, Customer $customer){//At transaction
         if($this->CheckBalance($account, $transaction)){//Insufficient Account Balance
 			$transaction->setState(false);
 			return -1;//Save but denied
@@ -61,6 +67,7 @@ class verification{
                     $atm = new ATM();
                     $atm->getAtmData();
                     $_SESSION['WOTP'] = $atm->sendOTP($customer, $this->generateOTP());
+                    // $_SESSION['WOTP'] = 'WOTP';
                     return false;
                 }else{
                     unset($_SESSION['WOTP']);

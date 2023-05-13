@@ -118,6 +118,9 @@ $transactions = $tr->viewTransactionHistory($account);
                 <li>
                     <p>Date : <span><?php echo $transactions[$i]['Date']; ?></span></p>
                 </li>
+                <li>
+                    <p>Time : <span><?php echo $transactions[$i]['transaction_time']; ?></span></p>
+                </li>
             </ul>
         </div>
         <?php            

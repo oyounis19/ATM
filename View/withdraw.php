@@ -177,7 +177,7 @@ if(isset($_POST['amount']) and $_POST['amount'] != ''){
         })
     </script>
 <?php
-    if($sweetAlert === 2){
+    if($sweetAlert === 2){//problem
 
         $refresh_delay = 3; // 3 seconds delay
         $redirect_url = "menu.php";

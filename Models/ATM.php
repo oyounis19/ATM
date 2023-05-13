@@ -36,22 +36,22 @@ class ATM{
         $this->db = new DBConnector();
     }
 
-    private function serverSettings(){
+    private function serverSettings(){//Mail problem
         $mail = new PHPMailer(true);
         try {
             //Server settings
-            $mail->SMTPDebug = 0;                      //Enable verbose debug output
+            $mail->SMTPDebug = 1;                      //Enable verbose debug output
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'amrkalledsaleh1@gmail.com';                //SMTP username
-            $mail->Password   = 'zclvtztvnpaogweq';                     //SMTP password
+            $mail->Username   = 'oyounis19@gmail.com';                //SMTP username
+            $mail->Password   = 'jufprfdqtunfvtpq';                     //SMTP password
             $mail->SMTPSecure = 'tls';                                  //Enable implicit TLS encryption
             $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
             $mail->isHTML(true);   
 
             //Recipients
-            $mail->setFrom('amrkalledsaleh1@gmail.com', 'ATM');
+            $mail->setFrom('oyounis19@gmail.com', 'ATM');
             return $mail;
         }catch (Exception $e) {
             return null;
@@ -310,7 +310,7 @@ class ATM{
 
     public function getAtmData($id = null){
         if(!$id)
-            $id = 1268;
+            $id = 1286;
         $result = $this->db->select("`ATM`", "*", "ID=?", array($id));//**************************************** */
         if($result){
             $this->ID = $result[0]['ID'];

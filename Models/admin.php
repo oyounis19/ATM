@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../Controllers/DBconnector.php');
-require_once(__DIR__ . "/Account.php");
+require_once(__DIR__.'/servicesTechnican.php');
 require_once(__DIR__ . "/customer.php");
+require_once(__DIR__ . "/Account.php");
 require_once(__DIR__ . "/User.php");
 require_once(__DIR__ . "/Card.php");
 require_once(__DIR__.'/ATM.php');
@@ -200,6 +201,16 @@ class admin extends User
         $data["Password"] = hash("sha256", $admin->getPassword());
         $row = $db->insert("Employee", $data);
 
+        return $row > 0 ? true : false;
+    }
+    public function createSRT(servicesTechinican $srt){
+        $db = new DBconnector();
+        $data["FirstName"] = $srt->getFirstName();
+        $data["LastName"] = $srt->getLastName();
+        $data["UserName"] = $srt->getUserName();
+        $data["Password"] = hash("sha256", $srt->getPassword());
+        $data["Role"] = 2;
+        $row = $db->insert("Employee", $data);
         return $row > 0 ? true : false;
     }
 }

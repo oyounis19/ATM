@@ -8,24 +8,21 @@ class servicesTechinican{
     private $lastName;
     private $userName;
     private $password;
-    private $role;
     private $accId;
+    private $role;
     private $db;
     
-    public function __construct($firstName = null, $lastName = null, $userName = null, $password = null, $role = null){
+    public function __construct($firstName = null, $lastName = null, $userName = null, $password = null){
         if($firstName)
-            $this->firstName= $firstName;
+            $this->firstName = $firstName;
         if($lastName)
-            $this->lastName= $lastName;
+            $this->lastName = $lastName;
         if($userName)
-            $this->userName= $userName;
+            $this->userName = $userName;
         if($password)
-            $this->password= $password;
-        // if($tqId)
-        //     $this->tqId= $tqId;
-        if($role)
-            $this->role= $role;
-
+            $this->password = $password;
+            
+        $this->role = 'Technician';
         $this->db = new DBConnector;
     }
 
