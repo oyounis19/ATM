@@ -1,25 +1,37 @@
-// var sessionTimeoutMinutes = 0.1; // Session timeout duration in minutes
-// var sessionTimeoutMilliseconds = sessionTimeoutMinutes * 60 * 1000; // Convert to milliseconds
-var sessionTimeoutMilliseconds = 60 * 1000; // Convert to milliseconds
-
+var sessionTimeoutMilliseconds = 63 * 1000;
+var alertTimeoutMilliseconds = 3 * 1000; // 3 seconds
 var timeoutTimer;
 
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+});
+
 function logout() {
-  // Perform logout action
-  window.location.href = 'index.php'; // Replace with your logout page or action
-// console.log("logged out")
+  Toast.fire({
+    icon: 'success',
+    title: 'Session Timeout, Directing to Home screen'
+  });
+
+  setTimeout(() => {
+    window.location.href = 'index';
+  }, 3000);
 }
 
 function resetTimeout() {
   clearTimeout(timeoutTimer);
-  timeoutTimer = setTimeout(logout, sessionTimeoutMilliseconds);
+  timeoutTimer = setTimeout(logout, sessionTimeoutMilliseconds - alertTimeoutMilliseconds);
 }
 
-
-// Attach event listeners to relevant user interactions
 window.addEventListener('mousemove', resetTimeout);
 window.addEventListener('keypress', resetTimeout);
 window.addEventListener('click', resetTimeout);
 
-// Start the initial timeout
 resetTimeout();

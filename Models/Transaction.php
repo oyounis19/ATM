@@ -2,8 +2,8 @@
 require_once 'ATM.php';
 require_once 'Account.php';
 require_once 'customer.php';//starts session
-require_once '../Controllers/DBconnector.php';
-require_once '../Models/Verification.php';
+require_once __DIR__.'/../Controllers/DBconnector.php';
+require_once __DIR__.'/../Models/Verification.php';
 
 class Transaction {
 	private $type;
