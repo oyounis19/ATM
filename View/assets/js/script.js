@@ -20,7 +20,7 @@ closeBTN?.addEventListener("click", (e) => {
 })
 
 //**** CHAT GPT ****
-if (window.location.pathname.endsWith("index") || window.location.pathname.endsWith("index")) {
+if (window.location.pathname.endsWith("index") || window.location.pathname.endsWith("index.php")) {
     // Credit card format
     inputcc.addEventListener("input", function(event) {
         let cardNumber = this.value.replace(/\s/g, "");// Remove any existing spaces from the input value
