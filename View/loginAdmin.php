@@ -13,7 +13,7 @@ if (isset($_POST['user']) && isset($_POST['pass'])) {
         $_SESSION['firstname'] = $result[0]['FirstName'];
         $_SESSION['lastname'] = $result[0]['LastName'];
 
-        header("Location: admin/home.php");
+        header("Location: admin/home");
         exit();
     } else {
         $showAlert = 1;

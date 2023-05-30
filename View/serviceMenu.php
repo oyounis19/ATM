@@ -7,7 +7,7 @@ require_once '../Models/ATM.php';
 if(!isset($_SESSION['firstName'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 2; // 2 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
@@ -17,7 +17,7 @@ $teqRep = new Report;
 $atm = new ATM();//HARD CODED ATM ID: 1268
 $atm->getAtmData();
 if(! $_SESSION['firstName']){
-    header("location: index.php");
+    header("location: index");
 }
 if(isset($_POST['bLogOut'])){
     $srvTeq->logOut();
@@ -82,7 +82,7 @@ if(isset($_POST['finish'])){
                     <button id="cashBTN" class="btn btnMenu">
                         Fill Cash
                     </button>
-                    <a href="../View/logger.php" class="btn btnMenu">
+                    <a href="../View/logger" class="btn btnMenu">
                         Check ATM Logger
                     </a>
 

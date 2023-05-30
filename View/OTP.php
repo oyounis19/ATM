@@ -5,27 +5,30 @@ require_once '../Models/customer.php'; //starts session
 if(!isset($_SESSION['SSN'])){//check if user not logged in
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 2; // 2 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
 $OTP = null;
 $page = null;
-
+$pageBefore = null;
 if(isset($_SESSION['OTP'])){//redirected from CCFS (Login)
     $OTP = $_SESSION['OTP'];
-    $page = "Account.php";
+    $page = "Account";
+    $pageBefore = "index";
 }
 //destroy session after done
 else if(isset($_SESSION['WOTP'])){//redirected from CCFS (Withdraw)
     $OTP = $_SESSION['WOTP'];
-    $page = "withdraw.php";
+    $page = "withdraw";
+    $pageBefore = 'menu';
 }
 
 else if(isset($_SESSION['TOTP'])){//redirected from CCFS (Transfer)
     $OTP = $_SESSION['TOTP'];
-    $page = "transfer.php";
+    $page = "transfer";
+    $pageBefore = 'menu';
 }
 else{//logged in but no page redirected here
     // Generate JavaScript code to navigate back
@@ -41,10 +44,10 @@ if(isset($_POST['otp'])){
     if($_POST['otp'] != ''){
         if($_POST['otp'] == $OTP){
             switch($page){
-                case "withdraw.php":
+                case "withdraw":
                     $_SESSION['CWOTP'] = '1';
                     break;
-                case "transfer.php":
+                case "transfer":
                     $_SESSION['CTOTP'] = '1';
                     break;
             }
@@ -83,7 +86,7 @@ if(isset($_POST['otp'])){
                     </div>
                     <button name="continue" class="btn btn-primary mt-3 w-100" type="submit">Continue</button>
                 </form>
-                <a href="<?php echo $page?>.php">
+                <a href="<?php echo $pageBefore?>">
                     <img src="assets/img/icons8-back-64.png" alt="Back button">
                     <br>
                     <b>Back</b>
@@ -151,7 +154,7 @@ if(isset($_POST['otp'])){
         //destroying sessions
         $refresh_delay = 2;
         if(!$page){
-            header("Location:index.php");
+            header("Location:index");
             exit();
         }
 

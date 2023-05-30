@@ -1,11 +1,11 @@
 <?php 
-require_once (__DIR__."/../Models/servicesTechnican.php");
+require_once (__DIR__."/../Models/servicesTechnican");
 require_once "../Models/customer.php";
 
 if(!isset($_SESSION['firstName'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 2; // 2 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
@@ -75,7 +75,7 @@ $result =  $srvTeq->checkLoggers();
                 
         </div>
         <div class="backk">
-            <a href="serviceMenu.php" style="margin-left: 50px;">
+            <a href="serviceMenu" style="margin-left: 50px;">
                 <img src="assets/img/icons8-back-64.png" alt="Back button">
                 <br>
                 <b style="color:azure">Back</b>

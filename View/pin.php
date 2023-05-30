@@ -5,13 +5,13 @@ require_once '../Models/customer.php';//starts session
 if(!isset($_SESSION['SSN'])){//check if user not logged in
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 2; // 2 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
 if(isset($_SESSION['correctPIN']) && $_SESSION['correctPIN'] == '1'){//already entered the pin and came back
-    header("Location: ".$_SESSION['transType'].".php");
+    header("Location: ".$_SESSION['transType']);
     exit();
 }
 $customer = new Customer();
@@ -58,7 +58,7 @@ if(isset($_POST['pin'])){//Check entered PIN
                         </div>
                         <button name="lg_in" class="btn btn-primary mt-3 w-100" type="submit">Continue</button>
                     </form>
-                    <a href="menu.php">
+                    <a href="menu">
                         <img src="assets/img/icons8-back-64.png" alt="Back button">
                         <br>
                         <b>Back</b>
@@ -121,7 +121,7 @@ if(isset($_POST['pin'])){//Check entered PIN
 <?php
     if($sweetAlert === 1){
         $refresh_delay = 2; // 3 seconds delay
-        header("refresh:$refresh_delay;url=".$_SESSION['transType'].".php");
+        header("refresh:$refresh_delay;url=".$_SESSION['transType']);
         ob_end_flush();//Sends the HTML to the browser
     }
 }

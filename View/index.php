@@ -70,7 +70,7 @@ if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploade
             $sweetAlert = 5;
     }
     if ($Success) {
-        header("location:Account.php");
+        header("location:Account");
         exit();
     }
 }else if(isset($_POST['upload']))
@@ -83,7 +83,7 @@ require_once(__DIR__ . "/../Models/servicesTechnican.php");
 $srvTeq = new servicesTechinican;
 if (isset($_POST['bLogin'])) {
     if($srvTeq->login()){
-        header("location:../View/serviceMenu.php");
+        header("location:../View/serviceMenu");
     }else{
         ?>
         <!-- <script> alert('<?php //echo $_SESSION['errMsg'] ?>')</script> -->
@@ -305,7 +305,7 @@ if (isset($_POST['bLogin'])) {
     if($sweetAlert === 2){//OTP
 
         $refresh_delay = 3; // 3 seconds delay
-        $redirect_url = "OTP.php";
+        $redirect_url = "OTP";
         
         header("refresh:$refresh_delay;url=$redirect_url");
         ob_end_flush();//Sends the HTML to the browser

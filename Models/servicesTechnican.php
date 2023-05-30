@@ -124,7 +124,7 @@ class servicesTechinican{
         session_start();
         session_unset();
         session_destroy();
-        header("location:../View/index.php");
+        header("location:../View/index");
     }
 
     public function rechargeAtm() {

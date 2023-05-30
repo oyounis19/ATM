@@ -6,7 +6,7 @@ require_once "../Models/Account.php";
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 1; // 1 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
@@ -58,7 +58,7 @@ if(isset($_POST['block'])){
                         if(isset($_SESSION['fing']) && $_SESSION['fing'] == 1){//User blocks card if he is logged in by fingerprint
                         ?>
                             <li class="text-white d-flex flex-column text-start fs-5 mb-3">
-                                <a href="Changepin.php">
+                                <a href="Changepin">
                                     Change PIN
                                 </a>
                             </li>
@@ -67,7 +67,7 @@ if(isset($_POST['block'])){
                         ?>
                         <?php if(!isset($_SESSION['oneAccountOnly'])){?>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">
-                                <a href="Account.php">
+                                <a href="Account">
                                     Change Account
                                 </a>
                         </li>
@@ -78,16 +78,16 @@ if(isset($_POST['block'])){
 
             <div class="screen menu">
                 <div class="buttons d-flex flex-wrap justify-content-between">
-                    <a href="withdraw.php" class="btn btnMenu">
+                    <a href="withdraw" class="btn btnMenu">
                         Withdraw
                     </a>
-                    <a href="deposit.php" class="btn btnMenu">
+                    <a href="deposit" class="btn btnMenu">
                         Deposit
                     </a>
-                    <a href="transfer.php" class="btn btnMenu">
+                    <a href="transfer" class="btn btnMenu">
                         Transfer
                     </a>
-                    <a href="transaction.php" class="btn btnMenu">
+                    <a href="transaction" class="btn btnMenu">
                         Transaction History
                     </a>
                     <form action="" style="width: 100%;" method="post">

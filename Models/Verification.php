@@ -67,7 +67,6 @@ class verification{
                     $atm = new ATM();
                     $atm->getAtmData();
                     $_SESSION['WOTP'] = $atm->sendOTP($customer, $this->generateOTP());
-                    // $_SESSION['WOTP'] = 'WOTP';
                     return false;
                 }else{
                     unset($_SESSION['WOTP']);

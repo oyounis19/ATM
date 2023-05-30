@@ -7,7 +7,7 @@ require_once __DIR__.'/../Models/Transaction.php';
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 1; // 2 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
@@ -15,7 +15,7 @@ if(!isset($_SESSION['SSN'])){
 
 if($_SESSION['fing'] == '1' and $_SESSION['correctPIN'] != '1'){
     $_SESSION['transType'] = 'withdraw';
-    header("Location: pin.php");
+    header("Location: pin");
     exit();
 }
 
@@ -68,7 +68,7 @@ if(isset($_POST['amount']) and $_POST['amount'] != ''){
                             <span>Account id</span> <?php echo $account->getID();?>
                         </li>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">
-                            <a href="menu.php">
+                            <a href="menu">
                                     <img src="assets/img/icons8-back-64.png" alt="Back button">
                                     <br>
                                     <b>Back</b>
@@ -180,7 +180,7 @@ if(isset($_POST['amount']) and $_POST['amount'] != ''){
     if($sweetAlert === 2){//problem
 
         $refresh_delay = 3; // 3 seconds delay
-        $redirect_url = "menu.php";
+        $redirect_url = "menu";
         
         header("refresh:$refresh_delay;url=$redirect_url");
         ob_end_flush();//Sends the HTML to the browser
@@ -188,7 +188,7 @@ if(isset($_POST['amount']) and $_POST['amount'] != ''){
 
     if($sweetAlert === 5){
         $refresh_delay = 3; // 3 seconds delay
-        $redirect_url = "OTP.php";
+        $redirect_url = "OTP";
 
         header("refresh:$refresh_delay;url=$redirect_url");
         ob_end_flush();//Sends the HTML to the browser

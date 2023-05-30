@@ -8,7 +8,7 @@ $result=[];
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 1; // 1 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
@@ -22,12 +22,12 @@ if (count($result) == 0) {//has no accounts
 }else if(count($result) == 1){//has only 1 account, Directed to menu directly
     $customer->chooseAccount($result[0]['ID']);
     $_SESSION['oneAccountOnly'] = '1';
-    header("location:menu.php");
+    header("location:menu");
     exit();
 }
 if (isset($_POST['selectedAccount'])) {//Account pressed
     $customer->chooseAccount($_POST['selectedAccount']);
-    header("location:menu.php");
+    header("location:menu");
     exit();
 }
 
@@ -88,7 +88,7 @@ if (isset($_POST['selectedAccount'])) {//Account pressed
                     <?php } ?>
                     <input type="hidden" name="selectedAccount" id="selectedAccount">
                 </form>
-                <a href="index.php">
+                <a href="index">
                     <img src="assets/img/icons8-back-64.png" alt="Back button">
                     <br>
                     <b>Back</b>

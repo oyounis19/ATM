@@ -310,7 +310,7 @@ class ATM{
 
     public function getAtmData($id = null){
         if(!$id)
-            $id = 1287;
+            $id = 1286;
         $result = $this->db->select("`ATM`", "*", "ID=?", array($id));//**************************************** */
         if($result){
             $this->ID = $result[0]['ID'];

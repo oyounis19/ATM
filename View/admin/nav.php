@@ -3,7 +3,7 @@
     if(isset($_POST['ptnLogOut'])){
         $admin = new admin();
         $admin->logout();
-        header("Location: ../loginAdmin.php");
+        header("Location: ../loginAdmin");
         exit;
     }
 ?>
@@ -25,7 +25,7 @@
     <div class="leftSide" id="leftSide">
         <ul class="d-flex flex-column ">
             <li>
-                <a href="home.php"><button class="btn-primary d-flex" id="DashBoardBTN">DashBoard</button></a>
+                <a href="home"><button class="btn-primary d-flex" id="DashBoardBTN">DashBoard</button></a>
             </li>
             <li>
                 <button class="btn-primary d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
@@ -35,10 +35,10 @@
             </li>
             <div class="collapse" id="collapseExample1">
                 <ul>
-                    <a href="CreateAccount.php"><li class="ps-3 " id="createAccountBTN">Create Account</li></a>
-                    <a href="DeleteAccount.php"><li class="ps-3 " id="deleteAccountBTN">Delete Account</li></a>
-                    <a href="EditAccount.php"><li class="ps-3 " id="editAccountBTN">Edit Account</li></a>
-                    <a href="ManageCreditCards.php"><li class="ps-3 " id="creditCardBTN">Manage Credit Cards</li></a>
+                    <a href="CreateAccount"><li class="ps-3 " id="createAccountBTN">Create Account</li></a>
+                    <a href="DeleteAccount"><li class="ps-3 " id="deleteAccountBTN">Delete Account</li></a>
+                    <a href="EditAccount"><li class="ps-3 " id="editAccountBTN">Edit Account</li></a>
+                    <a href="ManageCreditCards"><li class="ps-3 " id="creditCardBTN">Manage Credit Cards</li></a>
                 </ul>
             </div>
             <li>
@@ -49,9 +49,9 @@
             </li>
             <div class="collapse" id="collapseExample2">
                 <ul>
-                    <a href="CreateUser.php"><li class="ps-3" id="createUserBTN">Create user</li></a>
-                    <a href="DeleteUser.php"><li class="ps-3" id="deleteUserBTN">Delete user</li></a>
-                    <a href="EditUser.php"><li class="ps-3" id="editUserBTN">Edit user</li></a>
+                    <a href="CreateUser"><li class="ps-3" id="createUserBTN">Create user</li></a>
+                    <a href="DeleteUser"><li class="ps-3" id="deleteUserBTN">Delete user</li></a>
+                    <a href="EditUser"><li class="ps-3" id="editUserBTN">Edit user</li></a>
                 </ul>
             </div>
             <li>
@@ -62,16 +62,16 @@
             </li>
             <div class="collapse" id="collapseExample3">
                 <ul>
-                    <a href="CreateATM.php"><li class="ps-3" id="createATMBTN">Create ATM</li></a>
-                    <a href="DeleteATM.php"><li class="ps-3" id="deleteATMBTN">Delete ATM</li></a>
+                    <a href="CreateATM"><li class="ps-3" id="createATMBTN">Create ATM</li></a>
+                    <a href="DeleteATM"><li class="ps-3" id="deleteATMBTN">Delete ATM</li></a>
                 </ul>
             </div>
             <li>
-                <a href="CreateAdmin.php"><button class="btn-primary d-flex" id="CreateAdminBTN">Create Admin</button></a>
+                <a href="CreateAdmin"><button class="btn-primary d-flex" id="CreateAdminBTN">Create Admin</button></a>
             </li>
         </ul>
         
-        <form method="POST" action="home.php">
+        <form method="POST" action="home">
             <button class="btn btn-danger" name="ptnLogOut" style="width: 100%">Log out</button>
         </form>
     </div>

@@ -6,7 +6,7 @@ require_once __DIR__.'/../Models/Transaction.php';
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 1; // 3 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
@@ -71,7 +71,7 @@ $transactions = $tr->viewTransactionHistory($account);
             </div>
         </div>
         <div class="backk">
-            <a href="menu.php" style="margin-left: 50px;">
+            <a href="menu" style="margin-left: 50px;">
                 <img src="assets/img/icons8-back-64.png" alt="Back button">
                 <br>
                 <b style="color:azure">Back</b>

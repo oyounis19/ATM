@@ -3,7 +3,7 @@ require_once "../Models/customer.php";
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 1; // 2 seconds delay
-    $redirect_url = "index.php";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
@@ -72,7 +72,7 @@ if (isset($_POST['change'])) {
                     </div>
                     <?php echo $errmsg ?>
                 </form>
-                <a href="menu.php">
+                <a href="menu">
                     <img src="assets/img/icons8-back-64.png" alt="Back button">
                     <br>
                     <b>Back</b>
