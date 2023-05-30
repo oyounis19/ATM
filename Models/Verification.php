@@ -114,7 +114,6 @@ class verification{
     public function CheckLocation(Customer $customer,ATM $ATM){//At login
         if(strtolower($customer->getCity()) == strtolower($ATM->getCity()))
             return true;
-            
         else{
             try{
                 $SSN =  $customer->getSSN();
@@ -122,18 +121,17 @@ class verification{
                 $result = $this->db->join($sql);//special db function for join statement
                 if($result){
                     $lastLocation = $result['City'];
-                    if(strtolower($lastLocation) == strtolower($ATM->getCity())){//Last transaction's location with ATM's location
-                        return true;
-                    }
+                    if(strtolower($lastLocation) == strtolower($ATM->getCity()))//Last transaction's location with current ATM's location
+                    return true;
                     else{
                         $OTP = $ATM->sendOTP($customer, $this->generateOTP());
-                        return $OTP;
+                        return $OTP;//fraud detected
                     }
                 }
                 else{
                     if($result['City'] == '')
                         return true;//1st transaction
-
+                    
                     return false;//error in Database
                 }
             }

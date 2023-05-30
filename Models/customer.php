@@ -216,16 +216,16 @@ class Customer extends User {
      * Sets the user's sessions to be used in the whole website
     */
     private function setSessions($row) {
-        $_SESSION['SSN']        = $row[0]['SSN'];
-        $_SESSION['card_id']    = $row[0]['CardID'];
-        $_SESSION['fingerpint'] = $row[0]['Fingerprint'];
-        $_SESSION['upass']      = $row[0]['PIN'];
-        $_SESSION['fName']      = $row[0]['FirstName'];
-        $_SESSION['lName']      = $row[0]['LastName'];
-        $_SESSION['Street']     = $row[0]['Street'];
-        $_SESSION['Area']       = $row[0]['Area'];
-        $_SESSION['City']       = $row[0]['City'];
-        $_SESSION['Email']      = $row[0]['Email'];
+        $this->SSN         = $_SESSION['SSN']        = $row[0]['SSN']; 
+        $this->CardID      = $_SESSION['card_id']    = $row[0]['CardID'];
+        $this->Fingerprint = $_SESSION['fingerpint'] = $row[0]['Fingerprint'];
+        $this->PIN         = $_SESSION['upass']      = $row[0]['PIN'];
+        $this->FirstName   = $_SESSION['fName']      = $row[0]['FirstName'];
+        $this->LastName    = $_SESSION['lName']      = $row[0]['LastName'];
+        $this->Street      = $_SESSION['Street']     = $row[0]['Street'];
+        $this->Area        = $_SESSION['Area']       = $row[0]['Area'];
+        $this->City        = $_SESSION['City']       = $row[0]['City'];
+        $this->Email       = $_SESSION['Email']      = $row[0]['Email'];
     }
 
     /** @param array $row

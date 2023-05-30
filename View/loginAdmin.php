@@ -72,7 +72,7 @@ if (isset($_POST['user']) && isset($_POST['pass'])) {
 </body>
 
 <?php
-if ($showAlert == 1) {
+if ($showAlert === 1) {
 ?>
     <script>
         const Toast = Swal.mixin({

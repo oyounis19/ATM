@@ -1,5 +1,5 @@
 <?php
-ob_start();//Capture the HTML in output buffer instead of being sending to the browser immediately
+ob_start();//Capture the HTML in output buffer instead of being sent to the browser immediately
 require_once __DIR__.'/../Models/Account.php';
 require_once __DIR__.'/../Models/customer.php';//Starts the sessions
 require_once __DIR__.'/../Models/Transaction.php';
@@ -124,7 +124,7 @@ if(isset($_POST['amount']) and $_POST['amount'] != ''){
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 <?php
-    if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2 or $sweetAlert === 3 or $sweetAlert === 4 or $sweetAlert === 5){
+    if($sweetAlert and $sweetAlert >= 0 and $sweetAlert <= 5){
         $icon = '';
         $message = '';
         switch($sweetAlert){
@@ -150,7 +150,7 @@ if(isset($_POST['amount']) and $_POST['amount'] != ''){
                 break;
             case 5:
                 $icon = 'warning';
-                $message = 'withdrawal amount is more than 30% above average, sending OTP to verify';
+                $message = 'Withdrawal amount is more than 30% above average, sending OTP to verify';
                 break;
             default:
                 $icon = 'error';

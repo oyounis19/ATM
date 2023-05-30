@@ -5,7 +5,7 @@ require_once "../Models/Account.php";
 
 if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
-    $refresh_delay = 1; // 2 seconds delay
+    $refresh_delay = 1; // 1 seconds delay
     $redirect_url = "index.php";
 
     header("refresh:$refresh_delay;url=$redirect_url");
@@ -65,11 +65,13 @@ if(isset($_POST['block'])){
                         <?php
                         }
                         ?>
+                        <?php if(!isset($_SESSION['oneAccountOnly'])){?>
                         <li class="text-white d-flex flex-column text-start fs-5 mb-3">
                                 <a href="Account.php">
                                     Change Account
                                 </a>
                         </li>
+                        <?php }?>
                     </ul>
                 </div>
             </div>

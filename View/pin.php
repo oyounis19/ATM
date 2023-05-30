@@ -78,7 +78,7 @@ if(isset($_POST['pin'])){//Check entered PIN
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 <?php
-    if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2){
+    if($sweetAlert and $sweetAlert >= 0 and $sweetAlert <= 2){
         $icon = '';
         $message = '';
         switch($sweetAlert){

@@ -100,7 +100,7 @@ if(isset($_POST['amount']) and isset($_POST['accountID']) and $_POST['accountID'
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 <?php
-    if($sweetAlert === 0 || $sweetAlert === 1 || $sweetAlert === 2 || $sweetAlert === 3 or $sweetAlert == 4){
+    if($sweetAlert and $sweetAlert >= 0 and $sweetAlert <= 4){
         $icon = '';
         $message = '';
         switch($sweetAlert){

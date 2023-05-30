@@ -110,7 +110,7 @@ else if(!isset($_SESSION['SSN'])){
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 <?php
-if($sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2){
+if($sweetAlert and $sweetAlert >= 0 and $sweetAlert <= 2){
     switch($sweetAlert){
         case 0:
             $icon = 'error';

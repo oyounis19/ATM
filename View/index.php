@@ -1,16 +1,17 @@
 <?php
-if(session_status() !== PHP_SESSION_ACTIVE)//If session is closed open it to destroy it
+ob_start();//Capture the HTML in output buffer instead of being sent to the browser immediately
+if(session_status() !== PHP_SESSION_ACTIVE)// If session is closed open it to destroy it
 session_start();
 
 if (session_status() === PHP_SESSION_ACTIVE) {//session is open
-    $_SESSION = array();//remove all data in the session
+    $_SESSION = array();// remove all data in the session
     session_unset();
-    session_destroy();//destroy the previous session when logging out or first time in website
+    session_destroy();// destroy the previous session when logging out or first time in website
 }
 
 /* functions of Customer start from here
 */
-require_once "../Models/customer.php";//Actual session starts
+require_once "../Models/customer.php";// Actual session starts
 require_once "../Models/Verification.php";
 require_once "../Models/Card.php";
 require_once "../Models/ATM.php";
@@ -19,76 +20,65 @@ $customer = new customer;
 $verify = new verification();
 $atm = new ATM();
 $atm->getAtmData();
-$customererrmsg = "";
-$customererrmsgfingerprint = "";
+$sweetAlert = null;
 $card;
-//login function using Credit Card or Fingerprint 
-// if you want to check login by fingerprint or not go to line @14 & line @30
 if (isset($_POST['lg_in']) or (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']))) {
     $value;
     $Success = 0;
     $_SESSION['fing'] = '0';// session of fingerprint set to zero
-    if (isset($_POST['lg_in'])) {//Credit Card
-        $cardID = $_POST['card_id'];
-        $pass = $_POST['upass'];
-        $value = $customer->login($cardID, $pass);
-        if ($value == 1) {//sessions has been set
+    if (isset($_POST['lg_in'])) {// Login by Credit Card **********
+
+        $value = $customer->login($_POST['card_id'], $_POST['upass']);
+        if ($value == 1) {
             $card = unserialize($_SESSION['card']);
-            //Start Fraud Verify***********
+            // Start Fraud Verify***********
             if ($verify->CheckExpDate($card))
                 $Success = 1;
             else{
-                $customererrmsg = "<b style='color: white;'> Card has been blocked,Since the Card Expired </b>";
-                $Success = -1;
+                $Success = 0; 
+                $sweetAlert = 0;
             }
-            if($Success == 1){//Not expired
-                $otp = $verify->CheckLocation($customer, $atm);//Location
+            if($Success == 1){// Not expired
+                $otp = $verify->CheckLocation($customer, $atm);// Location
                 if($otp === true){
                     $Success = 1;
-                    echo 'done';
                 }
-                else if($otp === false)
-                    echo 'error occured';
+                else if($otp === false){//DB error
+                    $Success = 0;
+                    $sweetAlert = 1;
+                }
                 else{
                     $_SESSION['OTP'] = $otp;
-                    header("location:OTP.php");
-                    exit();
+                    $Success = 0;
+                    $sweetAlert = 2;
                 }
             }
-            //End Fraud Verify***********
-            goto here;
+            // End Fraud Verify***********
         } else if ($value == -1) {
-            $customererrmsg = "<b style='color: white;'> Card is blocked </b>";
+            $sweetAlert = 3;
         } else {//0
-            $customererrmsg = "<b style='color: white;'> Wrong Credit Card number or PIN</b>";
+            $sweetAlert = 4;
         }
-    } else if (isset($_POST['upload'])) {//Fingerprint
+    } else if (isset($_POST['upload'])) {// Login by Fingerprint ***********
         $value = $customer->FingerprintValidation();
         if ($value == 1) {
             $Success = 1;
-            //session of fingerprint set to 1 if logged by it
-            $_SESSION['fing'] = '1';
-            goto here;
-        } else if ($value == -1) {
-            $customererrmsgfingerprint = "<b style='color: white;'> Card is blocked </b>";
-        } else {
-            $customererrmsgfingerprint = "<b style='color: white;'> Not recognized </b>";
-        }
+            $_SESSION['fing'] = '1'; // session of fingerprint set to 1
+        } else if ($value == -1) 
+            $sweetAlert = 3;
+        else
+            $sweetAlert = 5;
     }
-    here:;
     if ($Success) {
         header("location:Account.php");
         exit();
     }
-}else if(isset($_POST['upload'])){
-    $customererrmsgfingerprint = "<b style='color: white;'> Upload image first.. </b>";
-}
-
+}else if(isset($_POST['upload']))
+    $sweetAlert = 6;
 
 /////////////////////////////
 
-/* functions of Service technican start from here
-*/
+// Service technican
 require_once(__DIR__ . "/../Models/servicesTechnican.php");
 $srvTeq = new servicesTechinican;
 if (isset($_POST['bLogin'])) {
@@ -96,8 +86,9 @@ if (isset($_POST['bLogin'])) {
         header("location:../View/serviceMenu.php");
     }else{
         ?>
-        <script> alert('<?php echo $_SESSION['errMsg'] ?>')</script>
+        <!-- <script> alert('<?php //echo $_SESSION['errMsg'] ?>')</script> -->
         <?php
+        $sweetAlert = 7;
     }
 }
 ?>
@@ -137,7 +128,6 @@ if (isset($_POST['bLogin'])) {
                         <label for="floatingPassword">Enter your PIN code</label>
                     </div>
                     <button name="lg_in" class="btn btn-primary mt-3 w-100" type="submit">Log in</button>
-                    <?php echo $customererrmsg?>
                 </form>
 
             </div>
@@ -208,7 +198,6 @@ if (isset($_POST['bLogin'])) {
                 <form action="#" method="post" enctype="multipart/form-data">
                     <input type="file" class="btn btn-primary mb-3" name="image">
                     <input type="submit" name="upload" class="btn btn-primary" value="Scan">
-                    <?php echo "<pre>$customererrmsgfingerprint</pre>" ?>
                 </form>
             </div>
         </div>
@@ -251,5 +240,76 @@ if (isset($_POST['bLogin'])) {
     <script src="assets/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+<?php
+    if($sweetAlert and $sweetAlert >= 0 and $sweetAlert <= 7){
+        $icon = '';
+        $message = '';
+        switch($sweetAlert){
+            case 0:
+                $icon = 'error';
+                $message = 'Card is Expired, Please contact customer service';
+                break;
+            case 1:
+                $icon = 'error';
+                $message = 'Error occured, Try again';
+                break;
+            case 2:
+                $icon = 'warning';
+                $message = 'Location Fraud detected, sending OTP to verify';
+                break;
+            case 3:
+                $icon = 'error';
+                $message = 'Card is blocked';
+                break;
+            case 4:
+                $icon = 'error';
+                $message = 'Wrong Credit Card number or PIN';
+                break;
+            case 5:
+                $icon = 'warning';
+                $message = 'Fingerprint not recognized, Try again';
+                break;
+            case 6:
+                $icon = 'warning';
+                $message = 'Upload image first...';
+                break;
+            case 7:
+                $icon = 'error';
+                $message = $_SESSION['errMsg'];
+                break;
+            default:
+                $icon = 'error';
+                $message = 'Something went wrong...';
+                break;
+        }
+?>
+    <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        })
 
+        Toast.fire({
+        icon: '<?php echo $icon; ?>',
+        title: '<?php echo $message; ?>'
+        })
+    </script>
+<?php
+    if($sweetAlert === 2){//OTP
+
+        $refresh_delay = 3; // 3 seconds delay
+        $redirect_url = "OTP.php";
+        
+        header("refresh:$refresh_delay;url=$redirect_url");
+        ob_end_flush();//Sends the HTML to the browser
+    }
+}
+?>
 </html>

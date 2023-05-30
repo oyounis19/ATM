@@ -102,7 +102,7 @@ if(isset($_POST['otp'])){
 </body>
 
 <?php
-    if($sweetAlert === -1 or $sweetAlert === 0 or $sweetAlert === 1 or $sweetAlert === 2 ){
+    if($sweetAlert and $sweetAlert >= -1 and $sweetAlert <= 2){
         $icon = '';
         $message = '';
         switch($sweetAlert){

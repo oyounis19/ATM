@@ -96,7 +96,7 @@ if(isset($_POST["AddUser"])){
                 </div>
                 <div class="d-flex gap-4">
                     <div class="form-floating w-50 mb-3">
-                        <input type="number" class="form-control" id="PINcode" placeholder="PIN Code" name="PIN" required>
+                        <input type="number" class="form-control" id="PINcode" placeholder="PIN Code" name="PIN" maxlength="4" required>
                         <label for="PINcode">PIN Code</label>
                     </div>
                     <div class="form-floating w-50 mb-3">

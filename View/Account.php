@@ -5,23 +5,7 @@ require_once "../Models/customer.php";
 /* Functions of customer starts here */
 $msg = "";
 $result=[];
-if (isset($_SESSION['SSN'])) {
-    $customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
-                                $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email'],$_SESSION['card_id']);
-    $result = $customer->accounts($customer->getSSN());
-    if (count($result) == 0) {
-        $msg ="<b style='color: white;'>You Don't have Account Yet </b>";
-    }else if(count($result) == 1){
-        $customer->chooseAccount($result[0]['ID']);
-        header("location:menu.php");
-        exit();
-    }
-    if (isset($_POST['selectedAccount'])) {
-        $customer->chooseAccount($_POST['selectedAccount']);
-        header("location:menu.php");
-        exit();
-    }
-}else{
+if(!isset($_SESSION['SSN'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 1; // 1 seconds delay
     $redirect_url = "index.php";
@@ -29,6 +13,24 @@ if (isset($_SESSION['SSN'])) {
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
 }
+
+$customer = new customer($_SESSION['SSN'],$_SESSION['fName'],$_SESSION['lName'],$_SESSION['upass'],$_SESSION['fingerpint'],
+                            $_SESSION['Street'], $_SESSION['Area'], $_SESSION['City'],$_SESSION['Email'],$_SESSION['card_id']);
+$result = $customer->accounts($customer->getSSN());
+if (count($result) == 0) {//has no accounts
+    $msg ="<b style='color: white;'>You Don't have Account Yet </b>";
+}else if(count($result) == 1){//has only 1 account, Directed to menu directly
+    $customer->chooseAccount($result[0]['ID']);
+    $_SESSION['oneAccountOnly'] = '1';
+    header("location:menu.php");
+    exit();
+}
+if (isset($_POST['selectedAccount'])) {//Account pressed
+    $customer->chooseAccount($_POST['selectedAccount']);
+    header("location:menu.php");
+    exit();
+}
+
 
 ?>
 

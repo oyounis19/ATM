@@ -40,18 +40,18 @@ class ATM{
         $mail = new PHPMailer(true);
         try {
             //Server settings
-            $mail->SMTPDebug = 1;                      //Enable verbose debug output
+            $mail->SMTPDebug = 0;                      //Enable verbose debug output
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'oyounis19@gmail.com';                //SMTP username
-            $mail->Password   = 'jufprfdqtunfvtpq';                     //SMTP password
+            $mail->Username   = 'atm86596@gmail.com';                //SMTP username
+            $mail->Password   = 'qkgujxouotvsvspv';                     //SMTP password
             $mail->SMTPSecure = 'tls';                                  //Enable implicit TLS encryption
             $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
             $mail->isHTML(true);   
 
             //Recipients
-            $mail->setFrom('oyounis19@gmail.com', 'ATM');
+            $mail->setFrom('atm86596@gmail.com', 'ATM');
             return $mail;
         }catch (Exception $e) {
             return null;
@@ -310,7 +310,7 @@ class ATM{
 
     public function getAtmData($id = null){
         if(!$id)
-            $id = 1286;
+            $id = 1287;
         $result = $this->db->select("`ATM`", "*", "ID=?", array($id));//**************************************** */
         if($result){
             $this->ID = $result[0]['ID'];
@@ -360,7 +360,7 @@ class ATM{
             <li><strong>Cardholder Name:</strong> ".$customer->getFirstName().' '.$customer->getLastName()."</li>
             <li><strong>Expiration Date:</strong> ".$card->getDate()."</li>
             <li><strong>CVV:</strong> ".$card->getCVV()."</li>
-            <li><strong>PIN code:</strong> ".$customer->getPin()."</li>
+            <li><strong>PIN code:</strong> ".$customer->getPin()." (please change this PIN)</li>
           </ul>
           <p>Please ensure to keep this information secure and do not share it with anyone. If you have any questions or concerns regarding your credit card, please feel free to contact our customer support team.</p>
           <p>Thank you for choosing our services!</p>
