@@ -17,7 +17,7 @@ $showAlert = false;
 if(!isset($_SESSION['firstname'])){
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 1; // 2 seconds delay
-    $redirect_url = "../LoginAdmin";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();
@@ -34,7 +34,7 @@ if (isset($_SESSION['userID']) && isset($_SESSION['firstname']) && isset($_SESSI
 } else {
     echo '<b>Redirecting you to login screen to login...</b>';
     $refresh_delay = 3; // 3 seconds delay
-    $redirect_url = "../loginAdmin";
+    $redirect_url = "index";
 
     header("refresh:$refresh_delay;url=$redirect_url");
     exit();

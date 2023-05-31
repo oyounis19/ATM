@@ -3,7 +3,7 @@
     if(isset($_POST['ptnLogOut'])){
         $admin = new admin();
         $admin->logout();
-        header("Location: ../loginAdmin");
+        header("Location: index");
         exit;
     }
 ?>
